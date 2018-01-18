@@ -1,7 +1,4 @@
-# stand-alone
-单机版机顶盒项目 - 热点信息技术有限公司。
-        
-## 开发分支： `devp`
+# 上传日志项目模块 - 单机版
 
 ### 命名规范：
 1.  命名 - 尽量见名知义
@@ -15,8 +12,17 @@
 9.  接口名 - 必须以 I 开头。
 10. Mapper文件名 - 必须与类的主名一样。
 11. ibatis配置文件名 - 必须是mybatis_config.xml。
+12. 控制器主文件名必须以 Controller 结尾，即：XxxController
+
+### 模块说明：
+项目的业务层、控制层、资源等都放在这里
+
+* xxx.xxx.controller 控制层[控制器]
+* xxx.xxx.listener 控制层[监听器]
+* xxx.xxx.service 业务层
+
+- 用户配置文件(可改)： custom-configuration.conf
+- 系统配置文件(匆改)： system-configuration.conf
 
 
 
-### 项目配置说明：
-操作系统环境变量配置 RUNTIME_ENVIRONMENT 运行环境变量设置，取值为 local/development/release/produce (分别代表 本地/研发/预发布/生产 环境)。
