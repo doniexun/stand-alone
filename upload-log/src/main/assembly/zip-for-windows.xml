@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>windows-package</id>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>StandAlong</baseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+
+        <!-- 说明文档 -->
+        <fileSet>
+            <directory>src/main/run/help</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>ReadMe.md</include>
+            </includes>
+        </fileSet>
+
+        <!-- Soft -->
+        <fileSet>
+            <directory>src/main/run/soft/windows</directory>
+            <outputDirectory>soft</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+
+        <!-- Bin -->
+        <fileSet>
+            <directory>src/main/run/exe/windows</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/libs</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/shell/windows</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>*.cmd</include>
+                <include>*.vbs</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/shell/windows/media</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>*.cmd</include>
+                <include>*.vbs</include>
+            </includes>
+        </fileSet>
+
+        <!-- Sbin -->
+        <fileSet>
+            <directory>src/main/run/shell/windows</directory>
+            <outputDirectory>sbin</outputDirectory>
+            <includes>
+                <include>*.bat</include>
+            </includes>
+            <excludes>
+                <exclude>*[alone].bat</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/shell/windows/media</directory>
+            <outputDirectory>sbin</outputDirectory>
+            <includes>
+                <include>*.bat</include>
+            </includes>
+            <excludes>
+                <exclude>*[alone].bat</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/shell/windows</directory>
+            <outputDirectory>sbin/alone</outputDirectory>
+            <includes>
+                <include>*[alone].bat</include>
+            </includes>
+        </fileSet>
+
+        <!-- Conf -->
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+
+        <!-- Help -->
+        <fileSet>
+            <directory>src/main/run/help</directory>
+            <outputDirectory>help</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+            <excludes>
+                <exclude>ReadMe.md</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/help/windows</directory>
+            <outputDirectory>help</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+            <excludes>
+                <exclude>ReadMe.md</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Media -->
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>media/source</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>media/target</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Data -->
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>data</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Temp -->
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>temp</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- Logs -->
+        <fileSet>
+            <directory>src/main/run/conf</directory>
+            <outputDirectory>logs</outputDirectory>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+</assembly>

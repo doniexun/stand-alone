@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.savor</groupId>
+        <artifactId>standalone</artifactId>
+        <version>1.0.0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>cn.savor.standalone</groupId>
+    <artifactId>upload-log</artifactId>
+    <version>1.0.0.0.1-SNAPSHOT</version>
+
+    <name>Stand-Alone [Upload-Log]</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+        <!-- 常用工具 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- 调试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--&lt;!&ndash;AliYun&ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>com.aliyun.oss</groupId>-->
+        <!--<artifactId>aliyun-sdk-oss</artifactId>-->
+        <!--<version>2.4.0</version>-->
+        <!--</dependency>-->
+
+        <!-- 自定义插件 -->
+        <dependency>
+            <groupId>net.lizhaoweb.common.util</groupId>
+            <artifactId>argument</artifactId>
+            <version>JL.COMMON.1.4.0.0.1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.lizhaoweb.common.util</groupId>
+            <artifactId>compress</artifactId>
+            <version>JL.COMMON.1.5.0.0.1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.savor.aliyun</groupId>
+            <artifactId>oss</artifactId>
+            <version>1.0.0.0.1-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <!--<finalName>${project.artifactId}-${project.version}.${project.packaging}</finalName>-->
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>cn.savor.standalone.log.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>
+                            src/main/assembly/zip-for-windows.xml
+                        </descriptor>
+                        <descriptor>src/main/assembly/zip-for-macos.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
