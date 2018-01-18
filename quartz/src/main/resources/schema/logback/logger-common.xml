@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<included xmlns="http://ch.qos.logback/xml/ns/logback" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback http://ch.qos.logback/xml/ns/logback/logback.xsd">
+
+    <!-- MyBatis -->
+    <logger name="org.apache.ibatis" level="${logger.mybatis.level}"/>
+    <logger name="org.mybatis.spring" level="${logger.mybatis.level}"/>
+
+    <!-- JDBC -->
+    <logger name="java.sql.ResultSet" level="${logger.jdbc.level}"/>
+    <logger name="java.sql.Connection" level="${logger.jdbc.level}"/>
+    <logger name="java.sql.Statement" level="${logger.jdbc.level}"/>
+    <logger name="java.sql.PreparedStatement" level="${logger.jdbc.level}"/>
+
+    <!-- 自定义插件 -->
+    <logger name="net.lizhaoweb" level="${log.lizhaoweb.level}"/>
+
+</included>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cn.savor.oss.OSSCreateHotelDir" class="cn.savor.standalone.jobs.OSSCreateHotelDir">
+        <property name="ossService" ref="ossCreateDir"/>
+    </bean>
+    <bean id="cn.savor.oss.job.OSSCreateHotelDir"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="cn.savor.oss.OSSCreateHotelDir"/>
+        <property name="targetMethod" value="createHotelDir"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="cn.savor.oss.trigger.OSSCreateHotelDir"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cn.savor.oss.job.OSSCreateHotelDir"/>
+        <property name="cronExpression" value="0 */10 * * * ?"/>
+    </bean>
+
+    <!-- ======================== 调度工厂 ======================== -->
+    <bean id="small.quartz.scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          lazy-init="true" autowire="no">
+        <property name="autoStartup" value="true"/>
+        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+        <property name="overwriteExistingJobs" value="false"/>
+        <property name="triggers">
+            <list>
+                <ref bean="cn.savor.oss.trigger.OSSCreateHotelDir"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

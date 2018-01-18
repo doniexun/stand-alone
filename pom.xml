@@ -18,6 +18,7 @@
     <modules>
         <module>upload-log</module>
         <module>oss-inspect</module>
+        <module>quartz</module>
     </modules>
 
 </project>
