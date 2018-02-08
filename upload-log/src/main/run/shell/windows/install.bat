@@ -52,29 +52,29 @@ Echo.
 If NOT EXIST "!APP_HOME!\data\upload\" (
     MKDIR "!APP_HOME!\data\upload\"
 )
-If NOT EXIST "!APP_HOME!\data\upload\generation" (
-    MKDIR "!APP_HOME!\data\upload\generation"
+If NOT EXIST "!APP_HOME!\data\upload\standalone_v1\" (
+    MKDIR "!APP_HOME!\data\upload\standalone_v1\"
 )
-If NOT EXIST "!APP_HOME!\data\upload\bibasic" (
-    MKDIR "!APP_HOME!\data\upload\bibasic"
+If NOT EXIST "!APP_HOME!\data\upload\standalone_v3\" (
+    MKDIR "!APP_HOME!\data\upload\standalone_v3\"
 )
 If NOT EXIST "!APP_HOME!\data\download\" (
     MKDIR "!APP_HOME!\data\download\"
 )
-If NOT EXIST "!APP_HOME!\data\download\generation" (
-    MKDIR "!APP_HOME!\data\download\generation"
+If NOT EXIST "!APP_HOME!\data\download\standalone_v1\" (
+    MKDIR "!APP_HOME!\data\download\standalone_v1\"
 )
-If NOT EXIST "!APP_HOME!\data\download\bibasic" (
-    MKDIR "!APP_HOME!\data\download\bibasic"
+If NOT EXIST "!APP_HOME!\data\download\standalone_v3\" (
+    MKDIR "!APP_HOME!\data\download\standalone_v3\"
 )
 If NOT EXIST "!APP_HOME!\data\decompression\" (
     MKDIR "!APP_HOME!\data\decompression\"
 )
-If NOT EXIST "!APP_HOME!\data\decompression\generation" (
-    MKDIR "!APP_HOME!\data\decompression\generation"
+If NOT EXIST "!APP_HOME!\data\decompression\standalone_v1\" (
+    MKDIR "!APP_HOME!\data\decompression\standalone_v1\"
 )
-If NOT EXIST "!APP_HOME!\data\decompression\bibasic" (
-    MKDIR "!APP_HOME!\data\decompression\bibasic"
+If NOT EXIST "!APP_HOME!\data\decompression\standalone_v3\" (
+    MKDIR "!APP_HOME!\data\decompression\standalone_v3\"
 )
 If NOT EXIST "!APP_HOME!\data\U\" (
     MKDIR "!APP_HOME!\data\U\"

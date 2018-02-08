@@ -27,9 +27,9 @@ IF NOT EXIST "%TARGET_PATH%\" (
 Set "ne=standalone"
 For /R "%SOURCE_PATH%" %%f In (*) do (
      Set FILE_ITEM=%%f
-     Set TARGET_PATH_TEMP=%TARGET_PATH%\bibasic
+     Set TARGET_PATH_TEMP=%TARGET_PATH%\standalone_v3
      Echo     !FILE_ITEM!
-     echo %%~nf|findStr /v "%ne%" && Set TARGET_PATH_TEMP=%TARGET_PATH%\generation
+     echo %%~nf|findStr /v "%ne%" && Set TARGET_PATH_TEMP=%TARGET_PATH%\standalone_v1
      Copy /Y "!FILE_ITEM!" "!TARGET_PATH_TEMP!"
      If ERRORLEVEL 1 GoTo move_fail "!FILE_ITEM!"
 )

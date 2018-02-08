@@ -67,30 +67,30 @@ If "%com.littlehotspot.alone.logs.oss.bucket.name%" == "" (
 	SET OSS_BUCKET_NAME=%com.littlehotspot.alone.logs.oss.bucket.name%
 )
 
-If "%com.littlehotspot.alone.logs.oss.key.prefix%" == "" (
-	Echo OSS 对象前缀没有配置，请到 'conf\app.ini' 中配置 'com.littlehotspot.alone.logs.oss.key.prefix'
+If "%com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix%" == "" (
+	Echo OSS 对象前缀没有配置，请到 'conf\app.ini' 中配置 'com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix'
 	GoTo eof
 ) Else (
-	If "%com.littlehotspot.alone.logs.oss.key.prefix:~-1%" == "\" (
-	  Set OSS_KEY_PREFIX=%com.littlehotspot.alone.logs.oss.key.prefix:~0,-1%
+	If "%com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix:~-1%" == "\" (
+	  Set OSS_KEY_STANDALONE_V1_PREFIX=%com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix:~0,-1%
 	)
-	If "%com.littlehotspot.alone.logs.oss.key.prefix:~-1%" == "/" (
-	  Set OSS_KEY_PREFIX=%com.littlehotspot.alone.logs.oss.key.prefix:~0,-1%
+	If "%com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix:~-1%" == "/" (
+	  Set OSS_KEY_STANDALONE_V1_PREFIX=%com.littlehotspot.alone.logs.oss.key.standalone.v1.prefix:~0,-1%
 	)
-	SET OSS_KEY_PREFIX=!OSS_KEY_PREFIX!/%HOTEL_AREA%/%date:~0,4%%date:~5,2%%date:~8,2%
+	SET OSS_KEY_STANDALONE_V1_PREFIX=!OSS_KEY_STANDALONE_V1_PREFIX!/%HOTEL_AREA%/%date:~0,4%%date:~5,2%%date:~8,2%
 )
 
-If "%com.littlehotspot.alone.logs.oss.key.bibasic.prefix%" == "" (
-	Echo OSS 对象前缀没有配置，请到 'conf\app.ini' 中配置 'com.littlehotspot.alone.logs.oss.key.bibasic.prefix'
+If "%com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix%" == "" (
+	Echo OSS 对象前缀没有配置，请到 'conf\app.ini' 中配置 'com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix'
 	GoTo eof
 ) Else (
-	If "%com.littlehotspot.alone.logs.oss.key.bibasic.prefix:~-1%" == "\" (
-	  Set OSS_KEY_BIBASIC_PREFIX=%com.littlehotspot.alone.logs.oss.key.bibasic.prefix:~0,-1%
+	If "%com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix:~-1%" == "\" (
+	  Set OSS_KEY_STANDALONE_V3_PREFIX=%com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix:~0,-1%
 	)
-	If "%com.littlehotspot.alone.logs.oss.key.bibasic.prefix:~-1%" == "/" (
-	  Set OSS_KEY_BIBASIC_PREFIX=%com.littlehotspot.alone.logs.oss.key.bibasic.prefix:~0,-1%
+	If "%com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix:~-1%" == "/" (
+	  Set OSS_KEY_STANDALONE_V3_PREFIX=%com.littlehotspot.alone.logs.oss.key.standalone.v3.prefix:~0,-1%
 	)
-	SET OSS_KEY_BIBASIC_PREFIX=!OSS_KEY_BIBASIC_PREFIX!/{}/%date:~0,4%%date:~5,2%%date:~8,2%
+	SET OSS_KEY_STANDALONE_V3_PREFIX=!OSS_KEY_STANDALONE_V3_PREFIX!/{}/%date:~0,4%%date:~5,2%%date:~8,2%
 )
 
 
@@ -119,14 +119,17 @@ If ERRORLEVEL 1 (
 
 
 @REM Upload log-file to OSS
-Call "%APP_HOME%\bin\upload" "%LONG_BIT%" "%LOCAL_FROM%\generation" "%TEMP%\generation" "%LOCAL_BACKUP%\generation" "%OSS_BUCKET_NAME%" "%OSS_KEY_PREFIX%"
-::START "上传日志压缩包到 OSS" %APP_HOME%\bin\upload "%FROM%" "%TEMP%" "%LOCAL_BACKUP%" "%OSS_BUCKET_NAME%" "%OSS_KEY_PREFIX%"
+Call "%APP_HOME%\bin\upload" "%LONG_BIT%" "%LOCAL_FROM%\standalone_v1" "%TEMP%\standalone_v1" "%LOCAL_BACKUP%\standalone_v1" "%OSS_BUCKET_NAME%" "%OSS_KEY_STANDALONE_V1_PREFIX%"
+::START "上传日志压缩包到 OSS" %APP_HOME%\bin\upload "%FROM%" "%TEMP%" "%LOCAL_BACKUP%" "%OSS_BUCKET_NAME%" "%OSS_KEY_STANDALONE_V1_PREFIX%"
 If ERRORLEVEL 1 (
 	GoTo eof
 )
 
-Call "%APP_HOME%\bin\upload" "%LONG_BIT%" "%LOCAL_FROM%\bibasic" "%TEMP%\bibasic" "%LOCAL_BACKUP%\bibasic" "%OSS_BUCKET_NAME%" "%OSS_KEY_BIBASIC_PREFIX%" "%AREA_URL%"
-::START "上传日志压缩包到 OSS" %APP_HOME%\bin\upload "%FROM%" "%TEMP%" "%LOCAL_BACKUP%" "%OSS_BUCKET_NAME%" "%OSS_KEY_PREFIX%"
+echo 一代单机版日志上传完成，按任意键继续上传三代单机版日志
+PAUSE
+
+Call "%APP_HOME%\bin\upload" "%LONG_BIT%" "%LOCAL_FROM%\standalone_v3" "%TEMP%\standalone_v3" "%LOCAL_BACKUP%\standalone_v3" "%OSS_BUCKET_NAME%" "%OSS_KEY_STANDALONE_V3_PREFIX%" "%AREA_URL%"
+::START "上传日志压缩包到 OSS" %APP_HOME%\bin\upload "%FROM%" "%TEMP%" "%LOCAL_BACKUP%" "%OSS_BUCKET_NAME%" "%OSS_KEY_STANDALONE_V3_PREFIX%" "%AREA_URL%"
 If ERRORLEVEL 1 (
 	GoTo eof
 )
