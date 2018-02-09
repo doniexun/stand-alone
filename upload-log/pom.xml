@@ -15,6 +15,7 @@
 
     <name>Stand-Alone [Upload-Log]</name>
     <packaging>jar</packaging>
+    <description>单机版日志： 从 U 盘复制/移动到本机、从本机上传日志到 OSS 、从 OSS 下载日志到本机、 U 盘制作、视频格式转换</description>
 
     <dependencies>
 
