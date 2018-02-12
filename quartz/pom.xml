@@ -15,6 +15,7 @@
 
     <name>Stand-Alone [OSS-Quartz]</name>
     <packaging>war</packaging>
+    <description>OSS 上定时创建单机版酒楼节目单目录</description>
 
     <properties>
         <hadoop.version>2.6.0</hadoop.version>
