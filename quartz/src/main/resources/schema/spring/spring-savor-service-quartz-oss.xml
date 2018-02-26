@@ -7,7 +7,7 @@
                                   ignore-unresolvable="true"/>
 
     <bean id="ossCreateDir" class="cn.savor.standalone.service.impl.OSSService">
-        <property name="ossClient" ref="ossClientForSavor"/>
+        <property name="ossClient" ref="cn.savor.aliyun.oss.Client"/>
         <property name="bucketName" value="${cn.savor.quartz.oss.bucket.name}"/>
         <property name="apiURL" value="${cn.savor.quartz.oss.hotel.info.url}"/>
         <property name="dir" value="${cn.savor.quartz.oss.object.dir}"/>
