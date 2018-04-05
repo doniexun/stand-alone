@@ -13,12 +13,12 @@ import java.net.URLConnection;
  */
 public class GetItemList {
 
-    public static JSONObject getItemList(String hotelId,String ur) {
-        JSONObject jsonObject =null;
-        boolean result=false;
+    public static JSONObject getItemList(String hotelId, String ur) {
+        JSONObject jsonObject = null;
+        boolean result = false;
         try {
-            String url =ur+"="+hotelId;
-            String json= getHttpResponse(url);
+            String url = ur + "=" + hotelId;
+            String json = getHttpResponse(url);
             jsonObject = JSONObject.fromObject(json);
 //            System.out.println(jsonObject.toString());
         } catch (Exception e) {
@@ -26,7 +26,6 @@ public class GetItemList {
         }
         return jsonObject;
     }
-
 
 
     public static String getHttpResponse(String allConfigUrl) {
@@ -45,7 +44,7 @@ public class GetItemList {
             result = new StringBuffer();
             //读取URL的响应
             in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream(),"utf-8"));
+                    connection.getInputStream(), "utf-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
@@ -55,7 +54,7 @@ public class GetItemList {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (in != null) {
                     in.close();
@@ -64,8 +63,6 @@ public class GetItemList {
                 e2.printStackTrace();
             }
         }
-
         return null;
-
     }
 }

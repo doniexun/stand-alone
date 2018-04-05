@@ -21,27 +21,21 @@ public class CompareList {
 
     private static List<Item> getRemove(List<Item> prelist, List<Item> curlist) {
         List<Item> diff = new ArrayList<Item>();
-        Map<Item,Integer> map = new HashMap<Item,Integer>(curlist.size());
+        Map<Item, Integer> map = new HashMap<Item, Integer>(curlist.size());
         for (Item stu : curlist) {
             map.put(stu, 1);
         }
         for (Item stu : prelist) {
-            if(map.get(stu)!=null)
-            {
+            if (map.get(stu) != null) {
                 map.put(stu, 2);
                 continue;
             }
         }
-        for(Map.Entry<Item, Integer> entry:map.entrySet())
-        {
-            if(entry.getValue()==1)
-            {
+        for (Map.Entry<Item, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
                 diff.add(entry.getKey());
             }
         }
-
         return diff;
-
     }
-
 }

@@ -43,17 +43,17 @@ public class Item {
     //重写equals方法只要cnaName相等，我们就认为对象两个相等
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Item){
-            Item st=(Item) obj;
+        if (obj instanceof Item) {
+            Item st = (Item) obj;
             return (cnaName.equals(st.cnaName));
-        }else{
+        } else {
             return super.equals(obj);
 
         }
     }
+
     @Override
     public int hashCode() {
         return cnaName.hashCode();
     }
-
 }

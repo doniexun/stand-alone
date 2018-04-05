@@ -13,7 +13,6 @@ package cn.savor.standalone.log.createfile.service;
 import cn.savor.aliyun.oss.IOSSClient;
 import cn.savor.aliyun.oss.impl.OSSClientForSavor;
 import cn.savor.standalone.log.createfile.bean.Item;
-import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectMetadata;
 import net.lizhaoweb.common.util.base.StringUtil;
@@ -22,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
 
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
@@ -41,12 +39,12 @@ public class MediaDownloader {
     private static IOSSClient ossClient;
     private static String fileName;
 
-    public static List<OSSObjectSummary> execute(List<Item> items, String filePath,String ossBucketName,String ossKeyPrefix) throws IOException {
+    public static List<OSSObjectSummary> execute(List<Item> items, String filePath, String ossBucketName, String ossKeyPrefix) throws IOException {
 
         // 准备工作
-        MediaDownloader.filePath=filePath;
+        MediaDownloader.filePath = filePath;
         MediaDownloader.ossBucketName = ossBucketName;
-        MediaDownloader.ossKeyPrefix=ossKeyPrefix;
+        MediaDownloader.ossKeyPrefix = ossKeyPrefix;
         MediaDownloader.ossClient = getOssClient();
 
         System.out.println();
@@ -55,57 +53,57 @@ public class MediaDownloader {
         if (ossObjectSummaryList == null || ossObjectSummaryList.size() < 1) {
             System.out.println("");
         }
-    try {
+        try {
 
 
-        for (OSSObjectSummary ossObjectSummary : ossObjectSummaryList) {
-            if (ossObjectSummary == null) {
-                continue;
-            }
-            String ossFileKey = ossObjectSummary.getKey();
-            if (StringUtil.isBlank(ossFileKey)) {
-                continue;
-            }
-            if (ossFileKey.indexOf("/") < 0) {
-                continue;
-            }
-            if (ossFileKey.indexOf(".") < 0) {
+            for (OSSObjectSummary ossObjectSummary : ossObjectSummaryList) {
+                if (ossObjectSummary == null) {
                     continue;
-            }
-            String mediaName = ossFileKey.substring(ossFileKey.lastIndexOf("/") + 1);
-            String uploadDateString = null;
+                }
+                String ossFileKey = ossObjectSummary.getKey();
+                if (StringUtil.isBlank(ossFileKey)) {
+                    continue;
+                }
+                if (ossFileKey.indexOf("/") < 0) {
+                    continue;
+                }
+                if (ossFileKey.indexOf(".") < 0) {
+                    continue;
+                }
+                String mediaName = ossFileKey.substring(ossFileKey.lastIndexOf("/") + 1);
+                String uploadDateString = null;
 
-            String fileNamed = mediaName.substring(0, mediaName.lastIndexOf("."));
-            for (Item item : items) {
-                if (StringUtil.equals(item.getCnaName(),fileNamed)){
-                    if(StringUtil.equals("adv",item.getType())){
-                        fileName=item.getCnaName()+"_"+item.getType();
-                    }else {
-                        fileName=item.getId()+"_"+item.getType();
-                    }
+                String fileNamed = mediaName.substring(0, mediaName.lastIndexOf("."));
+                for (Item item : items) {
+                    if (StringUtil.equals(item.getCnaName(), fileNamed)) {
+                        if (StringUtil.equals("adv", item.getType())) {
+                            fileName = item.getCnaName() + "_" + item.getType();
+                        } else {
+                            fileName = item.getId() + "_" + item.getType();
+                        }
 
-                    //判断文件目录是否存在 如果不存在 创建目录
-                    File downloadFile = new File(filePath+"\\"+fileName, item.getId()+"_"+item.getType()+".ts");
-                    if (!downloadFile.getParentFile().exists() || !downloadFile.getParentFile().isDirectory()) {
-                        FileUtils.forceMkdir(new File(filePath+"\\"+fileName));
-                    }
-                    // 已经下载过
-                    if (downloadFile.exists()) {
-                        continue;
-                    }
+                        //判断文件目录是否存在 如果不存在 创建目录
+                        File downloadFile = new File(filePath + "\\" + fileName, item.getId() + "_" + item.getType() + ".ts");
+                        if (!downloadFile.getParentFile().exists() || !downloadFile.getParentFile().isDirectory()) {
+                            FileUtils.forceMkdir(new File(filePath + "\\" + fileName));
+                        }
+                        // 已经下载过
+                        if (downloadFile.exists()) {
+                            continue;
+                        }
 
-                    String downloadPath = downloadFile.getAbsolutePath();
-                    ObjectMetadata object = ossClient.getObject(ossBucketName, ossFileKey, downloadPath);
+                        String downloadPath = downloadFile.getAbsolutePath();
+                        ObjectMetadata object = ossClient.getObject(ossBucketName, ossFileKey, downloadPath);
 //                    ObjectMetadata objectMetadata = ossClient.downloadFile(ossBucketName, ossFileKey, downloadPath);
-                    if (object == null) {
-                        continue;
+                        if (object == null) {
+                            continue;
+                        }
                     }
                 }
+
             }
 
-        }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("资源下载失败！！！");
         }

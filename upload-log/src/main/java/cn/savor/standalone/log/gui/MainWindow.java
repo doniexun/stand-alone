@@ -13,8 +13,8 @@ package cn.savor.standalone.log.gui;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
@@ -27,52 +27,30 @@ import java.awt.*;
  */
 public class MainWindow {
 
-    private JModalFrame mainFrame;
+    public void init() throws IOException {
+        this.buildWindow();
+    }
 
-    public void init() {
-        mainFrame = new JModalFrame(WindowConstant.MainFrame.title);
+    /**
+     * 构建窗口
+     */
+    private void buildWindow() {
+        Image icon = new ImageIcon(this.getClass().getResource(WindowConstant.MainFrame.icon)).getImage();
+        JModalFrame mainFrame = new JModalFrame(WindowConstant.MainFrame.title);
+        mainFrame.setIconImage(icon);
         mainFrame.setSize(WindowConstant.MainFrame.width, WindowConstant.MainFrame.height);
         mainFrame.setResizable(false);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLocationRelativeTo(null);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setSize(mainFrame.getWidth(), mainFrame.getHeight());
-        mainPanel.setLayout(new BorderLayout());
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
-        this.createConfigurePanel(mainPanel);
-        this.createOperationPanel(mainPanel);
-        this.createMessagePanel(mainPanel);
+        new AppConfigTabbedPane().buildUI(tabbedPane);
+        new AppMainTabbedPane().buildUI(tabbedPane);
 
-        mainFrame.add(mainPanel);
+        mainFrame.add(tabbedPane);
         mainFrame.setVisible(true);
-    }
-
-    private void createConfigurePanel(JPanel parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.ConfigurePanel.title);
-        JPanel configurePanel = new JPanel();
-//        configurePanel.setLayout(null);
-        configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 3 / 5 - 80));
-        configurePanel.setBorder(configurePanelTitledBorder);
-        parentPanel.add(configurePanel, BorderLayout.NORTH);
-    }
-
-    private void createOperationPanel(JPanel parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.OperationPanel.title);
-        JPanel configurePanel = new JPanel();
-//        configurePanel.setLayout(null);
-        configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), 80));
-        configurePanel.setBorder(configurePanelTitledBorder);
-        parentPanel.add(configurePanel, BorderLayout.CENTER);
-    }
-
-    private void createMessagePanel(JPanel parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.MessagePanel.title);
-        JPanel configurePanel = new JPanel();
-//        configurePanel.setLayout(null);
-        configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 2 / 5));
-        configurePanel.setBorder(configurePanelTitledBorder);
-        parentPanel.add(configurePanel, BorderLayout.SOUTH);
     }
 
     public void destroy() {
@@ -80,8 +58,12 @@ public class MainWindow {
     }
 
     public static void main(String[] args) {
-        MainWindow window = new MainWindow();
-        window.init();
-        window.destroy();
+        try {
+            MainWindow window = new MainWindow();
+            window.init();
+            window.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

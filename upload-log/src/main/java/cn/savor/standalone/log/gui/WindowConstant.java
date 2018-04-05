@@ -22,20 +22,31 @@ package cn.savor.standalone.log.gui;
 class WindowConstant {
 
     static class MainFrame {
+        static final String icon = "/images/icon.png";
         static final String title = "例子";
         static final int width = 800;
         static final int height = 600;
     }
 
-    static class ConfigurePanel {
-        static final String title = "配置";
-    }
+    static class AppTabbedPane {
+        static class Main {
+            static final String title = "主页";
 
-    static class OperationPanel {
-        static final String title = "操作";
-    }
+            static class ConfigurePanel {
+                static final String title = "配置";
+            }
 
-    static class MessagePanel {
-        static final String title = "信息";
+            static class OperationPanel {
+                static final String title = "操作";
+            }
+
+            static class MessagePanel {
+                static final String title = "信息";
+            }
+        }
+
+        static class Config {
+            static final String title = "配置";
+        }
     }
 }
