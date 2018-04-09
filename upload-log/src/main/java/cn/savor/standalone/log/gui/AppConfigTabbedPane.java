@@ -62,6 +62,20 @@ class AppConfigTabbedPane {
         JComboBox<ItemKeyValue> ossBucketComboBox = new JComboBox<>(ossBucketItemData);
         rowPanel_1.add(ossBucketComboBox);
 
+        rowPanel_1.add(Box.createHorizontalGlue());
+
+        JLabel ossObjectKeyLabel = new JLabel("OSS 前缀");
+        ossObjectKeyLabel.setPreferredSize(new Dimension(60, 0));
+        rowPanel_1.add(ossObjectKeyLabel);
+
+        ItemKeyValue[] ossObjectKeyItemData = {
+                new ItemKeyValue<String, String>("log/box-standalone/", "一代单机版"),
+                new ItemKeyValue<String, String>("log/box_standalone/", "三代单机版"),
+                new ItemKeyValue<String, String>("media/stand_alone/", "媒体")
+        };
+        JComboBox<ItemKeyValue> ossObjectKeyComboBox = new JComboBox<>(ossObjectKeyItemData);
+        rowPanel_1.add(ossObjectKeyComboBox);
+
 
         //======================= 第二行
         JPanel rowPanel_2 = new JPanel();
