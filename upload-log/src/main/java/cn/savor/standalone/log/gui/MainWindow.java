@@ -10,6 +10,9 @@
  */
 package cn.savor.standalone.log.gui;
 
+import cn.savor.standalone.log.Configure;
+import cn.savor.standalone.log.ConfigureLoader;
+import cn.savor.standalone.log.exception.LoadException;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
 import javax.swing.*;
@@ -27,7 +30,12 @@ import java.io.IOException;
  */
 public class MainWindow {
 
-    public void init() throws IOException {
+    private Context context;
+
+    public void init() throws IOException, LoadException {
+        ConfigureLoader configureLoader = new ConfigureLoader();
+        Configure configure = configureLoader.loadUIData();
+        context = new Context(configure);
         this.buildWindow();
     }
 
@@ -46,8 +54,8 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
-        new AppConfigTabbedPane().buildUI(tabbedPane);
-        new AppMainTabbedPane().buildUI(tabbedPane);
+        new AppConfigTabbedPane(context).buildUI(tabbedPane);
+        new AppMainTabbedPane(context).buildUI(tabbedPane);
 
         mainFrame.add(tabbedPane);
         mainFrame.setVisible(true);

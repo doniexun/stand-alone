@@ -10,6 +10,10 @@
  */
 package cn.savor.standalone.log.gui;
 
+import cn.savor.standalone.log.Constants;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,7 +26,11 @@ import java.awt.*;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
+@RequiredArgsConstructor
 class AppConfigTabbedPane {
+
+    @NonNull
+    private Context context;
 
     void buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
@@ -39,12 +47,7 @@ class AppConfigTabbedPane {
         areaLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(areaLabel);
 
-        ItemKeyValue[] areaItemData = {
-                new ItemKeyValue<String, String>("010", "北京市"),
-                new ItemKeyValue<String, String>("020", "广州市"),
-                new ItemKeyValue<String, String>("021", "上海市"),
-                new ItemKeyValue<String, String>("0755", "深圳市")
-        };
+        ItemKeyValue[] areaItemData = context.getUIData(Constants.Properties.Keys.CITY);
         JComboBox<ItemKeyValue> areaComboBox = new JComboBox<>(areaItemData);
         rowPanel_1.add(areaComboBox);
 
@@ -55,10 +58,7 @@ class AppConfigTabbedPane {
         ossBucketLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossBucketLabel);
 
-        ItemKeyValue[] ossBucketItemData = {
-                new ItemKeyValue<String, String>("redian-produce", "生产环境"),
-                new ItemKeyValue<String, String>("redian-development", "测试环境")
-        };
+        ItemKeyValue[] ossBucketItemData = context.getUIData(Constants.Properties.Keys.OSS_BUCKET);
         JComboBox<ItemKeyValue> ossBucketComboBox = new JComboBox<>(ossBucketItemData);
         rowPanel_1.add(ossBucketComboBox);
 
@@ -68,11 +68,7 @@ class AppConfigTabbedPane {
         ossObjectKeyLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossObjectKeyLabel);
 
-        ItemKeyValue[] ossObjectKeyItemData = {
-                new ItemKeyValue<String, String>("log/box-standalone/", "一代单机版"),
-                new ItemKeyValue<String, String>("log/box_standalone/", "三代单机版"),
-                new ItemKeyValue<String, String>("media/stand_alone/", "媒体")
-        };
+        ItemKeyValue[] ossObjectKeyItemData = context.getUIData(Constants.Properties.Keys.OSS_OBJECT_KEY);
         JComboBox<ItemKeyValue> ossObjectKeyComboBox = new JComboBox<>(ossObjectKeyItemData);
         rowPanel_1.add(ossObjectKeyComboBox);
 

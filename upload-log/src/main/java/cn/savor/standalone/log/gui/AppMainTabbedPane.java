@@ -10,6 +10,9 @@
  */
 package cn.savor.standalone.log.gui;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -23,7 +26,11 @@ import java.awt.*;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
+@RequiredArgsConstructor
 class AppMainTabbedPane {
+
+    @NonNull
+    private Context context;
 
     void buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();

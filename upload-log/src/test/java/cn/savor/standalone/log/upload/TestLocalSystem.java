@@ -10,7 +10,7 @@
  */
 package cn.savor.standalone.log.upload;
 
-import cn.savor.standalone.log.createfile.CreateBoxFile;
+import cn.savor.standalone.log.createfile.CommandCreateBoxFile;
 import org.junit.Test;
 
 import java.io.File;
@@ -42,6 +42,6 @@ public class TestLocalSystem {
 
     @Test
     public void create() throws IOException {
-        CreateBoxFile.execute();
+        new CommandCreateBoxFile().execute();
     }
 }
