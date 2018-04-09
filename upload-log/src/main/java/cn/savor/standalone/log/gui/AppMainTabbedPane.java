@@ -35,6 +35,7 @@ class AppMainTabbedPane {
         this.createMessagePanel(mainPanel);
 
         parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Main.title);
+        mainPanel.requestFocusInWindow();
     }
 
     private void createConfigurePanel(JComponent parentPanel) {

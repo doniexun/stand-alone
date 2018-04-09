@@ -12,6 +12,7 @@ package cn.savor.standalone.log.upload;
 
 import cn.savor.aliyun.oss.IOSSClient;
 import cn.savor.aliyun.oss.impl.OSSClientForSavor;
+import cn.savor.standalone.log.ICommand;
 import com.aliyun.oss.model.PutObjectResult;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.HttpClientSimpleUtil;
@@ -34,9 +35,13 @@ import java.util.Map;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-public class LogFileUploader {
+public class CommandUpload implements ICommand {
 
-    public static void execute() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute() {
         String logCompressionPackageFrom = ArgumentFactory.getParameterValue(B_LogUploadArgument.LogCompressionPackageFrom);
         ArgumentFactory.printInputArgument(B_LogUploadArgument.LogCompressionPackageFrom, logCompressionPackageFrom, false);
 
@@ -80,7 +85,7 @@ public class LogFileUploader {
         List<File> notMoveFileList = new ArrayList<>();
         List<File> notUploadFileList = new ArrayList<>();
 
-        IOSSClient ossClient = getOssClient();
+        IOSSClient ossClient = this.getOssClient();
         File backupDirectory = new File(backupDir);
         for (File compressionFile : localFile.getFileList()) {
             try {
@@ -130,7 +135,22 @@ public class LogFileUploader {
         System.out.println("\n\n全部文件已经上传到 OSS 完毕\n\n\n");
     }
 
-    private static IOSSClient getOssClient() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getInformation() {
+        StringBuilder information = new StringBuilder();
+        information.append("Usage: upload <ARGUMENT>...").append("\n");
+        information.append("Command upload argument:").append("\n");
+        information.append("    fromDir=DIR      Local directory for reading files").append("\n");
+        information.append("    tempDir=DIR      Local storage temporary directory").append("\n");
+        information.append("    bucketName=WORD  The OSS bucket name for the file to upload").append("\n");
+        information.append("    keyPrefix=WORD   The prefix of the file in OSS").append("\n");
+        return information.toString();
+    }
+
+    private IOSSClient getOssClient() {
         String endpoint = "oss-cn-beijing.aliyuncs.com";
         String accessKeyId = "LTAI5h1iEI5N7Zjj";
         String secretAccessKey = "m2Mn3HAqhfXZm7o4r9tsUfqrXh2NxE";

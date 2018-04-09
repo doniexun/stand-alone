@@ -10,6 +10,10 @@
  */
 package cn.savor.standalone.log.help;
 
+import cn.savor.standalone.log.CommandFactory;
+
+import java.util.Set;
+
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
@@ -23,11 +27,9 @@ public class S_Info {
 
     // 帮助说明
     public static void helpDescription() {
-        System.out.println("Usage: upload <ARGUMENT>...");
-        System.out.println("Command upload argument:");
-        System.out.println("    fromDir=DIR      Local directory for reading files");
-        System.out.println("    tempDir=DIR      Local storage temporary directory");
-        System.out.println("    bucketName=WORD  The OSS bucket name for the file to upload");
-        System.out.println("    keyPrefix=WORD   The prefix of the file in OSS");
+        Set<String> commandNameSet = CommandFactory.commandNames();
+        for (String commandName : commandNameSet) {
+            System.out.println(commandName);
+        }
     }
 }

@@ -12,6 +12,7 @@ package cn.savor.standalone.log.download;
 
 import cn.savor.aliyun.oss.IOSSClient;
 import cn.savor.aliyun.oss.impl.OSSClientForSavor;
+import cn.savor.standalone.log.ICommand;
 import com.aliyun.oss.model.OSSObjectSummary;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.HttpClientSimpleUtil;
@@ -33,14 +34,19 @@ import java.util.regex.Pattern;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-public class LogFileDownloader {
+public class CommandDownload implements ICommand {
 
-    private static String filePath;
-    private static String ossBucketName;
-    private static IOSSClient ossClient;
     private static Pattern pattern = Pattern.compile("(.*)\\[(.*)\\]");
 
-    public static void execute() {
+    private String filePath;
+    private String ossBucketName;
+    private IOSSClient ossClient;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute() {
         String filePath = ArgumentFactory.getParameterValue(B_LogDownloadArgument.FilePath);
         ArgumentFactory.printInputArgument(B_LogDownloadArgument.FilePath, filePath, false);
 
@@ -57,21 +63,21 @@ public class LogFileDownloader {
         ArgumentFactory.checkNullValueForArgument(B_LogDownloadArgument.OSSBucketName, ossBucketName);
         ArgumentFactory.checkNullValueForArgument(B_LogDownloadArgument.OSSKeyPrefix, Arrays.toString(ossKeyPrefix));
 
-        LogFileDownloader.ossBucketName = ossBucketName;
-        LogFileDownloader.filePath = filePath;
-        LogFileDownloader.ossClient = getOssClient();
+        this.ossBucketName = ossBucketName;
+        this.filePath = filePath;
+        this.ossClient = getOssClient();
 
-        if(StringUtil.isNotBlank(areaUrl)){
-            String json= HttpClientSimpleUtil.get(areaUrl);
-            Map<String,Object> data= JsonUtil.toBean(json,Map.class);
-            Integer code=(Integer)data.get("code");
-            if(code==10000){
-                String id=((Map<String,String>)data.get("result")).get("id");
-                if(StringUtil.isBlank(id)) throw new IllegalArgumentException("获取城市编码失败，请核查日志文件所属区域是否配置正确");
-                for(int i=0;i<ossKeyPrefix.length;i++){
-                    ossKeyPrefix[i]=StringUtil.replaceOnce(ossKeyPrefix[i],"{}",id);
+        if (StringUtil.isNotBlank(areaUrl)) {
+            String json = HttpClientSimpleUtil.get(areaUrl);
+            Map<String, Object> data = JsonUtil.toBean(json, Map.class);
+            Integer code = (Integer) data.get("code");
+            if (code == 10000) {
+                String id = ((Map<String, String>) data.get("result")).get("id");
+                if (StringUtil.isBlank(id)) throw new IllegalArgumentException("获取城市编码失败，请核查日志文件所属区域是否配置正确");
+                for (int i = 0; i < ossKeyPrefix.length; i++) {
+                    ossKeyPrefix[i] = StringUtil.replaceOnce(ossKeyPrefix[i], "{}", id);
                 }
-            }else{
+            } else {
                 throw new IllegalArgumentException("获取城市编码失败，请核查日志文件所属区域是否配置正确");
             }
         }
@@ -98,12 +104,17 @@ public class LogFileDownloader {
 
     }
 
+    @Override
+    public String getInformation() {
+        return null;
+    }
+
     /**
      * 下载匹配前缀的所有文件
      *
      * @param prefix
      */
-    private static void download(String prefix) {
+    private void download(String prefix) {
         List<OSSObjectSummary> ossObjectSummaries = ossClient.listObjects(ossBucketName, prefix);
         for (OSSObjectSummary ossObjectSummary : ossObjectSummaries) {
             try {
@@ -113,8 +124,8 @@ public class LogFileDownloader {
 
                 if (matcher.find()) {
                     String fileName = matcher.group(3);
-                    if(StringUtil.equals(matcher.group(1),"box-standalone")){
-                        fileName=fileName.replaceAll("_.*_", "_" + matcher.group(2) + "_");
+                    if (StringUtil.equals(matcher.group(1), "box-standalone")) {
+                        fileName = fileName.replaceAll("_.*_", "_" + matcher.group(2) + "_");
                     }
                     String downloadFile = String.format("%s/%s", filePath, fileName);
 
@@ -125,8 +136,8 @@ public class LogFileDownloader {
                         downloadFile = downloadFile.replace("//", "/");
                     }
                     ossClient.downloadFile(ossBucketName, key, downloadFile);
-                }else{
-                    System.out.println("格式不正确文件:"+key);
+                } else {
+                    System.out.println("格式不正确文件:" + key);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -142,7 +153,7 @@ public class LogFileDownloader {
      * @param start
      * @param end
      */
-    private static void download(String prefix, String start, String end) {
+    private void download(String prefix, String start, String end) {
         List<OSSObjectSummary> ossObjectSummaries = ossClient.listObjects(ossBucketName, prefix);
         for (OSSObjectSummary ossObjectSummary : ossObjectSummaries) {
             String key = ossObjectSummary.getKey();

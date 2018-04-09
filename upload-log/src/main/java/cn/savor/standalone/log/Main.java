@@ -10,10 +10,7 @@
  */
 package cn.savor.standalone.log;
 
-import cn.savor.standalone.log.createfile.CreateBoxFile;
-import cn.savor.standalone.log.download.LogFileDownloader;
 import cn.savor.standalone.log.help.S_Info;
-import cn.savor.standalone.log.upload.LogFileUploader;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 
 /**
@@ -31,6 +28,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            CommandRegister.register();
             if (args == null) {
                 S_Info.helpDescription();
                 System.exit(Status.SUCCESS);
@@ -46,24 +44,33 @@ public class Main {
                 System.exit(Status.SUCCESS);
             }
 
-            Command command = Command.fromName(com);
-            if (Command.UNKNOWN == command) {
-                String message = String.format("Command '%s' not found", command);
+            ICommand command = CommandFactory.getCommand(com);
+            if (command == null) {
+                String message = String.format("Command '%s' not found", com);
                 System.out.println(message);
                 System.exit(Status.COM_NOT_FOUND);
             }
-            if (Command.UPLOAD == command) {
-                ArgumentFactory.analysisArgument(args);
-                LogFileUploader.execute();// 上传日志文件
-            }
-            if (Command.DOWNLOAD == command) {
-                ArgumentFactory.analysisArgument(args);
-                LogFileDownloader.execute();//下载文件
-            }
-            if (Command.CREATEFILE == command) {
-                ArgumentFactory.analysisArgument(args);
-                CreateBoxFile.execute();//制作U盘
-            }
+            ArgumentFactory.analysisArgument(args);
+            command.execute();
+
+//            Command command = Command.fromName(com);
+//            if (Command.UNKNOWN == command) {
+//                String message = String.format("Command '%s' not found", command);
+//                System.out.println(message);
+//                System.exit(Status.COM_NOT_FOUND);
+//            }
+//            if (Command.UPLOAD == command) {
+//                ArgumentFactory.analysisArgument(args);
+//                LogFileUploader.execute();// 上传日志文件
+//            }
+//            if (Command.DOWNLOAD == command) {
+//                ArgumentFactory.analysisArgument(args);
+//                LogFileDownloader.execute();//下载文件
+//            }
+//            if (Command.CREATEFILE == command) {
+//                ArgumentFactory.analysisArgument(args);
+//                CreateBoxFile.execute();//制作U盘
+//            }
 
 
             System.exit(Status.SUCCESS);

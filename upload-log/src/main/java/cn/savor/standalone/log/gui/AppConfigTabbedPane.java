@@ -121,11 +121,9 @@ class AppConfigTabbedPane {
         mainPanel.add(rowPanel_1);
         mainPanel.add(rowPanel_2);
         mainPanel.add(rowPanel_3);
-        mainPanel.add(new JPanel());
+//        mainPanel.add(new JPanel());
         mainPanel.repaint();
         parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Config.title);
     }
 
-
 }
-

@@ -1,5 +1,6 @@
 package cn.savor.standalone.log.createfile;
 
+import cn.savor.standalone.log.ICommand;
 import cn.savor.standalone.log.createfile.bean.B_CreateArgument;
 import cn.savor.standalone.log.createfile.bean.Item;
 import cn.savor.standalone.log.createfile.service.CompareList;
@@ -16,11 +17,15 @@ import java.util.Map;
 /**
  * Created by gy on 2017/11/1.
  */
-public class CreateBoxFile {
+public class CommandCreateBoxFile implements ICommand {
 
     private static List<Item> playList;
 
-    public static void execute() throws IOException {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute() throws IOException {
         String filePath = ArgumentFactory.getParameterValue(B_CreateArgument.FilePath);
 //        String filePath ="E:\\U";
         ArgumentFactory.printInputArgument(B_CreateArgument.FilePath, filePath, false);
@@ -90,4 +95,8 @@ public class CreateBoxFile {
 
     }
 
+    @Override
+    public String getInformation() {
+        return null;
+    }
 }
