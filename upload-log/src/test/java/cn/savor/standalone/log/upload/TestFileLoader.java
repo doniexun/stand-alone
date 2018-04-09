@@ -37,7 +37,7 @@ public class TestFileLoader {
     @Test
     public void loadProperties() {
         try {
-            Properties properties = loader.loadProperties();
+            Properties properties = loader.loadDataFile();
             System.out.println(properties);
         } catch (Exception e) {
             e.printStackTrace();

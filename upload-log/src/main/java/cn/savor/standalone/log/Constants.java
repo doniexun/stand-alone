@@ -37,4 +37,21 @@ public class Constants {
             public static final String OSS_OBJECT_KEY = "cn.savor.offline.log.map.oss.object.key";
         }
     }
+
+    /**
+     * 属性
+     */
+    public static class Configure {
+
+        /**
+         * 键
+         */
+        public static class Keys {
+            public static final String CITY = "cn.savor.offline.log.configure.city";
+            public static final String OSS_BUCKET = "cn.savor.offline.log.configure.oss.bucket";
+            public static final String OSS_OBJECT_KEY = "cn.savor.offline.log.configure.oss.object.key";
+            public static final String DIRECTORY_TEMP = "cn.savor.offline.log.configure.directory.temp";
+            public static final String DIRECTORY_DATA = "cn.savor.offline.log.configure.directory.data";
+        }
+    }
 }

@@ -37,35 +37,24 @@ public class FileLoader {
 
     protected Logger logger = LoggerFactory.getLogger(FileLoader.class);
 
-    public Properties loadProperties() throws LoadException {
+    public Properties loadDataFile() {
         Properties properties = new Properties();
-        InputStream inputStream = null;
-        try {
-            this.loadFile(properties);
-        } catch (Exception e) {
-            throw new LoadException(e);
-        } finally {
-            IOUtil.close(inputStream);
-        }
-        return properties;
-    }
-
-    private void loadFile(Properties properties) {
-        String fileName = "config.properties";
+        String fileName = "data.properties";
         if (this.loadFromUserHome(properties, fileName)) {
-            return;
+            return properties;
         }
         if (this.loadFromUserWork(properties, fileName)) {
-            return;
+            return properties;
         }
-        fileName = "app-jar-config.properties";
+        fileName = "app-jar-data.properties";
         if (this.loadFromUserHome(properties, fileName)) {
-            return;
+            return properties;
         }
         if (this.loadFromUserWork(properties, fileName)) {
-            return;
+            return properties;
         }
         this.loadFromJar(properties, fileName);
+        return properties;
     }
 
     private boolean loadFromUserHome(Properties properties, String fileName) {
