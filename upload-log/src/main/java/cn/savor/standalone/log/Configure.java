@@ -11,6 +11,7 @@
 package cn.savor.standalone.log;
 
 import cn.savor.standalone.log.gui.ItemKeyValue;
+import lombok.Getter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,8 +31,16 @@ public class Configure {
 
     private Map<String, ItemKeyValue[]> uiDataMap;
 
+    @Getter
+    private String userHome;
+
+    @Getter
+    private String userWork;
+
     public Configure() {
-        uiDataMap = new ConcurrentHashMap<>();
+        this.userHome = System.getProperty("user.home");
+        this.userWork = System.getProperty("user.dir");
+        this.uiDataMap = new ConcurrentHashMap<>();
     }
 
     public void putUIData(String key, ItemKeyValue[] value) {

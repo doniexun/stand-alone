@@ -10,7 +10,6 @@
  */
 package cn.savor.standalone.log;
 
-import cn.savor.standalone.log.exception.LoadException;
 import net.lizhaoweb.common.util.base.Constant;
 import net.lizhaoweb.common.util.base.IOUtil;
 import org.slf4j.Logger;
@@ -37,32 +36,31 @@ public class FileLoader {
 
     protected Logger logger = LoggerFactory.getLogger(FileLoader.class);
 
-    public Properties loadDataFile() {
+    public Properties loadDataFile(Configure configure) {
         Properties properties = new Properties();
         String fileName = "data.properties";
-        if (this.loadFromUserHome(properties, fileName)) {
+        if (this.loadFromUserHome(configure, properties, fileName)) {
             return properties;
         }
-        if (this.loadFromUserWork(properties, fileName)) {
+        if (this.loadFromUserWork(configure, properties, fileName)) {
             return properties;
         }
         fileName = "app-jar-data.properties";
-        if (this.loadFromUserHome(properties, fileName)) {
+        if (this.loadFromUserHome(configure, properties, fileName)) {
             return properties;
         }
-        if (this.loadFromUserWork(properties, fileName)) {
+        if (this.loadFromUserWork(configure, properties, fileName)) {
             return properties;
         }
-        this.loadFromJar(properties, fileName);
+        this.loadFromJar(configure, properties, fileName);
         return properties;
     }
 
-    private boolean loadFromUserHome(Properties properties, String fileName) {
+    private boolean loadFromUserHome(Configure configure, Properties properties, String fileName) {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {
-            String userHome = System.getProperty("user.home");
-            String configFileName = String.format("%s/%s/%s", userHome, USER_HOME_CONFIG_DIRECTORY_NAME, fileName);
+            String configFileName = String.format("%s/%s/%s", configure.getUserHome(), USER_HOME_CONFIG_DIRECTORY_NAME, fileName);
             inputStream = new BufferedInputStream(new FileInputStream(configFileName));
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
@@ -76,12 +74,11 @@ public class FileLoader {
         return false;
     }
 
-    private boolean loadFromUserWork(Properties properties, String fileName) {
+    private boolean loadFromUserWork(Configure configure, Properties properties, String fileName) {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {
-            String userWork = System.getProperty("user.dir");
-            String configFileName = String.format("%s/../%s/%s", userWork, USER_WORK_CONFIG_DIRECTORY_NAME, fileName);
+            String configFileName = String.format("%s/../%s/%s", configure.getUserWork(), USER_WORK_CONFIG_DIRECTORY_NAME, fileName);
             inputStream = new BufferedInputStream(new FileInputStream(configFileName));
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
@@ -95,7 +92,7 @@ public class FileLoader {
         return false;
     }
 
-    private boolean loadFromJar(Properties properties, String fileName) {
+    private boolean loadFromJar(Configure configure, Properties properties, String fileName) {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {

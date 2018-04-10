@@ -46,7 +46,7 @@ public class ConfigureLoader {
     }
 
     public Configure loadUIData() throws LoadException {
-        Properties properties = fileLoader.loadDataFile();
+        Properties properties = fileLoader.loadDataFile(configure);
         this.loadUIDataFromProperties(properties, Constants.Properties.Keys.CITY, configure);
         this.loadUIDataFromProperties(properties, Constants.Properties.Keys.OSS_BUCKET, configure);
         this.loadUIDataFromProperties(properties, Constants.Properties.Keys.OSS_OBJECT_KEY, configure);

@@ -43,20 +43,15 @@ public class MainWindow {
      * 构建窗口
      */
     private void buildWindow() {
-        Image icon = new ImageIcon(this.getClass().getResource(WindowConstant.MainFrame.icon)).getImage();
-        JModalFrame mainFrame = new JModalFrame(WindowConstant.MainFrame.title);
-        mainFrame.setIconImage(icon);
-        mainFrame.setSize(WindowConstant.MainFrame.width, WindowConstant.MainFrame.height);
-        mainFrame.setResizable(false);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setLocationRelativeTo(null);
+        JFrame mainFrame = context.getTopWindow();
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
-        new AppConfigTabbedPane(context).buildUI(tabbedPane);
-        new AppMainTabbedPane(context).buildUI(tabbedPane);
+        Component appConfigTabComponent = new AppConfigTabbedPane(context).buildUI(tabbedPane);
+        Component appMainTabComponent = new AppMainTabbedPane(context).buildUI(tabbedPane);
 
+        tabbedPane.setSelectedComponent(appMainTabComponent);
         mainFrame.add(tabbedPane);
         mainFrame.setVisible(true);
     }

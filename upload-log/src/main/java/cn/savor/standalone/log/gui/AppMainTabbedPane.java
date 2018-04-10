@@ -32,7 +32,7 @@ class AppMainTabbedPane {
     @NonNull
     private Context context;
 
-    void buildUI(Container parentContainer) {
+    Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
         mainPanel.setSize(parentContainer.getWidth(), parentContainer.getHeight());
         mainPanel.setLayout(new BorderLayout());
@@ -42,7 +42,7 @@ class AppMainTabbedPane {
         this.createMessagePanel(mainPanel);
 
         parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Main.title);
-        mainPanel.requestFocusInWindow();
+        return mainPanel;
     }
 
     private void createConfigurePanel(JComponent parentPanel) {

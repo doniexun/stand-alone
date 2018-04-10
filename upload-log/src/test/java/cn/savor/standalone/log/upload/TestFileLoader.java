@@ -10,6 +10,7 @@
  */
 package cn.savor.standalone.log.upload;
 
+import cn.savor.standalone.log.Configure;
 import cn.savor.standalone.log.FileLoader;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class TestFileLoader {
     @Test
     public void loadProperties() {
         try {
-            Properties properties = loader.loadDataFile();
+            Configure configure = new Configure();
+            Properties properties = loader.loadDataFile(configure);
             System.out.println(properties);
         } catch (Exception e) {
             e.printStackTrace();

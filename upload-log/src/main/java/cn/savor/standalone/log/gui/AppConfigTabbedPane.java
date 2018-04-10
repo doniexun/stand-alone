@@ -32,8 +32,9 @@ class AppConfigTabbedPane {
     @NonNull
     private Context context;
 
-    void buildUI(Container parentContainer) {
+    Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
+
         mainPanel.setSize((int) (parentContainer.getWidth() * 0.98), parentContainer.getHeight());
 //        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -89,6 +90,7 @@ class AppConfigTabbedPane {
 
         JButton localTempDirButton = new JButton("...");
         localTempDirButton.setPreferredSize(new Dimension(20, 0));
+        localTempDirButton.addActionListener(new FileChooserActionListener(context, localTempDirField, 1));
         rowPanel_2.add(localTempDirButton);
 
         rowPanel_2.add(Box.createHorizontalGlue());
@@ -109,6 +111,7 @@ class AppConfigTabbedPane {
 
         JButton localDataDirButton = new JButton("...");
         localDataDirButton.setPreferredSize(new Dimension(20, 0));
+        localDataDirButton.addActionListener(new FileChooserActionListener(context, localDataDirField, 1));
         rowPanel_3.add(localDataDirButton);
 
         rowPanel_3.add(Box.createHorizontalGlue());
@@ -120,6 +123,6 @@ class AppConfigTabbedPane {
 //        mainPanel.add(new JPanel());
         mainPanel.repaint();
         parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Config.title);
+        return mainPanel;
     }
-
 }
