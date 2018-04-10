@@ -59,6 +59,14 @@ public class Context {
         return configure.getUIData(key);
     }
 
+    public void setConfig(String name, String value) {
+        this.configure.putConfig(name, value);
+    }
+
+    public String getConfig(String name) {
+        return this.configure.getConfig(name);
+    }
+
     public String getUserHome() {
         return configure.getUserHome();
     }

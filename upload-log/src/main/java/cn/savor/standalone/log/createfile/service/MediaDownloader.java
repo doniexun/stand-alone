@@ -15,6 +15,7 @@ import cn.savor.aliyun.oss.impl.OSSClientForSavor;
 import cn.savor.standalone.log.createfile.bean.Item;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectMetadata;
+import net.lizhaoweb.common.util.base.FileUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
 import org.apache.commons.io.FileUtils;
 
@@ -92,7 +93,7 @@ public class MediaDownloader {
                             continue;
                         }
 
-                        String downloadPath = downloadFile.getAbsolutePath();
+                        String downloadPath = FileUtil.getCanonicalPath(downloadFile);
                         ObjectMetadata object = ossClient.getObject(ossBucketName, ossFileKey, downloadPath);
 //                    ObjectMetadata objectMetadata = ossClient.downloadFile(ossBucketName, ossFileKey, downloadPath);
                         if (object == null) {

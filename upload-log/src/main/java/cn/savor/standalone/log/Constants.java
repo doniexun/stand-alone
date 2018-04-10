@@ -53,5 +53,13 @@ public class Constants {
             public static final String DIRECTORY_TEMP = "cn.savor.offline.log.configure.directory.temp";
             public static final String DIRECTORY_DATA = "cn.savor.offline.log.configure.directory.data";
         }
+
+        /**
+         * 目录
+         */
+        public static class Directory {
+            public static final String USER_HOME = ".offline_logs";
+            public static final String USER_WORK = "conf";
+        }
     }
 }

@@ -12,6 +12,7 @@ package cn.savor.standalone.log.gui;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.lizhaoweb.common.util.base.FileUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -58,7 +59,7 @@ public class FileChooserActionListener implements ActionListener {
         int state = context.getFileChooser().showOpenDialog(context.getTopWindow());// 此句是打开文件选择器界面的触发语句
         if (state != 1) {
             File file = context.getFileChooser().getSelectedFile();// f为选择到的目录
-            textField.setText(file.getAbsolutePath());
+            textField.setText(FileUtil.getCanonicalPath(file));
         }
     }
 }

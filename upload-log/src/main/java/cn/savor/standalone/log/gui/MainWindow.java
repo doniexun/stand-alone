@@ -13,7 +13,6 @@ package cn.savor.standalone.log.gui;
 import cn.savor.standalone.log.Configure;
 import cn.savor.standalone.log.ConfigureLoader;
 import cn.savor.standalone.log.exception.LoadException;
-import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +33,7 @@ public class MainWindow {
 
     public void init() throws IOException, LoadException {
         ConfigureLoader configureLoader = new ConfigureLoader();
-        Configure configure = configureLoader.loadUIData();
+        Configure configure = configureLoader.loadUIData().loadConfig().getConfigure();
         context = new Context(configure);
         this.buildWindow();
     }

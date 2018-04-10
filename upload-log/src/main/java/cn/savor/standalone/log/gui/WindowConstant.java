@@ -23,14 +23,14 @@ class WindowConstant {
 
     static class MainFrame {
         static final String icon = "/images/icon.png";
-        static final String title = "例子";
+        static final String title = "日志操作工具";
         static final int width = 800;
         static final int height = 600;
     }
 
     static class AppTabbedPane {
         static class Main {
-            static final String title = "主页";
+            static final String title = "操作主页";
 
             static class ConfigurePanel {
                 static final String title = "配置";
@@ -46,7 +46,7 @@ class WindowConstant {
         }
 
         static class Config {
-            static final String title = "配置";
+            static final String title = "系统配置";
         }
     }
 }
