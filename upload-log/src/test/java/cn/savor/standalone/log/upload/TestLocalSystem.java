@@ -11,6 +11,8 @@
 package cn.savor.standalone.log.upload;
 
 import cn.savor.standalone.log.createfile.CommandCreateBoxFile;
+import net.lizhaoweb.common.util.base.Constant;
+import net.lizhaoweb.common.util.base.FileUtil;
 import org.junit.Test;
 
 import java.io.File;
@@ -43,5 +45,21 @@ public class TestLocalSystem {
     @Test
     public void create() throws IOException {
         new CommandCreateBoxFile().execute();
+    }
+
+    @Test
+    public void listTheLetter() {
+//        File[] roots = File.listRoots();
+//        for (File file : roots) {
+//            System.out.println(file.getPath() + "信息如下:");
+//            System.out.println("        空闲未使用 = " + file.getFreeSpace() / 1024 / 1024 / 1024 + "G");//空闲空间
+//            System.out.println("        已经使用 = " + (file.getTotalSpace() - file.getFreeSpace()) / 1024 / 1024 / 1024 + "G");//可用空间
+//            System.out.println("        总容量 = " + file.getTotalSpace() / 1024 / 1024 / 1024 + "G");//总空间
+//            System.out.println();
+//        }
+
+        for (File file : FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE)) {
+            System.out.println(file.getPath());
+        }
     }
 }

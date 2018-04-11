@@ -51,15 +51,15 @@ class AppConfigTabbedPane {
 //        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setLayout(new BorderLayout());
 
-        JPanel centerPanel = this.buildCenterPanel(mainPanel);
+        JPanel centerPanel = this.createCenterPanel(mainPanel);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-        JPanel southPanel = this.buildSouthPanel();
+        JPanel southPanel = this.createSouthPanel();
         mainPanel.add(southPanel, BorderLayout.SOUTH);
         parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Config.title);
         return mainPanel;
     }
 
-    private JPanel buildSouthPanel() {
+    private JPanel createSouthPanel() {
         JPanel southPanel = new JPanel();
         JButton savorConfigButton = new JButton("保存");
         savorConfigButton.addActionListener(new ActionListener() {
@@ -106,7 +106,7 @@ class AppConfigTabbedPane {
         return southPanel;
     }
 
-    private JPanel buildCenterPanel(JPanel mainPanel) {
+    private JPanel createCenterPanel(JPanel mainPanel) {
         JPanel centerPanel = new JPanel();
         centerPanel.setSize(mainPanel.getWidth(), mainPanel.getHeight());
 
@@ -114,18 +114,18 @@ class AppConfigTabbedPane {
         JPanel rowPanel_1 = new JPanel();
         rowPanel_1.setPreferredSize(new Dimension(centerPanel.getWidth(), 20));
         rowPanel_1.setLayout(new BoxLayout(rowPanel_1, BoxLayout.X_AXIS));
-        this.buildUIForCity(rowPanel_1);
+        this.structureUIForCity(rowPanel_1);
         rowPanel_1.add(Box.createHorizontalGlue());
-        this.buildUIForOSSBucket(rowPanel_1);
+        this.structureUIForOSSBucket(rowPanel_1);
         rowPanel_1.add(Box.createHorizontalGlue());
-        this.buildUIForOSSObjectKey(rowPanel_1);
+        this.structureUIForOSSObjectKey(rowPanel_1);
 
 
         //======================= 第二行
         JPanel rowPanel_2 = new JPanel();
         rowPanel_2.setPreferredSize(new Dimension(centerPanel.getWidth(), 20));
         rowPanel_2.setLayout(new BoxLayout(rowPanel_2, BoxLayout.X_AXIS));
-        this.buildUIForTempDir(rowPanel_2);
+        this.structureUIForTempDir(rowPanel_2);
         rowPanel_2.add(Box.createHorizontalGlue());
 
 
@@ -133,7 +133,7 @@ class AppConfigTabbedPane {
         JPanel rowPanel_3 = new JPanel();
         rowPanel_3.setPreferredSize(new Dimension(centerPanel.getWidth(), 20));
         rowPanel_3.setLayout(new BoxLayout(rowPanel_3, BoxLayout.X_AXIS));
-        this.buildUIForDataDir(rowPanel_3);
+        this.structureUIForDataDir(rowPanel_3);
         rowPanel_3.add(Box.createHorizontalGlue());
 
 
@@ -143,7 +143,7 @@ class AppConfigTabbedPane {
         return centerPanel;
     }
 
-    private void buildUIForDataDir(JPanel rowPanel_3) {
+    private void structureUIForDataDir(JPanel rowPanel_3) {
         JLabel localDataDirLabel = new JLabel("数据目录");
         localDataDirLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_3.add(localDataDirLabel);
@@ -159,7 +159,7 @@ class AppConfigTabbedPane {
         rowPanel_3.add(localDataDirButton);
     }
 
-    private void buildUIForTempDir(JPanel rowPanel_2) {
+    private void structureUIForTempDir(JPanel rowPanel_2) {
         JLabel localTempDirLabel = new JLabel("临时目录");
         localTempDirLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_2.add(localTempDirLabel);
@@ -175,7 +175,7 @@ class AppConfigTabbedPane {
         rowPanel_2.add(localTempDirButton);
     }
 
-    private void buildUIForOSSObjectKey(JPanel rowPanel_1) {
+    private void structureUIForOSSObjectKey(JPanel rowPanel_1) {
         JLabel ossObjectKeyLabel = new JLabel("OSS 前缀");
         ossObjectKeyLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossObjectKeyLabel);
@@ -195,7 +195,7 @@ class AppConfigTabbedPane {
         rowPanel_1.add(ossObjectKeyComboBox);
     }
 
-    private void buildUIForOSSBucket(JPanel rowPanel_1) {
+    private void structureUIForOSSBucket(JPanel rowPanel_1) {
         JLabel ossBucketLabel = new JLabel("OSS 环境");
         ossBucketLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossBucketLabel);
@@ -215,7 +215,7 @@ class AppConfigTabbedPane {
         rowPanel_1.add(ossBucketComboBox);
     }
 
-    private void buildUIForCity(JPanel rowPanel_1) {
+    private void structureUIForCity(JPanel rowPanel_1) {
         JLabel areaLabel = new JLabel("城市");
         areaLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(areaLabel);

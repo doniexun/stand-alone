@@ -51,6 +51,7 @@ class AppMainTabbedPane {
 //        configurePanel.setLayout(null);
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 2 / 5));
         configurePanel.setBorder(configurePanelTitledBorder);
+        configurePanel.setToolTipText("1111111111");
         parentPanel.add(configurePanel, BorderLayout.NORTH);
     }
 
