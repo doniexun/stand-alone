@@ -12,6 +12,7 @@ package cn.savor.standalone.log.gui;
 
 import cn.savor.standalone.log.Configure;
 import lombok.Getter;
+import net.lizhaoweb.common.util.base.FileUtil;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
 import javax.swing.*;
@@ -52,7 +53,7 @@ public class Context {
         this.topWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.topWindow.setLocationRelativeTo(null);
 
-        this.fileChooser = new JFileChooser(configure.getUserHome());
+        this.fileChooser = new JFileChooser(FileUtil.getUserDirectoryPath());
     }
 
     public ItemKeyValue[] getUIData(String key) {
@@ -65,10 +66,6 @@ public class Context {
 
     public String getConfig(String name) {
         return this.configure.getConfig(name);
-    }
-
-    public String getUserHome() {
-        return configure.getUserHome();
     }
 
     public String getUserWork() {

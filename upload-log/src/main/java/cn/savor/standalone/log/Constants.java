@@ -62,4 +62,8 @@ public class Constants {
             public static final String USER_WORK = "conf";
         }
     }
+
+    public static class UI{
+        
+    }
 }

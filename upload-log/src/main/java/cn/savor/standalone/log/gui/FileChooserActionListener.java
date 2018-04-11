@@ -51,8 +51,22 @@ public class FileChooserActionListener implements ActionListener {
         String dialogTitle = "打开";
         if (chooseFileMode == 0) {
             dialogTitle = "请选择文件";
+            String curSelectedFile = textField.getText();
+            File currentDirectory = new File(curSelectedFile);
+            if (currentDirectory.getParentFile().exists() && currentDirectory.getParentFile().isDirectory()) {
+                context.getFileChooser().setCurrentDirectory(currentDirectory.getParentFile());
+            } else {
+                context.getFileChooser().setCurrentDirectory(FileUtil.getUserDirectory());
+            }
         } else if (chooseFileMode == 1) {
             dialogTitle = "请选择文件夹";
+            String curSelectedDir = textField.getText();
+            File currentDirectory = new File(curSelectedDir);
+            if (currentDirectory.exists() && currentDirectory.isDirectory()) {
+                context.getFileChooser().setCurrentDirectory(currentDirectory);
+            } else {
+                context.getFileChooser().setCurrentDirectory(FileUtil.getUserDirectory());
+            }
         }
         context.getFileChooser().setFileSelectionMode(chooseFileMode);// 设定只能选择到文件夹
         context.getFileChooser().setDialogTitle(dialogTitle);
