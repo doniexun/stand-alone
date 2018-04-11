@@ -63,7 +63,22 @@ public class Constants {
         }
     }
 
-    public static class UI{
-        
+    public static class UI {
+
+    }
+
+    /**
+     * 服务器
+     */
+    public static class Server {
+        /**
+         * 状态
+         */
+        public static class Status {
+            public static final int STARTING = 0;
+            public static final int RUNNING = 1;
+            public static final int STOPPING = 2;
+            public static final int STOPPED = 3;
+        }
     }
 }

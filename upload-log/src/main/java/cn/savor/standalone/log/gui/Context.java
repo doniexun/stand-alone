@@ -11,12 +11,16 @@
 package cn.savor.standalone.log.gui;
 
 import cn.savor.standalone.log.Configure;
+import cn.savor.standalone.log.Constants;
 import lombok.Getter;
-import net.lizhaoweb.common.util.base.FileUtil;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <h1>模型 - 上下文</h1>
@@ -42,7 +46,11 @@ public class Context {
     @Getter
     private JFileChooser fileChooser;
 
+    @Getter
+    private int status;
+
     public Context(Configure configure) {
+        this.status = Constants.Server.Status.STARTING;
         this.configure = configure;
         this.icon = new ImageIcon(this.getClass().getResource(WindowConstant.MainFrame.icon)).getImage();
 
@@ -50,10 +58,47 @@ public class Context {
         this.topWindow.setIconImage(this.icon);
         this.topWindow.setSize(WindowConstant.MainFrame.width, WindowConstant.MainFrame.height);
         this.topWindow.setResizable(false);
-        this.topWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        this.topWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.topWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.topWindow.setLocationRelativeTo(null);
+        topWindow.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                status = Constants.Server.Status.RUNNING;
+            }
 
-        this.fileChooser = new JFileChooser(FileUtil.getUserDirectoryPath());
+            @Override
+            public void windowClosing(WindowEvent e) {
+                status = Constants.Server.Status.STOPPING;
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                status = Constants.Server.Status.STOPPED;
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+//                System.out.println("windowIconified 3");
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+//                System.out.println("windowDeiconified 5");
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+//                System.out.println("windowActivated 1");
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+//                System.out.println("windowDeactivated 4");
+            }
+        });
+
+        this.fileChooser = new JFileChooser();
     }
 
     public ItemKeyValue[] getUIData(String key) {
@@ -68,7 +113,19 @@ public class Context {
         return this.configure.getConfig(name);
     }
 
-    public String getUserWork() {
-        return configure.getUserWork();
+    public String getCurrentWorkDirectoryPath() {
+        return configure.getCurrentWorkDirectoryPath();
+    }
+
+    public String getWorkDirectoryPath() {
+        return configure.getWorkDirectoryPath();
+    }
+
+    public String getConfigFilePath() {
+        return configure.getConfigFilePath();
+    }
+
+    public Set<Map.Entry<String, String>> getConfigs() {
+        return configure.getConfigs();
     }
 }

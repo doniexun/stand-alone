@@ -12,6 +12,7 @@ package cn.savor.standalone.log.gui;
 
 import cn.savor.standalone.log.Configure;
 import cn.savor.standalone.log.ConfigureLoader;
+import cn.savor.standalone.log.Constants;
 import cn.savor.standalone.log.exception.LoadException;
 
 import javax.swing.*;
@@ -35,13 +36,12 @@ public class MainWindow {
         ConfigureLoader configureLoader = new ConfigureLoader();
         Configure configure = configureLoader.loadUIData().loadConfig().getConfigure();
         context = new Context(configure);
-        this.buildWindow();
     }
 
     /**
      * 构建窗口
      */
-    private void buildWindow() {
+    public void run() {
         JFrame mainFrame = context.getTopWindow();
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -53,6 +53,14 @@ public class MainWindow {
         tabbedPane.setSelectedComponent(appMainTabComponent);
         mainFrame.add(tabbedPane);
         mainFrame.setVisible(true);
+
+        while (context.getStatus() != Constants.Server.Status.STOPPED) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 
     public void destroy() {
@@ -63,6 +71,7 @@ public class MainWindow {
         try {
             MainWindow window = new MainWindow();
             window.init();
+            window.run();
             window.destroy();
         } catch (Exception e) {
             e.printStackTrace();

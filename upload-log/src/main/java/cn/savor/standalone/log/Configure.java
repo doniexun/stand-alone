@@ -13,8 +13,11 @@ package cn.savor.standalone.log;
 import cn.savor.standalone.log.gui.ItemKeyValue;
 import lombok.Getter;
 import lombok.Setter;
+import net.lizhaoweb.common.util.base.FileUtil;
 
+import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,18 +38,22 @@ public class Configure {
     private Map<String, String> configMap;
 
     @Getter
-    private String userWork;
+    private String workDirectoryPath;
+
+    @Getter
+    private String currentWorkDirectoryPath;
 
     @Setter
     @Getter
-    private String dataFile;
+    private String dataFilePath;
 
     @Setter
     @Getter
-    private String configFile;
+    private String configFilePath;
 
     public Configure() {
-        this.userWork = System.getProperty("user.dir");
+        this.currentWorkDirectoryPath = System.getProperty("user.dir");
+        this.workDirectoryPath = FileUtil.getCanonicalPath(new File(this.currentWorkDirectoryPath, ".."));
         this.uiDataMap = new ConcurrentHashMap<>();
         this.configMap = new ConcurrentHashMap<>();
     }
@@ -65,5 +72,9 @@ public class Configure {
 
     public String getConfig(String key) {
         return this.configMap.get(key);
+    }
+
+    public Set<Map.Entry<String, String>> getConfigs() {
+        return configMap.entrySet();
     }
 }

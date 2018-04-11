@@ -72,7 +72,7 @@ public class ConfigureLoader {
             configure.putConfig(Constants.Configure.Keys.DIRECTORY_TEMP, FileUtil.getTempDirectoryPath());
         }
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.DIRECTORY_DATA))) {
-            String defaultDataDirectoryName = String.format("%s/../data", configure.getUserWork());
+            String defaultDataDirectoryName = String.format("%s/data", configure.getWorkDirectoryPath());
             File defaultDataDirectory = new File(defaultDataDirectoryName);
             configure.putConfig(Constants.Configure.Keys.DIRECTORY_DATA, FileUtil.getCanonicalPath(defaultDataDirectory));
         }

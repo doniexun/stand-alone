@@ -72,8 +72,11 @@ public class FileChooserActionListener implements ActionListener {
         context.getFileChooser().setDialogTitle(dialogTitle);
         int state = context.getFileChooser().showOpenDialog(context.getTopWindow());// 此句是打开文件选择器界面的触发语句
         if (state != 1) {
-            File file = context.getFileChooser().getSelectedFile();// f为选择到的目录
-            textField.setText(FileUtil.getCanonicalPath(file));
+            File selectedFile = context.getFileChooser().getSelectedFile();// selectedFile 为选择到的目录
+            String selectedFilePath = FileUtil.getCanonicalPath(selectedFile);
+            textField.setText(selectedFilePath);
+            String configName = textField.getName();
+            context.setConfig(configName, selectedFilePath);
         }
     }
 }

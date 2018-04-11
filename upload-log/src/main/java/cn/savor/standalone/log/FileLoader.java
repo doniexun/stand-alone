@@ -90,9 +90,9 @@ public class FileLoader {
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
             if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFile(FileUtil.getCanonicalPath(configFile));
+                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
             } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFile(FileUtil.getCanonicalPath(configFile));
+                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
             }
             return true;
         } catch (IOException e) {
@@ -108,7 +108,7 @@ public class FileLoader {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {
-            String configFileName = String.format("%s/../%s/%s", configure.getUserWork(), Constants.Configure.Directory.USER_WORK, fileName);
+            String configFileName = String.format("%s/%s/%s", configure.getWorkDirectoryPath(), Constants.Configure.Directory.USER_WORK, fileName);
             File configFile = new File(configFileName);
             if (!configFile.exists() || !configFile.isFile()) {
                 return false;
@@ -117,9 +117,9 @@ public class FileLoader {
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
             if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFile(FileUtil.getCanonicalPath(configFile));
+                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
             } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFile(FileUtil.getCanonicalPath(configFile));
+                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
             }
             return true;
         } catch (IOException e) {
@@ -142,9 +142,9 @@ public class FileLoader {
             String defaultFileName = String.format("%s/%s/%s", FileUtil.getUserDirectoryPath(), Constants.Configure.Directory.USER_HOME, fileName);
             File configFile = new File(defaultFileName);
             if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFile(FileUtil.getCanonicalPath(configFile));
+                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
             } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFile(FileUtil.getCanonicalPath(configFile));
+                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
             }
             return true;
         } catch (IOException e) {
