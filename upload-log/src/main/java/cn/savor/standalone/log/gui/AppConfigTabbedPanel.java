@@ -55,13 +55,14 @@ class AppConfigTabbedPanel {
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         JPanel southPanel = this.createSouthPanel();
         mainPanel.add(southPanel, BorderLayout.SOUTH);
-        parentContainer.add(mainPanel, WindowConstant.AppTabbedPanel.Config.title);
+
         return mainPanel;
     }
 
     private JPanel createSouthPanel() {
         JPanel southPanel = new JPanel();
-        JButton savorConfigButton = new JButton("保存");
+        JButton savorConfigButton = new JButton(WindowConstant.AppTabbedPanel.Config.SaveButton.label);
+        savorConfigButton.setToolTipText(WindowConstant.AppTabbedPanel.Config.SaveButton.tip + context.getConfigFilePath());
         savorConfigButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -144,100 +145,100 @@ class AppConfigTabbedPanel {
     }
 
     private void structureUIForDataDir(JPanel rowPanel_3) {
-        JLabel localDataDirLabel = new JLabel("数据目录");
+        JLabel localDataDirLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.DataDirectory.label);
         localDataDirLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_3.add(localDataDirLabel);
 
         JTextField localDataDirField = new JTextField();
         localDataDirField.setEnabled(false);
         localDataDirField.setForeground(new Color(20, 20, 20));
-        localDataDirField.setDisabledTextColor(new Color(30,30,30));
+        localDataDirField.setDisabledTextColor(new Color(30, 30, 30));
         localDataDirField.setBackground(new Color(220, 220, 220));
-        localDataDirField.setName(Constants.Configure.Keys.DIRECTORY_DATA);
-        localDataDirField.setText(context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA));
+        localDataDirField.setName(WindowConstant.AppTabbedPanel.Config.DataDirectory.fieldName);
+        localDataDirField.setText(context.getConfig(WindowConstant.AppTabbedPanel.Config.DataDirectory.fieldName));
         rowPanel_3.add(localDataDirField);
 
-        JButton localDataDirButton = new JButton("...");
+        JButton localDataDirButton = new JButton(WindowConstant.AppTabbedPanel.Config.DataDirectory.fileChooseButton);
         localDataDirButton.setPreferredSize(new Dimension(20, 0));
         localDataDirButton.addActionListener(new FileChooserActionListener(context, localDataDirField, 1));
         rowPanel_3.add(localDataDirButton);
     }
 
     private void structureUIForTempDir(JPanel rowPanel_2) {
-        JLabel localTempDirLabel = new JLabel("临时目录");
+        JLabel localTempDirLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.TempDirectory.label);
         localTempDirLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_2.add(localTempDirLabel);
 
         JTextField localTempDirField = new JTextField();
         localTempDirField.setEnabled(false);
         localTempDirField.setForeground(new Color(20, 20, 20));
-        localTempDirField.setDisabledTextColor(new Color(30,30,30));
+        localTempDirField.setDisabledTextColor(new Color(30, 30, 30));
         localTempDirField.setBackground(new Color(220, 220, 220));
-        localTempDirField.setName(Constants.Configure.Keys.DIRECTORY_TEMP);
-        localTempDirField.setText(context.getConfig(Constants.Configure.Keys.DIRECTORY_TEMP));
+        localTempDirField.setName(WindowConstant.AppTabbedPanel.Config.TempDirectory.fieldName);
+        localTempDirField.setText(context.getConfig(WindowConstant.AppTabbedPanel.Config.TempDirectory.fieldName));
         rowPanel_2.add(localTempDirField);
 
-        JButton localTempDirButton = new JButton("...");
+        JButton localTempDirButton = new JButton(WindowConstant.AppTabbedPanel.Config.TempDirectory.fileChooseButton);
         localTempDirButton.setPreferredSize(new Dimension(20, 0));
         localTempDirButton.addActionListener(new FileChooserActionListener(context, localTempDirField, 1));
         rowPanel_2.add(localTempDirButton);
     }
 
     private void structureUIForOSSObjectKey(JPanel rowPanel_1) {
-        JLabel ossObjectKeyLabel = new JLabel("OSS 前缀");
+        JLabel ossObjectKeyLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.label);
         ossObjectKeyLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossObjectKeyLabel);
 
         ItemKeyValue ossObjectKeySelectedItem = null;
         ItemKeyValue[] ossObjectKeyItemData = context.getUIData(Constants.Properties.Keys.OSS_OBJECT_KEY);
         for (ItemKeyValue itemKeyValue : ossObjectKeyItemData) {
-            if (itemKeyValue.getKey().equals(context.getConfig(Constants.Configure.Keys.OSS_OBJECT_KEY))) {
+            if (itemKeyValue.getKey().equals(context.getConfig(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.fieldName))) {
                 ossObjectKeySelectedItem = itemKeyValue;
                 break;
             }
         }
         JComboBox<ItemKeyValue> ossObjectKeyComboBox = new JComboBox<>(ossObjectKeyItemData);
-        ossObjectKeyComboBox.setName(Constants.Configure.Keys.OSS_OBJECT_KEY);
+        ossObjectKeyComboBox.setName(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.fieldName);
         ossObjectKeyComboBox.addActionListener(new ComboBoxActionListener(context));
         ossObjectKeyComboBox.setSelectedItem(ossObjectKeySelectedItem);
         rowPanel_1.add(ossObjectKeyComboBox);
     }
 
     private void structureUIForOSSBucket(JPanel rowPanel_1) {
-        JLabel ossBucketLabel = new JLabel("OSS 环境");
+        JLabel ossBucketLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.OSSBucket.label);
         ossBucketLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(ossBucketLabel);
 
         ItemKeyValue ossBucketSelectedItem = null;
         ItemKeyValue[] ossBucketItemData = context.getUIData(Constants.Properties.Keys.OSS_BUCKET);
         for (ItemKeyValue itemKeyValue : ossBucketItemData) {
-            if (itemKeyValue.getKey().equals(context.getConfig(Constants.Configure.Keys.OSS_BUCKET))) {
+            if (itemKeyValue.getKey().equals(context.getConfig(WindowConstant.AppTabbedPanel.Config.OSSBucket.fieldName))) {
                 ossBucketSelectedItem = itemKeyValue;
                 break;
             }
         }
         JComboBox<ItemKeyValue> ossBucketComboBox = new JComboBox<>(ossBucketItemData);
-        ossBucketComboBox.setName(Constants.Configure.Keys.OSS_BUCKET);
+        ossBucketComboBox.setName(WindowConstant.AppTabbedPanel.Config.OSSBucket.fieldName);
         ossBucketComboBox.addActionListener(new ComboBoxActionListener(context));
         ossBucketComboBox.setSelectedItem(ossBucketSelectedItem);
         rowPanel_1.add(ossBucketComboBox);
     }
 
     private void structureUIForCity(JPanel rowPanel_1) {
-        JLabel areaLabel = new JLabel("城市");
+        JLabel areaLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.City.label);
         areaLabel.setPreferredSize(new Dimension(60, 0));
         rowPanel_1.add(areaLabel);
 
         ItemKeyValue areaSelectedItem = null;
         ItemKeyValue[] areaItemData = context.getUIData(Constants.Properties.Keys.CITY);
         for (ItemKeyValue itemKeyValue : areaItemData) {
-            if (itemKeyValue.getKey().equals(context.getConfig(Constants.Configure.Keys.CITY))) {
+            if (itemKeyValue.getKey().equals(context.getConfig(WindowConstant.AppTabbedPanel.Config.City.fieldName))) {
                 areaSelectedItem = itemKeyValue;
                 break;
             }
         }
         JComboBox<ItemKeyValue> areaComboBox = new JComboBox<>(areaItemData);
-        areaComboBox.setName(Constants.Configure.Keys.CITY);
+        areaComboBox.setName(WindowConstant.AppTabbedPanel.Config.City.fieldName);
         areaComboBox.addActionListener(new ComboBoxActionListener(context));
         areaComboBox.setSelectedItem(areaSelectedItem);
         rowPanel_1.add(areaComboBox);

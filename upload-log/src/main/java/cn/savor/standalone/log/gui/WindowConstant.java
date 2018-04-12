@@ -10,6 +10,8 @@
  */
 package cn.savor.standalone.log.gui;
 
+import cn.savor.standalone.log.Constants;
+
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
@@ -47,10 +49,46 @@ class WindowConstant {
 
         static class Config {
             static final String title = "系统配置";
+            static final String icon = "/images/icon_system_config.png";
+            static final String tip = "此系统的全局配置";
+
+            static class City {
+                static final String label = "城市";
+                static final String fieldName = Constants.Configure.Keys.CITY;
+            }
+
+            static class OSSBucket {
+                static final String label = "OSS 环境";
+                static final String fieldName = Constants.Configure.Keys.OSS_BUCKET;
+            }
+
+            static class OSSObjectKey {
+                static final String label = "OSS 前缀";
+                static final String fieldName = Constants.Configure.Keys.OSS_OBJECT_KEY;
+            }
+
+            static class TempDirectory {
+                static final String label = "临时目录";
+                static final String fieldName = Constants.Configure.Keys.DIRECTORY_TEMP;
+                static final String fileChooseButton = "...";
+            }
+
+            static class DataDirectory {
+                static final String label = "数据目录";
+                static final String fieldName = Constants.Configure.Keys.DIRECTORY_DATA;
+                static final String fileChooseButton = "...";
+            }
+
+            static class SaveButton {
+                static final String label = "保存";
+                static final String tip = "把配置信息保存到电脑中。\r\n保存路径是 ： ";
+            }
         }
 
         static class CopyFromUDisk {
-            static final String title = "从 U 盘复制";
+            static final String title = "复制日志";
+            static final String icon = "/images/icon_copy.png";
+            static final String tip = "把日志文件从 U 盘复制到此电脑";
 
             static class ConfigurePanel {
                 static final String title = "U 盘路径";

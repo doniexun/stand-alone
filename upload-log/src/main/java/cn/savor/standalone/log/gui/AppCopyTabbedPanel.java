@@ -41,7 +41,6 @@ class AppCopyTabbedPanel {
         this.createOperationPanel(mainPanel);
         this.createMessagePanel(mainPanel);
 
-        parentContainer.add(mainPanel, WindowConstant.AppTabbedPanel.CopyFromUDisk.title);
         return mainPanel;
     }
 
@@ -55,7 +54,7 @@ class AppCopyTabbedPanel {
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), (int) (configurePanel.getHeight() * 0.89)));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JTextArea textArea = new JTextArea("aaaa\nbbb");
+        JTextArea textArea = new JTextArea();
         textArea.setBackground(null);
         textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
         textArea.setEnabled(false);
@@ -73,6 +72,7 @@ class AppCopyTabbedPanel {
         configurePanel.setBorder(configurePanelTitledBorder);
 
         JButton copyButton = new JButton("复制");
+        copyButton.setToolTipText("从 U 盘中把日志复现到此台电脑上");
         configurePanel.add(copyButton);
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }

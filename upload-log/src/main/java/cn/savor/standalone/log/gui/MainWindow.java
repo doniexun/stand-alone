@@ -48,10 +48,15 @@ public class MainWindow {
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
         Component appConfigTabComponent = new AppConfigTabbedPanel(context).buildUI(tabbedPane);
+        Icon appConfigTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.Config.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.Config.title, appConfigTabIcon, appConfigTabComponent, WindowConstant.AppTabbedPanel.Config.tip);
+
         Component appCopyTabComponent = new AppCopyTabbedPanel(context).buildUI(tabbedPane);
+        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.CopyFromUDisk.title, appCopyTabIcon, appCopyTabComponent, WindowConstant.AppTabbedPanel.CopyFromUDisk.tip);
 
         tabbedPane.setSelectedComponent(appCopyTabComponent);
-        mainFrame.add(tabbedPane);
+        mainFrame.setContentPane(tabbedPane);
         mainFrame.setVisible(true);
 
         while (context.getStatus() != Constants.Server.Status.STOPPED) {
