@@ -10,6 +10,7 @@
  */
 package cn.savor.standalone.log.gui;
 
+import cn.savor.standalone.log.Constants;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.lizhaoweb.common.util.base.FileUtil;
@@ -77,6 +78,17 @@ public class FileChooserActionListener implements ActionListener {
             textField.setText(selectedFilePath);
             String configName = textField.getName();
             context.setConfig(configName, selectedFilePath);
+            if (Constants.Configure.Keys.DIRECTORY_DATA.equals(configName)) {
+                File uploadDir = new File(selectedFilePath, "upload");
+                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD, FileUtil.getCanonicalPath(uploadDir));
+                File uploadOfflineV1Dir = new File(uploadDir, "standalone_v1");
+                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1, FileUtil.getCanonicalPath(uploadOfflineV1Dir));
+                File uploadOfflineV3Dir = new File(uploadDir, "standalone_v3");
+                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3, FileUtil.getCanonicalPath(uploadOfflineV3Dir));
+
+                File mediaDir = new File(selectedFilePath, "media");
+                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_MEDIA, FileUtil.getCanonicalPath(mediaDir));
+            }
         }
     }
 }

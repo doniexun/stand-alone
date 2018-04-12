@@ -52,6 +52,10 @@ public class Constants {
             public static final String OSS_OBJECT_KEY = "cn.savor.offline.log.configure.oss.object.key";
             public static final String DIRECTORY_TEMP = "cn.savor.offline.log.configure.directory.temp";
             public static final String DIRECTORY_DATA = "cn.savor.offline.log.configure.directory.data";
+            public static final String DIRECTORY_DATA_UPLOAD = "cn.savor.offline.log.configure.directory.data.upload";
+            public static final String DIRECTORY_DATA_UPLOAD_OFFLINE_V1 = "cn.savor.offline.log.configure.directory.data.upload.offlineV1";
+            public static final String DIRECTORY_DATA_UPLOAD_OFFLINE_V3 = "cn.savor.offline.log.configure.directory.data.upload.offlineV3";
+            public static final String DIRECTORY_DATA_MEDIA = "cn.savor.offline.log.configure.directory.data.media";
         }
 
         /**

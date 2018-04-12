@@ -91,7 +91,7 @@ class WindowConstant {
             static final String tip = "把日志文件从 U 盘复制到此电脑";
 
             static class ConfigurePanel {
-                static final String title = "U 盘路径";
+                static final String title = "数据源";
             }
 
             static class OperationPanel {
@@ -100,6 +100,14 @@ class WindowConstant {
 
             static class MessagePanel {
                 static final String title = "信息";
+            }
+        }
+    }
+
+    public static class Page {
+        public static class Key {
+            public static class CopyFromUDisk {
+                public static final String SOURCE = "cn.savor.offline.log.page.source";
             }
         }
     }

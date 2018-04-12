@@ -59,6 +59,9 @@ class AppConfigTabbedPanel {
         return mainPanel;
     }
 
+    void close() {
+    }
+
     private JPanel createSouthPanel() {
         JPanel southPanel = new JPanel();
         JButton savorConfigButton = new JButton(WindowConstant.AppTabbedPanel.Config.SaveButton.label);

@@ -31,6 +31,8 @@ import java.io.IOException;
 public class MainWindow {
 
     private ApplicationContext context;
+    private AppConfigTabbedPanel appConfigTabbedPanel;
+    private AppCopyTabbedPanel appCopyTabbedPanel;
 
     public void init() throws IOException, LoadException {
         ConfigureLoader configureLoader = new ConfigureLoader();
@@ -47,11 +49,15 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
-        Component appConfigTabComponent = new AppConfigTabbedPanel(context).buildUI(tabbedPane);
+        // 系统配置页面
+        appConfigTabbedPanel = new AppConfigTabbedPanel(context);
+        Component appConfigTabComponent = appConfigTabbedPanel.buildUI(tabbedPane);
         Icon appConfigTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.Config.icon));
         tabbedPane.addTab(WindowConstant.AppTabbedPanel.Config.title, appConfigTabIcon, appConfigTabComponent, WindowConstant.AppTabbedPanel.Config.tip);
 
-        Component appCopyTabComponent = new AppCopyTabbedPanel(context).buildUI(tabbedPane);
+        // 从 U 盘复制日志页面
+        appCopyTabbedPanel = new AppCopyTabbedPanel(context);
+        Component appCopyTabComponent = appCopyTabbedPanel.buildUI(tabbedPane);
         Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
         tabbedPane.addTab(WindowConstant.AppTabbedPanel.CopyFromUDisk.title, appCopyTabIcon, appCopyTabComponent, WindowConstant.AppTabbedPanel.CopyFromUDisk.tip);
 
@@ -69,7 +75,8 @@ public class MainWindow {
     }
 
     public void destroy() {
-        System.out.println("window.destroy");
+        appConfigTabbedPanel.close();
+        appCopyTabbedPanel.close();
     }
 
     public static void main(String[] args) {

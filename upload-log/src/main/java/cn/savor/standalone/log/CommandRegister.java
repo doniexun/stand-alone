@@ -12,6 +12,7 @@ package cn.savor.standalone.log;
 
 import cn.savor.standalone.log.createfile.CommandCreateBoxFile;
 import cn.savor.standalone.log.download.CommandDownload;
+import cn.savor.standalone.log.file.copy.CommandCopy;
 import cn.savor.standalone.log.upload.CommandUpload;
 
 /**
@@ -31,6 +32,7 @@ public class CommandRegister {
      * 注册
      */
     public static void register() {
+        CommandFactory.putCommand("copy", new CommandCopy());
         CommandFactory.putCommand("upload", new CommandUpload());
         CommandFactory.putCommand("download", new CommandDownload());
 //        CommandFactory.putCommand("decompress", new CommandUpload());
