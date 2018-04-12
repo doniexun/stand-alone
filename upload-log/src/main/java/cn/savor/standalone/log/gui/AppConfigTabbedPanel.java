@@ -37,12 +37,12 @@ import java.util.Set;
  * Date of last commit:$Date$<br>
  */
 @RequiredArgsConstructor
-class AppConfigTabbedPane {
+class AppConfigTabbedPanel {
 
-    protected Logger logger = LoggerFactory.getLogger(AppConfigTabbedPane.class);
+    protected Logger logger = LoggerFactory.getLogger(AppConfigTabbedPanel.class);
 
     @NonNull
-    private Context context;
+    private ApplicationContext context;
 
     Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
@@ -55,7 +55,7 @@ class AppConfigTabbedPane {
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         JPanel southPanel = this.createSouthPanel();
         mainPanel.add(southPanel, BorderLayout.SOUTH);
-        parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Config.title);
+        parentContainer.add(mainPanel, WindowConstant.AppTabbedPanel.Config.title);
         return mainPanel;
     }
 
@@ -149,6 +149,10 @@ class AppConfigTabbedPane {
         rowPanel_3.add(localDataDirLabel);
 
         JTextField localDataDirField = new JTextField();
+        localDataDirField.setEnabled(false);
+        localDataDirField.setForeground(new Color(20, 20, 20));
+        localDataDirField.setDisabledTextColor(new Color(30,30,30));
+        localDataDirField.setBackground(new Color(220, 220, 220));
         localDataDirField.setName(Constants.Configure.Keys.DIRECTORY_DATA);
         localDataDirField.setText(context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA));
         rowPanel_3.add(localDataDirField);
@@ -165,6 +169,10 @@ class AppConfigTabbedPane {
         rowPanel_2.add(localTempDirLabel);
 
         JTextField localTempDirField = new JTextField();
+        localTempDirField.setEnabled(false);
+        localTempDirField.setForeground(new Color(20, 20, 20));
+        localTempDirField.setDisabledTextColor(new Color(30,30,30));
+        localTempDirField.setBackground(new Color(220, 220, 220));
         localTempDirField.setName(Constants.Configure.Keys.DIRECTORY_TEMP);
         localTempDirField.setText(context.getConfig(Constants.Configure.Keys.DIRECTORY_TEMP));
         rowPanel_2.add(localTempDirField);

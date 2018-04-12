@@ -10,10 +10,8 @@
  */
 package cn.savor.standalone.log.gui;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
@@ -26,11 +24,13 @@ import java.awt.*;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-@RequiredArgsConstructor
-class AppMainTabbedPane {
+class AppCopyTabbedPanel {
 
-    @NonNull
-    private Context context;
+    private PageContext context;
+
+    public AppCopyTabbedPanel(ApplicationContext context) {
+        this.context = new PageContext(context);
+    }
 
     Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
@@ -41,31 +41,44 @@ class AppMainTabbedPane {
         this.createOperationPanel(mainPanel);
         this.createMessagePanel(mainPanel);
 
-        parentContainer.add(mainPanel, WindowConstant.AppTabbedPane.Main.title);
+        parentContainer.add(mainPanel, WindowConstant.AppTabbedPanel.CopyFromUDisk.title);
         return mainPanel;
     }
 
     private void createConfigurePanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPane.Main.ConfigurePanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.ConfigurePanel.title);
         JPanel configurePanel = new JPanel();
-//        configurePanel.setLayout(null);
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 2 / 5));
+        configurePanel.setSize(parentPanel.getWidth(), parentPanel.getHeight() * 2 / 5);
         configurePanel.setBorder(configurePanelTitledBorder);
-        configurePanel.setToolTipText("1111111111");
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), (int) (configurePanel.getHeight() * 0.89)));
+        scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        JTextArea textArea = new JTextArea("aaaa\nbbb");
+        textArea.setBackground(null);
+        textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
+        textArea.setEnabled(false);
+        scrollPane.setViewportView(textArea);
+
+        configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.NORTH);
     }
 
     private void createOperationPanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPane.Main.OperationPanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.OperationPanel.title);
         JPanel configurePanel = new JPanel();
 //        configurePanel.setLayout(null);
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), 80));
         configurePanel.setBorder(configurePanelTitledBorder);
+
+        JButton copyButton = new JButton("复制");
+        configurePanel.add(copyButton);
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }
 
     private void createMessagePanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPane.Main.MessagePanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.MessagePanel.title);
         JPanel configurePanel = new JPanel();
 //        configurePanel.setLayout(null);
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 2 / 5));

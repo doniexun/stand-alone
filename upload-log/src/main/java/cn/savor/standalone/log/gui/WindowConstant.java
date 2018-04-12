@@ -28,7 +28,7 @@ class WindowConstant {
         static final int height = 600;
     }
 
-    static class AppTabbedPane {
+    static class AppTabbedPanel {
         static class Main {
             static final String title = "操作主页";
 
@@ -47,6 +47,22 @@ class WindowConstant {
 
         static class Config {
             static final String title = "系统配置";
+        }
+
+        static class CopyFromUDisk {
+            static final String title = "从 U 盘复制";
+
+            static class ConfigurePanel {
+                static final String title = "U 盘路径";
+            }
+
+            static class OperationPanel {
+                static final String title = "操作";
+            }
+
+            static class MessagePanel {
+                static final String title = "信息";
+            }
         }
     }
 }

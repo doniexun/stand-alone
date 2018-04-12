@@ -34,7 +34,7 @@ import java.io.File;
 public class FileChooserActionListener implements ActionListener {
 
     @NonNull
-    private Context context;
+    private ApplicationContext context;
 //
 //    @NonNull
 //    private JButton button;

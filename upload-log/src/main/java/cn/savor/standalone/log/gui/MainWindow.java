@@ -30,12 +30,12 @@ import java.io.IOException;
  */
 public class MainWindow {
 
-    private Context context;
+    private ApplicationContext context;
 
     public void init() throws IOException, LoadException {
         ConfigureLoader configureLoader = new ConfigureLoader();
         Configure configure = configureLoader.loadUIData().loadConfig().getConfigure();
-        context = new Context(configure);
+        context = new ApplicationContext(configure);
     }
 
     /**
@@ -47,10 +47,10 @@ public class MainWindow {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());
 
-        Component appConfigTabComponent = new AppConfigTabbedPane(context).buildUI(tabbedPane);
-        Component appMainTabComponent = new AppMainTabbedPane(context).buildUI(tabbedPane);
+        Component appConfigTabComponent = new AppConfigTabbedPanel(context).buildUI(tabbedPane);
+        Component appCopyTabComponent = new AppCopyTabbedPanel(context).buildUI(tabbedPane);
 
-        tabbedPane.setSelectedComponent(appMainTabComponent);
+        tabbedPane.setSelectedComponent(appCopyTabComponent);
         mainFrame.add(tabbedPane);
         mainFrame.setVisible(true);
 

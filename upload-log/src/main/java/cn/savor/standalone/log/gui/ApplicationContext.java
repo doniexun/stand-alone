@@ -33,7 +33,7 @@ import java.util.Set;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-public class Context {
+public class ApplicationContext {
 
     private Configure configure;
 
@@ -49,7 +49,7 @@ public class Context {
     @Getter
     private int status;
 
-    public Context(Configure configure) {
+    public ApplicationContext(Configure configure) {
         this.status = Constants.Server.Status.STARTING;
         this.configure = configure;
         this.icon = new ImageIcon(this.getClass().getResource(WindowConstant.MainFrame.icon)).getImage();
