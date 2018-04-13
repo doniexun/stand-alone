@@ -47,10 +47,6 @@ public abstract class AppAbstractTabbedPanel {
         return mainPanel;
     }
 
-    void sourceNewLine() {
-        sourceOutputStream.newLine();
-    }
-
     void sourcePrintln(String string) {
         sourceOutputStream.println(string);
     }
@@ -88,9 +84,4 @@ public abstract class AppAbstractTabbedPanel {
     abstract void createMessagePanel(JComponent parentPanel);
 
     abstract void close();
-
-    private interface IOutputStream {
-
-
-    }
 }
