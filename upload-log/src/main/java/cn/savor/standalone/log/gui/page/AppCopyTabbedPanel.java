@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * <h1>应用页面 - 从 U 盘复制</h1>
+ *
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
  * @EMAIL 404644381@qq.com
@@ -101,6 +103,7 @@ public class AppCopyTabbedPanel extends AppAbstractTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_SCAN_START;
+                    messagePrintln("开始扫描 U 盘 ... ");
                     context.removeParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
                     File[] usbDiskRoots = FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE);
                     for (File usbDiskRoot : usbDiskRoots) {
@@ -115,9 +118,12 @@ public class AppCopyTabbedPanel extends AppAbstractTabbedPanel {
                         String textAreaContent = StringUtil.join(pathArray, "\n");
                         sourcePrintln(textAreaContent);
                     }
+                    messagePrintln("扫描 U 盘完成");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    messagePrintlnError(e);
                 }
+                messageNewLine();
+                messageNewLine();
                 runningStatus = THIS_STATUS_SCAN_END;
             }
         });

@@ -10,11 +10,11 @@
  */
 package cn.savor.standalone.log.gui.page;
 
-import cn.savor.standalone.log.gui.util.DialogUI;
 import cn.savor.standalone.log.gui.bean.ApplicationContext;
 import cn.savor.standalone.log.gui.bean.PageContext;
 import cn.savor.standalone.log.gui.listener.ComboBoxActionListener;
 import cn.savor.standalone.log.gui.listener.FileChooserActionListener;
+import cn.savor.standalone.log.gui.util.DialogUI;
 import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.model.ItemKeyValue;
 import cn.savor.standalone.log.util.Constants;
@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * <h1>应用页面 - 系统配置</h1>
+ *
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
  * @EMAIL 404644381@qq.com
@@ -65,18 +67,22 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
 
     @Override
     protected void createConfigurePanel(JComponent parentPanel) {
+        // nothing
     }
 
     @Override
     protected void createOperationPanel(JComponent parentPanel) {
+        // nothing
     }
 
     @Override
     protected void createMessagePanel(JComponent parentPanel) {
+        // nothing
     }
 
     @Override
     public void close() {
+        // nothing
     }
 
     private JPanel createSouthPanel() {
@@ -118,7 +124,7 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
                     outputStream.flush();
                     DialogUI.alert(context.getTopWindow(), "提示", "保存完成");
                 } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
+                    messagePrintlnError(e);
                     DialogUI.alert(context.getTopWindow(), "提示", "保存失败");
                 } finally {
                     IOUtil.close(outputStream);

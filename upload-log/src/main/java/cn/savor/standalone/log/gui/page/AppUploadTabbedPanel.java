@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * <h1>应用页面 - 上传到 OSS</h1>
+ *
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
  * @EMAIL 404644381@qq.com
@@ -98,6 +100,8 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
                     messagePrintln("准备上传一代单机版日志 ... ");
 
+                    //TODO 本机时间校验
+
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(sourceDirectoryPath)) {
@@ -160,6 +164,8 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
                     messagePrintln("准备上传三代单机版日志 ... ");
+
+                    //TODO 本机时间校验
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);

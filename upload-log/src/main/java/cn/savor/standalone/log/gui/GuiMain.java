@@ -10,18 +10,21 @@
  */
 package cn.savor.standalone.log.gui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- *
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
- * @EMAIL 404644381@qq.com
  * @version 1.0.0.0.1
+ * @EMAIL 404644381@qq.com
  * @notes Created on 2018年04月13日<br>
- *        Revision of last commit:$Revision$<br>
- *        Author of last commit:$Author$<br>
- *        Date of last commit:$Date$<br>
- *
+ * Revision of last commit:$Revision$<br>
+ * Author of last commit:$Author$<br>
+ * Date of last commit:$Date$<br>
  */
 public class GuiMain {
+
+    private static Logger logger = LoggerFactory.getLogger(GuiMain.class);
 
     public static void main(String[] args) {
         try {
@@ -30,7 +33,7 @@ public class GuiMain {
             window.run();
             window.destroy();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 }

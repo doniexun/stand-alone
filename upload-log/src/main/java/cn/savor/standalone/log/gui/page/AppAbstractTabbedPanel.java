@@ -19,6 +19,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * <h1>应用页面 - 抽象类</h1>
+ *
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
  * @version 1.0.0.0.1
  * @EMAIL 404644381@qq.com
@@ -72,8 +74,8 @@ public abstract class AppAbstractTabbedPanel {
             logger.error(throwable.getMessage(), throwable);
 //            String errorString = String.format("MessageError : %s\n", e.getMessage());
             messageOutputStream.println(throwable);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 
