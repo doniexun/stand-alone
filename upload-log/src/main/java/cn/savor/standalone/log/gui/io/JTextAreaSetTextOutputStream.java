@@ -36,4 +36,9 @@ public class JTextAreaSetTextOutputStream extends AbstractTextAreaOutputStream {
             textArea.setText(new String(bytes, offset, length));
         }
     }
+
+    @Override
+    public void println(String string) {
+        super.print(string + "\n");
+    }
 }
