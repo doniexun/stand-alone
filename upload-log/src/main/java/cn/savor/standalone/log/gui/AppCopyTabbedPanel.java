@@ -18,8 +18,6 @@ import net.lizhaoweb.common.util.base.Constant;
 import net.lizhaoweb.common.util.base.FileUtil;
 import net.lizhaoweb.common.util.base.IOUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -42,7 +40,7 @@ import java.util.List;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-class AppCopyTabbedPanel {
+class AppCopyTabbedPanel extends AppAbstractTabbedPanel {
     private static final int THIS_STATUS_INIT = -1;
     private static final int THIS_STATUS_SCAN_START = 0x00;
     private static final int THIS_STATUS_SCAN_END = 0x01;
@@ -51,35 +49,15 @@ class AppCopyTabbedPanel {
     private static final int THIS_STATUS_OFFLINE_V3_START = 0x30;
     private static final int THIS_STATUS_OFFLINE_V3_END = 0x31;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private PageContext context;
-    private OutputStream sourceOutputStream;
-    private OutputStream messageOutputStream;
-
-    private int runningStatus = THIS_STATUS_INIT;
+    private int runningStatus;
 
     AppCopyTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
+        runningStatus = THIS_STATUS_INIT;
     }
 
-    Component buildUI(Container parentContainer) {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setSize(parentContainer.getWidth(), parentContainer.getHeight());
-        mainPanel.setLayout(new BorderLayout());
-
-        this.createConfigurePanel(mainPanel);
-        this.createOperationPanel(mainPanel);
-        this.createMessagePanel(mainPanel);
-
-        return mainPanel;
-    }
-
-    void close() {
-        IOUtil.closeQuietly(sourceOutputStream, messageOutputStream);
-    }
-
-    private void createConfigurePanel(JComponent parentPanel) {
+    @Override
+    void createConfigurePanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.ConfigurePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 7 / 15 - 120));
@@ -87,7 +65,7 @@ class AppCopyTabbedPanel {
         configurePanel.setBorder(configurePanelTitledBorder);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), (int) (configurePanel.getHeight() - 30)));
+        scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         final JTextArea textArea = new JTextArea();
@@ -117,7 +95,8 @@ class AppCopyTabbedPanel {
         parentPanel.add(configurePanel, BorderLayout.NORTH);
     }
 
-    private void createOperationPanel(JComponent parentPanel) {
+    @Override
+    void createOperationPanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.OperationPanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), 120));
@@ -140,11 +119,10 @@ class AppCopyTabbedPanel {
                     }
                     String[] pathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
                     if (pathArray == null) {
-                        String textAreaContent = "无 U 盘插入\n";
-                        sourceOutputStream.write(textAreaContent.getBytes());
+                        sourcePrintln("无 U 盘插入");
                     } else {
                         String textAreaContent = StringUtil.join(pathArray, "\n");
-                        sourceOutputStream.write(textAreaContent.getBytes());
+                        sourcePrintln(textAreaContent);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -174,7 +152,7 @@ class AppCopyTabbedPanel {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
                         String errorMessage = "复制一代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
@@ -216,7 +194,7 @@ class AppCopyTabbedPanel {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
                         String errorMessage = "复制三代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
@@ -241,38 +219,8 @@ class AppCopyTabbedPanel {
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }
 
-    private void checkRunningStatus() throws IOException {
-        if (runningStatus == THIS_STATUS_SCAN_START) {
-            this.messagePrintln("U 盘扫描没有结束");
-        }
-        if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
-            this.messagePrintln("复制一代单机版日志没有结束");
-        }
-        if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
-            this.messagePrintln("复制三代单机版日志没有结束");
-        }
-    }
-
-    private void messagePrintln(String string) {
-        try {
-            String content = string + "\n";
-            messageOutputStream.write(content.getBytes());
-        } catch (IOException e) {
-            this.messagePrintlnError(e);
-        }
-    }
-
-    private void messagePrintlnError(Exception e) {
-        try {
-            logger.error(e.getMessage(), e);
-            String errorString = String.format("Error : %s\n", e.getMessage());
-            messageOutputStream.write(errorString.getBytes());
-        } catch (IOException e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-    }
-
-    private void createMessagePanel(JComponent parentPanel) {
+    @Override
+    void createMessagePanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.MessagePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 8 / 15));
@@ -311,5 +259,22 @@ class AppCopyTabbedPanel {
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.SOUTH);
+    }
+
+    @Override
+    void close() {
+        IOUtil.closeQuietly(sourceOutputStream, messageOutputStream);
+    }
+
+    private void checkRunningStatus() throws IOException {
+        if (runningStatus == THIS_STATUS_SCAN_START) {
+            this.messagePrintln("U 盘扫描没有结束");
+        }
+        if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
+            this.messagePrintln("复制一代单机版日志没有结束");
+        }
+        if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
+            this.messagePrintln("复制三代单机版日志没有结束");
+        }
     }
 }

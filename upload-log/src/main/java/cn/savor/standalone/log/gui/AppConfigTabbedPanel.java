@@ -11,11 +11,8 @@
 package cn.savor.standalone.log.gui;
 
 import cn.savor.standalone.log.Constants;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.lizhaoweb.common.util.base.IOUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,14 +34,14 @@ import java.util.Set;
  * Date of last commit:$Date$<br>
  */
 @RequiredArgsConstructor
-class AppConfigTabbedPanel {
+class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
 
-    protected Logger logger = LoggerFactory.getLogger(AppConfigTabbedPanel.class);
+    AppConfigTabbedPanel(ApplicationContext context) {
+        this.context = new PageContext(context);
+    }
 
-    @NonNull
-    private ApplicationContext context;
-
-    Component buildUI(Container parentContainer) {
+    @Override
+    public Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
 
         mainPanel.setSize((int) (parentContainer.getWidth() * 0.98), parentContainer.getHeight());
@@ -59,7 +56,20 @@ class AppConfigTabbedPanel {
         return mainPanel;
     }
 
-    void close() {
+    @Override
+    protected void createConfigurePanel(JComponent parentPanel) {
+    }
+
+    @Override
+    protected void createOperationPanel(JComponent parentPanel) {
+    }
+
+    @Override
+    protected void createMessagePanel(JComponent parentPanel) {
+    }
+
+    @Override
+    protected void close() {
     }
 
     private JPanel createSouthPanel() {

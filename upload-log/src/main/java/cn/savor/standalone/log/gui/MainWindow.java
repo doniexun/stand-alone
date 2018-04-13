@@ -85,7 +85,7 @@ public class MainWindow {
 
         while (context.getStatus() != Constants.Server.Status.STOPPED) {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
             }

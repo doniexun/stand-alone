@@ -32,7 +32,7 @@ import java.awt.event.ActionListener;
 public class ComboBoxActionListener implements ActionListener {
 
     @NonNull
-    private ApplicationContext context;
+    private PageContext context;
 
     @Override
     public void actionPerformed(ActionEvent e) {

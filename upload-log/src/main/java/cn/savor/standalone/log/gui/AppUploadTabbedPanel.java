@@ -14,12 +14,8 @@ import cn.savor.standalone.log.Constants;
 import cn.savor.standalone.log.command.ICommand;
 import cn.savor.standalone.log.command.oss.upload.CommandUpload;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
-import net.lizhaoweb.common.util.base.Constant;
-import net.lizhaoweb.common.util.base.FileUtil;
 import net.lizhaoweb.common.util.base.IOUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +23,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -42,44 +37,22 @@ import java.util.List;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-class AppUploadTabbedPanel {
+class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
     private static final int THIS_STATUS_INIT = -1;
-    private static final int THIS_STATUS_SCAN_START = 0x00;
-    private static final int THIS_STATUS_SCAN_END = 0x01;
     private static final int THIS_STATUS_OFFLINE_V1_START = 0x10;
     private static final int THIS_STATUS_OFFLINE_V1_END = 0x11;
     private static final int THIS_STATUS_OFFLINE_V3_START = 0x30;
     private static final int THIS_STATUS_OFFLINE_V3_END = 0x31;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private PageContext context;
-    private OutputStream sourceOutputStream;
-    private OutputStream messageOutputStream;
-
-    private int runningStatus = THIS_STATUS_INIT;
+    private int runningStatus;
 
     AppUploadTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
+        runningStatus = THIS_STATUS_INIT;
     }
 
-    Component buildUI(Container parentContainer) {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setSize(parentContainer.getWidth(), parentContainer.getHeight());
-        mainPanel.setLayout(new BorderLayout());
-
-        this.createConfigurePanel(mainPanel);
-        this.createOperationPanel(mainPanel);
-        this.createMessagePanel(mainPanel);
-
-        return mainPanel;
-    }
-
-    void close() {
-        IOUtil.closeQuietly(sourceOutputStream, messageOutputStream);
-    }
-
-    private void createConfigurePanel(JComponent parentPanel) {
+    @Override
+    void createConfigurePanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.UploadToOSS.ConfigurePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 7 / 15 - 120));
@@ -87,7 +60,7 @@ class AppUploadTabbedPanel {
         configurePanel.setBorder(configurePanelTitledBorder);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), (int) (configurePanel.getHeight() - 30)));
+        scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         final JTextArea textArea = new JTextArea();
@@ -117,44 +90,14 @@ class AppUploadTabbedPanel {
         parentPanel.add(configurePanel, BorderLayout.NORTH);
     }
 
-    private void createOperationPanel(JComponent parentPanel) {
+    @Override
+    void createOperationPanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.UploadToOSS.OperationPanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), 120));
         configurePanel.setBorder(configurePanelTitledBorder);
 
-        JButton scanButton = new JButton("扫描");
-        scanButton.setToolTipText("扫描 U 盘");
-        scanButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    checkRunningStatus();
-                    runningStatus = THIS_STATUS_SCAN_START;
-                    context.removeParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
-                    File[] usbDiskRoots = FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE);
-                    for (File usbDiskRoot : usbDiskRoots) {
-                        File sourceFile = new File(usbDiskRoot, "log");
-                        String sourceFilePath = FileUtil.getCanonicalPath(sourceFile);
-                        context.addParameter(WindowConstant.Page.Key.UploadToOSS.SOURCE, sourceFilePath);
-                    }
-                    String[] pathArray = context.getParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
-                    if (pathArray == null) {
-                        String textAreaContent = "无 U 盘插入\n";
-                        sourceOutputStream.write(textAreaContent.getBytes());
-                    } else {
-                        String textAreaContent = StringUtil.join(pathArray, "\n");
-                        sourceOutputStream.write(textAreaContent.getBytes());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                runningStatus = THIS_STATUS_SCAN_END;
-            }
-        });
-        configurePanel.add(scanButton);
-
-        JButton uploadOfflineV1Button = new JButton("复制一代");
+        JButton uploadOfflineV1Button = new JButton("上传一代");
         uploadOfflineV1Button.setToolTipText("从 U 盘中把一代单机版日志复现到此台电脑上");
         uploadOfflineV1Button.addActionListener(new ActionListener() {
             @Override
@@ -162,21 +105,21 @@ class AppUploadTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("\n准备复制一代单机版日志 ... ");
+                    messagePrintln("\n准备上传一代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "复制一代单机版日志时，没有源目录";
+                        String errorMessage = "上传一代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "复制一代单机版日志时，没有目标目录";
+                        String errorMessage = "上传一代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
@@ -185,9 +128,9 @@ class AppUploadTabbedPanel {
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始复制： ");
+                    messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("\n一代单机版日志复制完成\n");
+                    messagePrintln("\n一代单机版日志上传完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
@@ -196,7 +139,7 @@ class AppUploadTabbedPanel {
         });
         configurePanel.add(uploadOfflineV1Button);
 
-        JButton uploadOfflineV3Button = new JButton("复制三代");
+        JButton uploadOfflineV3Button = new JButton("上传三代");
         uploadOfflineV3Button.setToolTipText("从 U 盘中把三代单机版日志复现到此台电脑上");
         uploadOfflineV3Button.addActionListener(new ActionListener() {
             @Override
@@ -204,21 +147,21 @@ class AppUploadTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("\n准备复制三代单机版日志 ... ");
+                    messagePrintln("\n准备上传三代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "复制三代单机版日志时，没有源目录";
+                        String errorMessage = "上传三代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "复制三代单机版日志时，没有目标目录";
+                        String errorMessage = "上传三代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
@@ -227,9 +170,9 @@ class AppUploadTabbedPanel {
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始复制： ");
+                    messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("\n三代单机版日志复制完成\n");
+                    messagePrintln("\n三代单机版日志上传完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
@@ -241,38 +184,8 @@ class AppUploadTabbedPanel {
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }
 
-    private void checkRunningStatus() throws IOException {
-        if (runningStatus == THIS_STATUS_SCAN_START) {
-            this.messagePrintln("U 盘扫描没有结束");
-        }
-        if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
-            this.messagePrintln("复制一代单机版日志没有结束");
-        }
-        if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
-            this.messagePrintln("复制三代单机版日志没有结束");
-        }
-    }
-
-    private void messagePrintln(String string) {
-        try {
-            String content = string + "\n";
-            messageOutputStream.write(content.getBytes());
-        } catch (IOException e) {
-            this.messagePrintlnError(e);
-        }
-    }
-
-    private void messagePrintlnError(Exception e) {
-        try {
-            logger.error(e.getMessage(), e);
-            String errorString = String.format("Error : %s\n", e.getMessage());
-            messageOutputStream.write(errorString.getBytes());
-        } catch (IOException e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-    }
-
-    private void createMessagePanel(JComponent parentPanel) {
+    @Override
+    void createMessagePanel(JComponent parentPanel) {
         TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.UploadToOSS.MessagePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 8 / 15));
@@ -311,5 +224,19 @@ class AppUploadTabbedPanel {
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.SOUTH);
+    }
+
+    @Override
+    void close() {
+        IOUtil.closeQuietly(sourceOutputStream, messageOutputStream);
+    }
+
+    private void checkRunningStatus() throws IOException {
+        if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
+            this.messagePrintln("上传一代单机版日志没有结束");
+        }
+        if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
+            this.messagePrintln("上传三代单机版日志没有结束");
+        }
     }
 }

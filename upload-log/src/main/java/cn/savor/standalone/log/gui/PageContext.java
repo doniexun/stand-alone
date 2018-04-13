@@ -15,7 +15,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.lizhaoweb.common.util.base.ArrayUtil;
 
+import javax.swing.*;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,6 +37,34 @@ public class PageContext {
     @NonNull
     @Getter
     private ApplicationContext applicationContext;
+
+    public JFrame getTopWindow() {
+        return applicationContext.getTopWindow();
+    }
+
+    public JFileChooser getFileChooser() {
+        return applicationContext.getFileChooser();
+    }
+
+    public void setConfig(String name, String value) {
+        applicationContext.setConfig(name, value);
+    }
+
+    public String getConfig(String name) {
+        return applicationContext.getConfig(name);
+    }
+
+    public ItemKeyValue[] getUIData(String key) {
+        return applicationContext.getUIData(key);
+    }
+
+    public Set<Map.Entry<String, String>> getConfigs() {
+        return applicationContext.getConfigs();
+    }
+
+    public String getConfigFilePath() {
+        return applicationContext.getConfigFilePath();
+    }
 
     public void setParameters(String name, String[] values) {
         parameterMap.put(name, values);
