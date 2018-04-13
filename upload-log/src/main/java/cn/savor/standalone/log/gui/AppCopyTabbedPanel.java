@@ -43,12 +43,21 @@ import java.util.List;
  * Date of last commit:$Date$<br>
  */
 class AppCopyTabbedPanel {
+    private static final int THIS_STATUS_INIT = -1;
+    private static final int THIS_STATUS_SCAN_START = 0x00;
+    private static final int THIS_STATUS_SCAN_END = 0x01;
+    private static final int THIS_STATUS_OFFLINE_V1_START = 0x10;
+    private static final int THIS_STATUS_OFFLINE_V1_END = 0x11;
+    private static final int THIS_STATUS_OFFLINE_V3_START = 0x30;
+    private static final int THIS_STATUS_OFFLINE_V3_END = 0x31;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private PageContext context;
     private OutputStream sourceOutputStream;
     private OutputStream messageOutputStream;
+
+    private int runningStatus = THIS_STATUS_INIT;
 
     AppCopyTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
@@ -118,6 +127,8 @@ class AppCopyTabbedPanel {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
+                    checkRunningStatus();
+                    runningStatus = THIS_STATUS_SCAN_START;
                     context.removeParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
                     File[] usbDiskRoots = FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE);
                     for (File usbDiskRoot : usbDiskRoots) {
@@ -125,59 +136,102 @@ class AppCopyTabbedPanel {
                         String sourceFilePath = FileUtil.getCanonicalPath(sourceFile);
                         context.addParameter(WindowConstant.Page.Key.CopyFromUDisk.SOURCE, sourceFilePath);
                     }
-                    String textAreaContent = StringUtil.join(context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE), "\n");
-                    sourceOutputStream.write(textAreaContent.getBytes());
+                    String[] pathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    if (pathArray == null) {
+                        String textAreaContent = "无 U 盘插入\n";
+                        sourceOutputStream.write(textAreaContent.getBytes());
+                    } else {
+                        String textAreaContent = StringUtil.join(pathArray, "\n");
+                        sourceOutputStream.write(textAreaContent.getBytes());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                runningStatus = THIS_STATUS_SCAN_END;
             }
         });
         configurePanel.add(scanButton);
 
         JButton copyOfflineV1Button = new JButton("复制一代");
-        copyOfflineV1Button.setToolTipText("从 U 盘中把日志复现到此台电脑上");
+        copyOfflineV1Button.setToolTipText("从 U 盘中把一代单机版日志复现到此台电脑上");
         copyOfflineV1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
+                    checkRunningStatus();
+                    runningStatus = THIS_STATUS_OFFLINE_V1_START;
+                    messagePrintln("\n准备复制一代单机版日志 ... ");
+
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    if (sourcePathArray == null) {
+                        String errorMessage = "复制一代单机版日志时，没有源目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
                     }
+
                     String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
+                    if (StringUtil.isBlank(targetDirectoryPath)) {
+                        String errorMessage = "复制一代单机版日志时，没有目标目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
                     argList.add("tarDir=" + targetDirectoryPath);
+                    argList.add("regex=^\\d+_\\d*_\\d*\\.csv(:?\\.gz)?$");
 
                     ICommand command = new CommandCopy(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                    messagePrintln("\t开始复制： ");
                     command.execute();
+                    messagePrintln("\n一代单机版日志复制完成\n");
                 } catch (Exception e) {
-                    printError(e);
+                    messagePrintlnError(e);
                 }
+                runningStatus = THIS_STATUS_OFFLINE_V1_END;
             }
         });
         configurePanel.add(copyOfflineV1Button);
 
         JButton copyOfflineV3Button = new JButton("复制三代");
-        copyOfflineV3Button.setToolTipText("从 U 盘中把日志复现到此台电脑上");
+        copyOfflineV3Button.setToolTipText("从 U 盘中把三代单机版日志复现到此台电脑上");
         copyOfflineV3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
+                    checkRunningStatus();
+                    runningStatus = THIS_STATUS_OFFLINE_V3_START;
+                    messagePrintln("\n准备复制三代单机版日志 ... ");
+
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    if (sourcePathArray == null) {
+                        String errorMessage = "复制三代单机版日志时，没有源目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
                     }
+
                     String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
+                    if (StringUtil.isBlank(targetDirectoryPath)) {
+                        String errorMessage = "复制三代单机版日志时，没有目标目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
                     argList.add("tarDir=" + targetDirectoryPath);
+                    argList.add("regex=^([0-9A-Fa-f]{12})_\\d*_standalone\\.blog\\.zip$");
 
                     ICommand command = new CommandCopy(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                    messagePrintln("\t开始复制： ");
                     command.execute();
+                    messagePrintln("\n三代单机版日志复制完成\n");
                 } catch (Exception e) {
-                    printError(e);
+                    messagePrintlnError(e);
                 }
+                runningStatus = THIS_STATUS_OFFLINE_V3_END;
             }
         });
         configurePanel.add(copyOfflineV3Button);
@@ -185,7 +239,28 @@ class AppCopyTabbedPanel {
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }
 
-    private void printError(Exception e) {
+    private void checkRunningStatus() throws IOException {
+        if (runningStatus == THIS_STATUS_SCAN_START) {
+            this.messagePrintln("U 盘扫描没有结束");
+        }
+        if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
+            this.messagePrintln("复制一代单机版日志没有结束");
+        }
+        if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
+            this.messagePrintln("复制三代单机版日志没有结束");
+        }
+    }
+
+    private void messagePrintln(String string) {
+        try {
+            String content = string + "\n";
+            messageOutputStream.write(content.getBytes());
+        } catch (IOException e) {
+            this.messagePrintlnError(e);
+        }
+    }
+
+    private void messagePrintlnError(Exception e) {
         try {
             logger.error(e.getMessage(), e);
             String errorString = String.format("Error : %s\n", e.getMessage());

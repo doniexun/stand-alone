@@ -79,14 +79,14 @@ public class FileChooserActionListener implements ActionListener {
             String configName = textField.getName();
             context.setConfig(configName, selectedFilePath);
             if (Constants.Configure.Keys.DIRECTORY_DATA.equals(configName)) {
-                File uploadDir = new File(selectedFilePath, "upload");
+                File uploadDir = new File(selectedFilePath, Constants.Configure.Directory.UPLOAD);
                 context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD, FileUtil.getCanonicalPath(uploadDir));
-                File uploadOfflineV1Dir = new File(uploadDir, "standalone_v1");
+                File uploadOfflineV1Dir = new File(uploadDir, Constants.Configure.Directory.STANDALONE_V1);
                 context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1, FileUtil.getCanonicalPath(uploadOfflineV1Dir));
-                File uploadOfflineV3Dir = new File(uploadDir, "standalone_v3");
+                File uploadOfflineV3Dir = new File(uploadDir, Constants.Configure.Directory.STANDALONE_V3);
                 context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3, FileUtil.getCanonicalPath(uploadOfflineV3Dir));
 
-                File mediaDir = new File(selectedFilePath, "media");
+                File mediaDir = new File(selectedFilePath, Constants.Configure.Directory.MEDIA);
                 context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_MEDIA, FileUtil.getCanonicalPath(mediaDir));
             }
         }

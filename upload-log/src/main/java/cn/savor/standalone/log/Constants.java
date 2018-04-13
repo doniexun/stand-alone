@@ -64,6 +64,11 @@ public class Constants {
         public static class Directory {
             public static final String USER_HOME = ".offline_logs";
             public static final String USER_WORK = "conf";
+            public static final String DATA = "data";
+            public static final String UPLOAD = "upload";
+            public static final String STANDALONE_V1 = "standalone_v1";
+            public static final String STANDALONE_V3 = "standalone_v3";
+            public static final String MEDIA = "media";
         }
     }
 

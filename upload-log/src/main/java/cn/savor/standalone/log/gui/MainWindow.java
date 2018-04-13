@@ -52,14 +52,14 @@ public class MainWindow {
         // 系统配置页面
         appConfigTabbedPanel = new AppConfigTabbedPanel(context);
         Component appConfigTabComponent = appConfigTabbedPanel.buildUI(tabbedPane);
-        Icon appConfigTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.Config.icon));
-        tabbedPane.addTab(WindowConstant.AppTabbedPanel.Config.title, appConfigTabIcon, appConfigTabComponent, WindowConstant.AppTabbedPanel.Config.tip);
+//        Icon appConfigTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.Config.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.Config.title, null, appConfigTabComponent, WindowConstant.AppTabbedPanel.Config.tip);
 
         // 从 U 盘复制日志页面
         appCopyTabbedPanel = new AppCopyTabbedPanel(context);
         Component appCopyTabComponent = appCopyTabbedPanel.buildUI(tabbedPane);
-        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
-        tabbedPane.addTab(WindowConstant.AppTabbedPanel.CopyFromUDisk.title, appCopyTabIcon, appCopyTabComponent, WindowConstant.AppTabbedPanel.CopyFromUDisk.tip);
+//        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.CopyFromUDisk.title, null, appCopyTabComponent, WindowConstant.AppTabbedPanel.CopyFromUDisk.tip);
 
         tabbedPane.setSelectedComponent(appCopyTabComponent);
         mainFrame.setContentPane(tabbedPane);
