@@ -8,7 +8,7 @@
  * @EMAIL 404644381@qq.com
  * @Time : 15:29
  */
-package cn.savor.standalone.log;
+package cn.savor.standalone.log.model;
 
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>

@@ -8,10 +8,12 @@
  * @EMAIL 404644381@qq.com
  * @Time : 16:56
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.bean;
 
-import cn.savor.standalone.log.Configure;
-import cn.savor.standalone.log.Constants;
+import cn.savor.standalone.log.model.Configure;
+import cn.savor.standalone.log.util.Constants;
+import cn.savor.standalone.log.gui.util.WindowConstant;
+import cn.savor.standalone.log.model.ItemKeyValue;
 import lombok.Getter;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 

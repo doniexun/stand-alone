@@ -8,11 +8,12 @@
  * @EMAIL 404644381@qq.com
  * @Time : 16:24
  */
-package cn.savor.standalone.log;
+package cn.savor.standalone.log.util;
 
 
 import cn.savor.standalone.log.exception.LoadException;
-import cn.savor.standalone.log.gui.ItemKeyValue;
+import cn.savor.standalone.log.model.Configure;
+import cn.savor.standalone.log.model.ItemKeyValue;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

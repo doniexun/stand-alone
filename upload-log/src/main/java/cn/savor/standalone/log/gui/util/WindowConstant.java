@@ -8,9 +8,9 @@
  * @EMAIL 404644381@qq.com
  * @Time : 18:13
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.util;
 
-import cn.savor.standalone.log.Constants;
+import cn.savor.standalone.log.util.Constants;
 
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>

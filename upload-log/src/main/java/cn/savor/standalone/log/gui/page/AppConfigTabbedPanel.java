@@ -8,9 +8,15 @@
  * @EMAIL 404644381@qq.com
  * @Time : 17:01
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.page;
 
-import cn.savor.standalone.log.Constants;
+import cn.savor.standalone.log.gui.bean.ApplicationContext;
+import cn.savor.standalone.log.gui.bean.PageContext;
+import cn.savor.standalone.log.gui.listener.ComboBoxActionListener;
+import cn.savor.standalone.log.gui.listener.FileChooserActionListener;
+import cn.savor.standalone.log.gui.util.WindowConstant;
+import cn.savor.standalone.log.model.ItemKeyValue;
+import cn.savor.standalone.log.util.Constants;
 import lombok.RequiredArgsConstructor;
 import net.lizhaoweb.common.util.base.IOUtil;
 
@@ -34,9 +40,9 @@ import java.util.Set;
  * Date of last commit:$Date$<br>
  */
 @RequiredArgsConstructor
-class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
+public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
 
-    AppConfigTabbedPanel(ApplicationContext context) {
+    public AppConfigTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
     }
 
@@ -69,7 +75,7 @@ class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
     }
 
     @Override
-    protected void close() {
+    public void close() {
     }
 
     private JPanel createSouthPanel() {

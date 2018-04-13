@@ -8,9 +8,9 @@
  * @EMAIL 404644381@qq.com
  * @Time : 16:42
  */
-package cn.savor.standalone.log;
+package cn.savor.standalone.log.model;
 
-import cn.savor.standalone.log.gui.ItemKeyValue;
+import cn.savor.standalone.log.model.ItemKeyValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.lizhaoweb.common.util.base.FileUtil;

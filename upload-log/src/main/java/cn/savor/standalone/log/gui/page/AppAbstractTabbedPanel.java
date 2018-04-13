@@ -8,8 +8,9 @@
  * @EMAIL 404644381@qq.com
  * @Time : 15:56
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.page;
 
+import cn.savor.standalone.log.gui.bean.PageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,7 @@ public abstract class AppAbstractTabbedPanel {
     OutputStream sourceOutputStream;
     OutputStream messageOutputStream;
 
-    protected Component buildUI(Container parentContainer) {
+    public Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
         mainPanel.setSize(parentContainer.getWidth(), parentContainer.getHeight());
         mainPanel.setLayout(new BorderLayout());

@@ -8,8 +8,9 @@
  * @EMAIL 404644381@qq.com
  * @Time : 22:35
  */
-package cn.savor.standalone.log;
+package cn.savor.standalone.log.util;
 
+import cn.savor.standalone.log.model.Configure;
 import net.lizhaoweb.common.util.base.Constant;
 import net.lizhaoweb.common.util.base.FileUtil;
 import net.lizhaoweb.common.util.base.IOUtil;

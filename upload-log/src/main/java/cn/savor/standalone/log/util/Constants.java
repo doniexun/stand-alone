@@ -8,7 +8,7 @@
  * @EMAIL 404644381@qq.com
  * @Time : 16:15
  */
-package cn.savor.standalone.log;
+package cn.savor.standalone.log.util;
 
 /**
  * <h1>常量</h1>

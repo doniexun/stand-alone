@@ -8,11 +8,14 @@
  * @EMAIL 404644381@qq.com
  * @Time : 17:01
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.page;
 
-import cn.savor.standalone.log.Constants;
 import cn.savor.standalone.log.command.ICommand;
 import cn.savor.standalone.log.command.oss.upload.CommandUpload;
+import cn.savor.standalone.log.gui.bean.ApplicationContext;
+import cn.savor.standalone.log.gui.bean.PageContext;
+import cn.savor.standalone.log.gui.util.WindowConstant;
+import cn.savor.standalone.log.util.Constants;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.IOUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
@@ -37,7 +40,7 @@ import java.util.List;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
+public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
     private static final int THIS_STATUS_INIT = -1;
     private static final int THIS_STATUS_OFFLINE_V1_START = 0x10;
     private static final int THIS_STATUS_OFFLINE_V1_END = 0x11;
@@ -46,7 +49,7 @@ class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
 
     private int runningStatus;
 
-    AppUploadTabbedPanel(ApplicationContext context) {
+    public AppUploadTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
         runningStatus = THIS_STATUS_INIT;
     }
@@ -227,7 +230,7 @@ class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
     }
 
     @Override
-    void close() {
+    public void close() {
         IOUtil.closeQuietly(sourceOutputStream, messageOutputStream);
     }
 

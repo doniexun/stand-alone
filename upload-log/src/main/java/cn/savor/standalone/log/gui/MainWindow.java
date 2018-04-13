@@ -10,10 +10,16 @@
  */
 package cn.savor.standalone.log.gui;
 
-import cn.savor.standalone.log.Configure;
-import cn.savor.standalone.log.ConfigureLoader;
-import cn.savor.standalone.log.Constants;
+import cn.savor.standalone.log.gui.bean.ApplicationContext;
+import cn.savor.standalone.log.gui.page.AppConfigTabbedPanel;
+import cn.savor.standalone.log.gui.page.AppCopyTabbedPanel;
+import cn.savor.standalone.log.gui.page.AppMoveTabbedPanel;
+import cn.savor.standalone.log.gui.page.AppUploadTabbedPanel;
+import cn.savor.standalone.log.model.Configure;
+import cn.savor.standalone.log.util.ConfigureLoader;
+import cn.savor.standalone.log.util.Constants;
 import cn.savor.standalone.log.exception.LoadException;
+import cn.savor.standalone.log.gui.util.WindowConstant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +42,7 @@ public class MainWindow {
     private AppMoveTabbedPanel appMoveTabbedPanel;
     private AppUploadTabbedPanel appUploadTabbedPanel;
 
-    public void init() throws IOException, LoadException {
+    void init() throws IOException, LoadException {
         ConfigureLoader configureLoader = new ConfigureLoader();
         Configure configure = configureLoader.loadUIData().loadConfig().getConfigure();
         context = new ApplicationContext(configure);
@@ -45,7 +51,7 @@ public class MainWindow {
     /**
      * 构建窗口
      */
-    public void run() {
+    void run() {
         JFrame mainFrame = context.getTopWindow();
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -92,21 +98,10 @@ public class MainWindow {
         }
     }
 
-    public void destroy() {
+    void destroy() {
         appConfigTabbedPanel.close();
         appCopyTabbedPanel.close();
         appMoveTabbedPanel.close();
         appUploadTabbedPanel.close();
-    }
-
-    public static void main(String[] args) {
-        try {
-            MainWindow window = new MainWindow();
-            window.init();
-            window.run();
-            window.destroy();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

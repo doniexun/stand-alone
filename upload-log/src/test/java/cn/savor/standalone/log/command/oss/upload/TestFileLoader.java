@@ -10,8 +10,8 @@
  */
 package cn.savor.standalone.log.command.oss.upload;
 
-import cn.savor.standalone.log.Configure;
-import cn.savor.standalone.log.FileLoader;
+import cn.savor.standalone.log.model.Configure;
+import cn.savor.standalone.log.util.FileLoader;
 import org.junit.Before;
 import org.junit.Test;
 
