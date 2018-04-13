@@ -59,23 +59,29 @@ public class WindowConstant {
 
             public static class OSSBucket {
                 public static final String label = "OSS 环境";
-                public static final String fieldName = Constants.Configure.Keys.OSS_BUCKET;
+                public static final String fieldName = Constants.Configure.Keys.OSS.BUCKET;
             }
 
             public static class OSSObjectKey {
                 public static final String label = "OSS 前缀";
-                public static final String fieldName = Constants.Configure.Keys.OSS_OBJECT_KEY;
+                public static final String fieldName = Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1;
             }
 
             public static class TempDirectory {
                 public static final String label = "临时目录";
-                public static final String fieldName = Constants.Configure.Keys.DIRECTORY_TEMP;
+                public static final String fieldName = Constants.Configure.Keys.Directory.Temp._ROOT;
                 public static final String fileChooseButton = "...";
             }
 
             public static class DataDirectory {
                 public static final String label = "数据目录";
-                public static final String fieldName = Constants.Configure.Keys.DIRECTORY_DATA;
+                public static final String fieldName = Constants.Configure.Keys.Directory.Data._ROOT;
+                public static final String fileChooseButton = "...";
+            }
+
+            public static class BackupDirectory {
+                public static final String label = "备份目录";
+                public static final String fieldName = Constants.Configure.Keys.Directory.Backup._ROOT;
                 public static final String fileChooseButton = "...";
             }
 

@@ -155,7 +155,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
                         String errorMessage = "移动一代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
@@ -168,7 +168,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("\n一代单机版日志移动完成\n");
+                    messagePrintln("一代单机版日志移动完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
@@ -197,7 +197,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                         argList.add("srcDir=" + sourcePath);
                     }
 
-                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
+                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
                         String errorMessage = "移动三代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
@@ -210,7 +210,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("\n三代单机版日志移动完成\n");
+                    messagePrintln("三代单机版日志移动完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }

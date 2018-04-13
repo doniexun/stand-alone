@@ -79,16 +79,16 @@ public class FileChooserActionListener implements ActionListener {
             textField.setText(selectedFilePath);
             String configName = textField.getName();
             context.setConfig(configName, selectedFilePath);
-            if (Constants.Configure.Keys.DIRECTORY_DATA.equals(configName)) {
+            if (Constants.Configure.Keys.Directory.Data._ROOT.equals(configName)) {
                 File uploadDir = new File(selectedFilePath, Constants.Configure.Directory.UPLOAD);
-                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD, FileUtil.getCanonicalPath(uploadDir));
+                context.setConfig(Constants.Configure.Keys.Directory.Data.Upload._ROOT, FileUtil.getCanonicalPath(uploadDir));
                 File uploadOfflineV1Dir = new File(uploadDir, Constants.Configure.Directory.STANDALONE_V1);
-                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1, FileUtil.getCanonicalPath(uploadOfflineV1Dir));
+                context.setConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1, FileUtil.getCanonicalPath(uploadOfflineV1Dir));
                 File uploadOfflineV3Dir = new File(uploadDir, Constants.Configure.Directory.STANDALONE_V3);
-                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3, FileUtil.getCanonicalPath(uploadOfflineV3Dir));
+                context.setConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3, FileUtil.getCanonicalPath(uploadOfflineV3Dir));
 
                 File mediaDir = new File(selectedFilePath, Constants.Configure.Directory.MEDIA);
-                context.setConfig(Constants.Configure.Keys.DIRECTORY_DATA_MEDIA, FileUtil.getCanonicalPath(mediaDir));
+                context.setConfig(Constants.Configure.Keys.Directory.Data.MEDIA, FileUtil.getCanonicalPath(mediaDir));
             }
         }
     }

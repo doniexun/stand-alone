@@ -111,29 +111,54 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     messagePrintln("\n准备上传一代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
-                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
-                    if (sourcePathArray == null) {
+                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
+                    if (StringUtil.isBlank(sourceDirectoryPath)) {
                         String errorMessage = "上传一代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
-                    for (String sourcePath : sourcePathArray) {
-                        argList.add("srcDir=" + sourcePath);
-                    }
+                    argList.add("fromDir=" + sourceDirectoryPath);
 
-                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
-                    if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "上传一代单机版日志时，没有目标目录";
+                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
+                    if (StringUtil.isBlank(tempDirectoryPath)) {
+                        String errorMessage = "上传一代单机版日志时，没有临时目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
-                    argList.add("tarDir=" + targetDirectoryPath);
-                    argList.add("regex=^\\d+_\\d*_\\d*\\.csv(:?\\.gz)?$");
+                    argList.add("tempDir=" + tempDirectoryPath);
+
+                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
+                    if (StringUtil.isBlank(backupDirectoryPath)) {
+                        String errorMessage = "上传一代单机版日志时，没有备份目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("backupDir=" + backupDirectoryPath);
+
+                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                    if (StringUtil.isBlank(bucketName)) {
+                        String errorMessage = "上传一代单机版日志时，没有 OSS 桶";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("bucketName=" + bucketName);
+
+                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
+                    if (StringUtil.isBlank(keyPrefix)) {
+                        String errorMessage = "上传一代单机版日志时，没有 OSS 键";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("keyPrefix=" + keyPrefix);
+
+                    String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1);
+                    if (StringUtil.isBlank(areaUrl)) {
+                        String errorMessage = "上传一代单机版日志时，没有区域 url 地址";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("areaUrl=" + areaUrl);
 
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
                     messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("\n一代单机版日志上传完成\n");
+                    messagePrintln("一代单机版日志上传完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
@@ -153,29 +178,54 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     messagePrintln("\n准备上传三代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
-                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.UploadToOSS.SOURCE);
-                    if (sourcePathArray == null) {
+                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
+                    if (StringUtil.isBlank(sourceDirectoryPath)) {
                         String errorMessage = "上传三代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
-                    for (String sourcePath : sourcePathArray) {
-                        argList.add("srcDir=" + sourcePath);
-                    }
+                    argList.add("fromDir=" + sourceDirectoryPath);
 
-                    String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
-                    if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "上传三代单机版日志时，没有目标目录";
+                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
+                    if (StringUtil.isBlank(tempDirectoryPath)) {
+                        String errorMessage = "上传三代单机版日志时，没有临时目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
-                    argList.add("tarDir=" + targetDirectoryPath);
-                    argList.add("regex=^([0-9A-Fa-f]{12})_\\d*_standalone\\.blog\\.zip$");
+                    argList.add("tempDir=" + tempDirectoryPath);
+
+                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
+                    if (StringUtil.isBlank(backupDirectoryPath)) {
+                        String errorMessage = "上传三代单机版日志时，没有备份目录";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("backupDir=" + backupDirectoryPath);
+
+                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                    if (StringUtil.isBlank(bucketName)) {
+                        String errorMessage = "上传三代单机版日志时，没有 OSS 桶";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("bucketName=" + bucketName);
+
+                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
+                    if (StringUtil.isBlank(keyPrefix)) {
+                        String errorMessage = "上传三代单机版日志时，没有 OSS 键";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("keyPrefix=" + keyPrefix);
+
+                    String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3);
+                    if (StringUtil.isBlank(areaUrl)) {
+                        String errorMessage = "上传三代单机版日志时，没有区域 url 地址";
+                        throw new IllegalArgumentException(errorMessage);
+                    }
+                    argList.add("areaUrl=" + areaUrl);
 
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
                     messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("\n三代单机版日志上传完成\n");
+                    messagePrintln("三代单机版日志上传完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }

@@ -44,6 +44,7 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
 
     public AppConfigTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
+        System.out.println("new AppConfigTabbedPanel");
     }
 
     @Override
@@ -157,16 +158,45 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         rowPanel_3.add(Box.createHorizontalGlue());
 
 
+        //======================= 第四行
+        JPanel rowPanel_4 = new JPanel();
+        rowPanel_4.setPreferredSize(new Dimension(centerPanel.getWidth(), 20));
+        rowPanel_4.setLayout(new BoxLayout(rowPanel_4, BoxLayout.X_AXIS));
+        this.structureUIForBackupDir(rowPanel_4);
+        rowPanel_4.add(Box.createHorizontalGlue());
+
+
         centerPanel.add(rowPanel_1, BorderLayout.CENTER);
         centerPanel.add(rowPanel_2, BorderLayout.CENTER);
         centerPanel.add(rowPanel_3, BorderLayout.CENTER);
+        centerPanel.add(rowPanel_4, BorderLayout.CENTER);
         return centerPanel;
     }
 
-    private void structureUIForDataDir(JPanel rowPanel_3) {
+    private void structureUIForBackupDir(JPanel rowPanel) {
+        JLabel localBackupDirLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.BackupDirectory.label);
+        localBackupDirLabel.setPreferredSize(new Dimension(60, 0));
+        rowPanel.add(localBackupDirLabel);
+
+        JTextField localBackupDirField = new JTextField();
+        localBackupDirField.setEnabled(false);
+        localBackupDirField.setForeground(new Color(20, 20, 20));
+        localBackupDirField.setDisabledTextColor(new Color(30, 30, 30));
+        localBackupDirField.setBackground(new Color(220, 220, 220));
+        localBackupDirField.setName(WindowConstant.AppTabbedPanel.Config.BackupDirectory.fieldName);
+        localBackupDirField.setText(context.getConfig(WindowConstant.AppTabbedPanel.Config.BackupDirectory.fieldName));
+        rowPanel.add(localBackupDirField);
+
+        JButton localBakcupDirButton = new JButton(WindowConstant.AppTabbedPanel.Config.BackupDirectory.fileChooseButton);
+        localBakcupDirButton.setPreferredSize(new Dimension(20, 0));
+        localBakcupDirButton.addActionListener(new FileChooserActionListener(context, localBackupDirField, 1));
+        rowPanel.add(localBakcupDirButton);
+    }
+
+    private void structureUIForDataDir(JPanel rowPanel) {
         JLabel localDataDirLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.DataDirectory.label);
         localDataDirLabel.setPreferredSize(new Dimension(60, 0));
-        rowPanel_3.add(localDataDirLabel);
+        rowPanel.add(localDataDirLabel);
 
         JTextField localDataDirField = new JTextField();
         localDataDirField.setEnabled(false);
@@ -175,18 +205,18 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         localDataDirField.setBackground(new Color(220, 220, 220));
         localDataDirField.setName(WindowConstant.AppTabbedPanel.Config.DataDirectory.fieldName);
         localDataDirField.setText(context.getConfig(WindowConstant.AppTabbedPanel.Config.DataDirectory.fieldName));
-        rowPanel_3.add(localDataDirField);
+        rowPanel.add(localDataDirField);
 
         JButton localDataDirButton = new JButton(WindowConstant.AppTabbedPanel.Config.DataDirectory.fileChooseButton);
         localDataDirButton.setPreferredSize(new Dimension(20, 0));
         localDataDirButton.addActionListener(new FileChooserActionListener(context, localDataDirField, 1));
-        rowPanel_3.add(localDataDirButton);
+        rowPanel.add(localDataDirButton);
     }
 
-    private void structureUIForTempDir(JPanel rowPanel_2) {
+    private void structureUIForTempDir(JPanel rowPanel) {
         JLabel localTempDirLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.TempDirectory.label);
         localTempDirLabel.setPreferredSize(new Dimension(60, 0));
-        rowPanel_2.add(localTempDirLabel);
+        rowPanel.add(localTempDirLabel);
 
         JTextField localTempDirField = new JTextField();
         localTempDirField.setEnabled(false);
@@ -195,18 +225,18 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         localTempDirField.setBackground(new Color(220, 220, 220));
         localTempDirField.setName(WindowConstant.AppTabbedPanel.Config.TempDirectory.fieldName);
         localTempDirField.setText(context.getConfig(WindowConstant.AppTabbedPanel.Config.TempDirectory.fieldName));
-        rowPanel_2.add(localTempDirField);
+        rowPanel.add(localTempDirField);
 
         JButton localTempDirButton = new JButton(WindowConstant.AppTabbedPanel.Config.TempDirectory.fileChooseButton);
         localTempDirButton.setPreferredSize(new Dimension(20, 0));
         localTempDirButton.addActionListener(new FileChooserActionListener(context, localTempDirField, 1));
-        rowPanel_2.add(localTempDirButton);
+        rowPanel.add(localTempDirButton);
     }
 
-    private void structureUIForOSSObjectKey(JPanel rowPanel_1) {
+    private void structureUIForOSSObjectKey(JPanel rowPanel) {
         JLabel ossObjectKeyLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.label);
         ossObjectKeyLabel.setPreferredSize(new Dimension(60, 0));
-        rowPanel_1.add(ossObjectKeyLabel);
+        rowPanel.add(ossObjectKeyLabel);
 
         ItemKeyValue ossObjectKeySelectedItem = null;
         ItemKeyValue[] ossObjectKeyItemData = context.getUIData(Constants.Properties.Keys.OSS_OBJECT_KEY);
@@ -220,13 +250,13 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         ossObjectKeyComboBox.setName(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.fieldName);
         ossObjectKeyComboBox.addActionListener(new ComboBoxActionListener(context));
         ossObjectKeyComboBox.setSelectedItem(ossObjectKeySelectedItem);
-        rowPanel_1.add(ossObjectKeyComboBox);
+        rowPanel.add(ossObjectKeyComboBox);
     }
 
-    private void structureUIForOSSBucket(JPanel rowPanel_1) {
+    private void structureUIForOSSBucket(JPanel rowPanel) {
         JLabel ossBucketLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.OSSBucket.label);
         ossBucketLabel.setPreferredSize(new Dimension(60, 0));
-        rowPanel_1.add(ossBucketLabel);
+        rowPanel.add(ossBucketLabel);
 
         ItemKeyValue ossBucketSelectedItem = null;
         ItemKeyValue[] ossBucketItemData = context.getUIData(Constants.Properties.Keys.OSS_BUCKET);
@@ -240,13 +270,13 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         ossBucketComboBox.setName(WindowConstant.AppTabbedPanel.Config.OSSBucket.fieldName);
         ossBucketComboBox.addActionListener(new ComboBoxActionListener(context));
         ossBucketComboBox.setSelectedItem(ossBucketSelectedItem);
-        rowPanel_1.add(ossBucketComboBox);
+        rowPanel.add(ossBucketComboBox);
     }
 
-    private void structureUIForCity(JPanel rowPanel_1) {
+    private void structureUIForCity(JPanel rowPanel) {
         JLabel areaLabel = new JLabel(WindowConstant.AppTabbedPanel.Config.City.label);
         areaLabel.setPreferredSize(new Dimension(60, 0));
-        rowPanel_1.add(areaLabel);
+        rowPanel.add(areaLabel);
 
         ItemKeyValue areaSelectedItem = null;
         ItemKeyValue[] areaItemData = context.getUIData(Constants.Properties.Keys.CITY);
@@ -260,6 +290,6 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         areaComboBox.setName(WindowConstant.AppTabbedPanel.Config.City.fieldName);
         areaComboBox.addActionListener(new ComboBoxActionListener(context));
         areaComboBox.setSelectedItem(areaSelectedItem);
-        rowPanel_1.add(areaComboBox);
+        rowPanel.add(areaComboBox);
     }
 }

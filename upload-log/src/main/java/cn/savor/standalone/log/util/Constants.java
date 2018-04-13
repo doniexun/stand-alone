@@ -48,14 +48,90 @@ public class Constants {
          */
         public static class Keys {
             public static final String CITY = "cn.savor.offline.log.configure.city";
-            public static final String OSS_BUCKET = "cn.savor.offline.log.configure.oss.bucket";
-            public static final String OSS_OBJECT_KEY = "cn.savor.offline.log.configure.oss.object.key";
-            public static final String DIRECTORY_TEMP = "cn.savor.offline.log.configure.directory.temp";
-            public static final String DIRECTORY_DATA = "cn.savor.offline.log.configure.directory.data";
-            public static final String DIRECTORY_DATA_UPLOAD = "cn.savor.offline.log.configure.directory.data.upload";
-            public static final String DIRECTORY_DATA_UPLOAD_OFFLINE_V1 = "cn.savor.offline.log.configure.directory.data.upload.offlineV1";
-            public static final String DIRECTORY_DATA_UPLOAD_OFFLINE_V3 = "cn.savor.offline.log.configure.directory.data.upload.offlineV3";
-            public static final String DIRECTORY_DATA_MEDIA = "cn.savor.offline.log.configure.directory.data.media";
+
+            /**
+             * URL
+             */
+            public static class Url {
+
+                /**
+                 * 区域
+                 */
+                public static class Area {
+                    public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.url.area.offlineV1";
+                    public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.url.area.offlineV3";
+                }
+            }
+
+            /**
+             * OSS
+             */
+            public static class OSS {
+                public static final String BUCKET = "cn.savor.offline.log.configure.oss.bucket";
+
+                /**
+                 * Object-Key
+                 */
+                public static class ObjectKey {
+                    public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.oss.object.key.offlineV1";
+                    public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.oss.object.key.offlineV3";
+                    public static final String MEDIA = "cn.savor.offline.log.configure.oss.object.key.media";
+                }
+            }
+
+            /**
+             * 目录
+             */
+            public static class Directory {
+                /**
+                 * 临时
+                 */
+                public static class Temp {
+                    public static final String _ROOT = "cn.savor.offline.log.configure.directory.temp";
+                }
+
+                /**
+                 * 备份
+                 */
+                public static class Backup {
+                    public static final String _ROOT = "cn.savor.offline.log.configure.directory.backup";
+
+                    /**
+                     * 上传
+                     */
+                    public static class Upload {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.backup.upload";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.backup.upload.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.backup.upload.offlineV3";
+                    }
+                }
+
+                /**
+                 * 数据
+                 */
+                public static class Data {
+                    public static final String _ROOT = "cn.savor.offline.log.configure.directory.data";
+                    public static final String MEDIA = "cn.savor.offline.log.configure.directory.data.media";
+
+                    /**
+                     * 上传
+                     */
+                    public static class Upload {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.data.upload";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.data.upload.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.data.upload.offlineV3";
+                    }
+
+                    /**
+                     * 下载
+                     */
+                    public static class Download {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.data.download";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.data.download.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.data.download.offlineV3";
+                    }
+                }
+            }
         }
 
         /**
@@ -65,6 +141,7 @@ public class Constants {
             public static final String USER_HOME = ".offline_logs";
             public static final String USER_WORK = "conf";
             public static final String DATA = "data";
+            public static final String BACKUP = "backup";
             public static final String UPLOAD = "upload";
             public static final String STANDALONE_V1 = "standalone_v1";
             public static final String STANDALONE_V3 = "standalone_v3";
