@@ -10,6 +10,7 @@
  */
 package cn.savor.standalone.log.gui.page;
 
+import cn.savor.standalone.log.gui.DialogUI;
 import cn.savor.standalone.log.gui.bean.ApplicationContext;
 import cn.savor.standalone.log.gui.bean.PageContext;
 import cn.savor.standalone.log.gui.listener.ComboBoxActionListener;
@@ -44,7 +45,6 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
 
     public AppConfigTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
-        System.out.println("new AppConfigTabbedPanel");
     }
 
     @Override
@@ -116,8 +116,10 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
                         outputStream.write(configKeyValue.getBytes());
                     }
                     outputStream.flush();
+                    DialogUI.alert(context.getTopWindow(), "提示", "保存完成");
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
+                    DialogUI.alert(context.getTopWindow(), "提示", "保存失败");
                 } finally {
                     IOUtil.close(outputStream);
                 }
