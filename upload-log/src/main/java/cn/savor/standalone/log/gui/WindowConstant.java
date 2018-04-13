@@ -21,85 +21,121 @@ import cn.savor.standalone.log.Constants;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-class WindowConstant {
+public class WindowConstant {
 
-    static class MainFrame {
-        static final String icon = "/images/icon.png";
-        static final String title = "日志操作工具";
-        static final int width = 800;
-        static final int height = 600;
+    public static class MainFrame {
+        public static final String icon = "/images/icon.png";
+        public static final String title = "日志操作工具";
+        public static final int width = 800;
+        public static final int height = 600;
     }
 
-    static class AppTabbedPanel {
-        static class Main {
-            static final String title = "操作主页";
+    public static class AppTabbedPanel {
+        public static class Main {
+            public static final String title = "操作主页";
 
-            static class ConfigurePanel {
-                static final String title = "配置";
+            public static class ConfigurePanel {
+                public static final String title = "配置";
             }
 
-            static class OperationPanel {
-                static final String title = "操作";
+            public static class OperationPanel {
+                public static final String title = "操作";
             }
 
-            static class MessagePanel {
-                static final String title = "信息";
-            }
-        }
-
-        static class Config {
-            static final String title = "系统配置";
-            static final String icon = "/images/icon_system_config.png";
-            static final String tip = "此系统的全局配置";
-
-            static class City {
-                static final String label = "城市";
-                static final String fieldName = Constants.Configure.Keys.CITY;
-            }
-
-            static class OSSBucket {
-                static final String label = "OSS 环境";
-                static final String fieldName = Constants.Configure.Keys.OSS_BUCKET;
-            }
-
-            static class OSSObjectKey {
-                static final String label = "OSS 前缀";
-                static final String fieldName = Constants.Configure.Keys.OSS_OBJECT_KEY;
-            }
-
-            static class TempDirectory {
-                static final String label = "临时目录";
-                static final String fieldName = Constants.Configure.Keys.DIRECTORY_TEMP;
-                static final String fileChooseButton = "...";
-            }
-
-            static class DataDirectory {
-                static final String label = "数据目录";
-                static final String fieldName = Constants.Configure.Keys.DIRECTORY_DATA;
-                static final String fileChooseButton = "...";
-            }
-
-            static class SaveButton {
-                static final String label = "保存";
-                static final String tip = "把配置信息保存到电脑中。\r\n保存路径是 ： ";
+            public static class MessagePanel {
+                public static final String title = "信息";
             }
         }
 
-        static class CopyFromUDisk {
-            static final String title = "复制日志";
-            static final String icon = "/images/icon_copy.png";
-            static final String tip = "把日志文件从 U 盘复制到此电脑";
+        public static class Config {
+            public static final String title = "系统配置";
+            public static final String icon = "/images/icon_system_config.png";
+            public static final String tip = "此系统的全局配置";
 
-            static class ConfigurePanel {
-                static final String title = "数据源";
+            public static class City {
+                public static final String label = "城市";
+                public static final String fieldName = Constants.Configure.Keys.CITY;
             }
 
-            static class OperationPanel {
-                static final String title = "操作";
+            public static class OSSBucket {
+                public static final String label = "OSS 环境";
+                public static final String fieldName = Constants.Configure.Keys.OSS_BUCKET;
             }
 
-            static class MessagePanel {
-                static final String title = "信息";
+            public static class OSSObjectKey {
+                public static final String label = "OSS 前缀";
+                public static final String fieldName = Constants.Configure.Keys.OSS_OBJECT_KEY;
+            }
+
+            public static class TempDirectory {
+                public static final String label = "临时目录";
+                public static final String fieldName = Constants.Configure.Keys.DIRECTORY_TEMP;
+                public static final String fileChooseButton = "...";
+            }
+
+            public static class DataDirectory {
+                public static final String label = "数据目录";
+                public static final String fieldName = Constants.Configure.Keys.DIRECTORY_DATA;
+                public static final String fileChooseButton = "...";
+            }
+
+            public static class SaveButton {
+                public static final String label = "保存";
+                public static final String tip = "把配置信息保存到电脑中。\r\n保存路径是 ： ";
+            }
+        }
+
+        public static class CopyFromUDisk {
+            public static final String title = "复制日志";
+            public static final String icon = "/images/icon_copy.png";
+            public static final String tip = "把日志文件从 U 盘复制到此电脑";
+
+            public static class ConfigurePanel {
+                public static final String title = "数据源";
+            }
+
+            public static class OperationPanel {
+                public static final String title = "操作";
+            }
+
+            public static class MessagePanel {
+                public static final String title = "信息";
+            }
+        }
+
+        public static class MoveFromUDisk {
+            public static final String title = "移动日志";
+            public static final String icon = "/images/icon_move.png";
+            public static final String tip = "把日志文件从 U 盘移动到此电脑";
+
+            public static class ConfigurePanel {
+                public static final String title = "数据源";
+            }
+
+            public static class OperationPanel {
+                public static final String title = "操作";
+            }
+
+            public static class MessagePanel {
+                public static final String title = "信息";
+            }
+        }
+
+        public static class UploadToOSS {
+            public static final String title = "上传到云";
+            public static final String icon = "/images/icon_upload.png";
+            public static final String tip = "把日志文件从此电脑上传到 OSS";
+
+            public static class ConfigurePanel {
+                public static final String title = "数据源";
+            }
+
+            public static class OperationPanel {
+                public static final String title = "操作";
+            }
+
+            public static class MessagePanel {
+                public static final String title = "信息";
             }
         }
     }
@@ -107,6 +143,14 @@ class WindowConstant {
     public static class Page {
         public static class Key {
             public static class CopyFromUDisk {
+                public static final String SOURCE = "cn.savor.offline.log.page.source";
+            }
+
+            public static class MoveFromUDisk {
+                public static final String SOURCE = "cn.savor.offline.log.page.source";
+            }
+
+            public static class UploadToOSS {
                 public static final String SOURCE = "cn.savor.offline.log.page.source";
             }
         }

@@ -12,7 +12,7 @@ package cn.savor.standalone.log.gui;
 
 import cn.savor.standalone.log.Constants;
 import cn.savor.standalone.log.command.ICommand;
-import cn.savor.standalone.log.command.local.file.copy.CommandCopy;
+import cn.savor.standalone.log.command.local.file.move.CommandMove;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.Constant;
 import net.lizhaoweb.common.util.base.FileUtil;
@@ -42,7 +42,7 @@ import java.util.List;
  * Author of last commit:$Author$<br>
  * Date of last commit:$Date$<br>
  */
-class AppCopyTabbedPanel {
+class AppMoveTabbedPanel {
     private static final int THIS_STATUS_INIT = -1;
     private static final int THIS_STATUS_SCAN_START = 0x00;
     private static final int THIS_STATUS_SCAN_END = 0x01;
@@ -59,7 +59,7 @@ class AppCopyTabbedPanel {
 
     private int runningStatus = THIS_STATUS_INIT;
 
-    AppCopyTabbedPanel(ApplicationContext context) {
+    AppMoveTabbedPanel(ApplicationContext context) {
         this.context = new PageContext(context);
     }
 
@@ -80,7 +80,7 @@ class AppCopyTabbedPanel {
     }
 
     private void createConfigurePanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.ConfigurePanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.MoveFromUDisk.ConfigurePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 7 / 15 - 120));
         configurePanel.setSize(parentPanel.getWidth(), parentPanel.getHeight() * 7 / 15 - 120);
@@ -118,7 +118,7 @@ class AppCopyTabbedPanel {
     }
 
     private void createOperationPanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.OperationPanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.MoveFromUDisk.OperationPanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), 120));
         configurePanel.setBorder(configurePanelTitledBorder);
@@ -131,14 +131,14 @@ class AppCopyTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_SCAN_START;
-                    context.removeParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    context.removeParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     File[] usbDiskRoots = FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE);
                     for (File usbDiskRoot : usbDiskRoots) {
                         File sourceFile = new File(usbDiskRoot, "log");
                         String sourceFilePath = FileUtil.getCanonicalPath(sourceFile);
-                        context.addParameter(WindowConstant.Page.Key.CopyFromUDisk.SOURCE, sourceFilePath);
+                        context.addParameter(WindowConstant.Page.Key.MoveFromUDisk.SOURCE, sourceFilePath);
                     }
-                    String[] pathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    String[] pathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (pathArray == null) {
                         String textAreaContent = "无 U 盘插入\n";
                         sourceOutputStream.write(textAreaContent.getBytes());
@@ -154,20 +154,20 @@ class AppCopyTabbedPanel {
         });
         configurePanel.add(scanButton);
 
-        JButton copyOfflineV1Button = new JButton("复制一代");
-        copyOfflineV1Button.setToolTipText("从 U 盘中把一代单机版日志复现到此台电脑上");
-        copyOfflineV1Button.addActionListener(new ActionListener() {
+        JButton moveOfflineV1Button = new JButton("移动一代");
+        moveOfflineV1Button.setToolTipText("从 U 盘中把一代单机版日志复现到此台电脑上");
+        moveOfflineV1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("\n准备复制一代单机版日志 ... ");
+                    messagePrintln("\n准备移动一代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
-                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "复制一代单机版日志时，没有源目录";
+                        String errorMessage = "移动一代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     for (String sourcePath : sourcePathArray) {
@@ -176,40 +176,40 @@ class AppCopyTabbedPanel {
 
                     String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V1);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "复制一代单机版日志时，没有目标目录";
+                        String errorMessage = "移动一代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
                     argList.add("regex=^\\d+_\\d*_\\d*\\.csv(:?\\.gz)?$");
 
-                    ICommand command = new CommandCopy(messageOutputStream);
+                    ICommand command = new CommandMove(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始复制： ");
+                    messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("\n一代单机版日志复制完成\n");
+                    messagePrintln("\n一代单机版日志移动完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
                 runningStatus = THIS_STATUS_OFFLINE_V1_END;
             }
         });
-        configurePanel.add(copyOfflineV1Button);
+        configurePanel.add(moveOfflineV1Button);
 
-        JButton copyOfflineV3Button = new JButton("复制三代");
-        copyOfflineV3Button.setToolTipText("从 U 盘中把三代单机版日志复现到此台电脑上");
-        copyOfflineV3Button.addActionListener(new ActionListener() {
+        JButton moveOfflineV3Button = new JButton("移动三代");
+        moveOfflineV3Button.setToolTipText("从 U 盘中把三代单机版日志复现到此台电脑上");
+        moveOfflineV3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("\n准备复制三代单机版日志 ... ");
+                    messagePrintln("\n准备移动三代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
-                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.CopyFromUDisk.SOURCE);
+                    String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "复制三代单机版日志时，没有源目录";
+                        String errorMessage = "移动三代单机版日志时，没有源目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     for (String sourcePath : sourcePathArray) {
@@ -218,25 +218,25 @@ class AppCopyTabbedPanel {
 
                     String targetDirectoryPath = context.getApplicationContext().getConfig(Constants.Configure.Keys.DIRECTORY_DATA_UPLOAD_OFFLINE_V3);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "复制三代单机版日志时，没有目标目录";
+                        String errorMessage = "移动三代单机版日志时，没有目标目录";
                         throw new IllegalArgumentException(errorMessage);
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
                     argList.add("regex=^([0-9A-Fa-f]{12})_\\d*_standalone\\.blog\\.zip$");
 
-                    ICommand command = new CommandCopy(messageOutputStream);
+                    ICommand command = new CommandMove(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始复制： ");
+                    messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("\n三代单机版日志复制完成\n");
+                    messagePrintln("\n三代单机版日志移动完成\n");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
                 runningStatus = THIS_STATUS_OFFLINE_V3_END;
             }
         });
-        configurePanel.add(copyOfflineV3Button);
+        configurePanel.add(moveOfflineV3Button);
 
         parentPanel.add(configurePanel, BorderLayout.CENTER);
     }
@@ -246,10 +246,10 @@ class AppCopyTabbedPanel {
             this.messagePrintln("U 盘扫描没有结束");
         }
         if (runningStatus == THIS_STATUS_OFFLINE_V1_START) {
-            this.messagePrintln("复制一代单机版日志没有结束");
+            this.messagePrintln("移动一代单机版日志没有结束");
         }
         if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
-            this.messagePrintln("复制三代单机版日志没有结束");
+            this.messagePrintln("移动三代单机版日志没有结束");
         }
     }
 
@@ -273,7 +273,7 @@ class AppCopyTabbedPanel {
     }
 
     private void createMessagePanel(JComponent parentPanel) {
-        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.CopyFromUDisk.MessagePanel.title);
+        TitledBorder configurePanelTitledBorder = new TitledBorder(WindowConstant.AppTabbedPanel.MoveFromUDisk.MessagePanel.title);
         JPanel configurePanel = new JPanel();
         configurePanel.setPreferredSize(new Dimension(parentPanel.getWidth(), parentPanel.getHeight() * 8 / 15));
         configurePanel.setSize(parentPanel.getWidth(), parentPanel.getHeight() * 8 / 15);

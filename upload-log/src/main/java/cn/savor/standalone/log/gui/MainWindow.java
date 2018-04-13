@@ -33,6 +33,8 @@ public class MainWindow {
     private ApplicationContext context;
     private AppConfigTabbedPanel appConfigTabbedPanel;
     private AppCopyTabbedPanel appCopyTabbedPanel;
+    private AppMoveTabbedPanel appMoveTabbedPanel;
+    private AppUploadTabbedPanel appUploadTabbedPanel;
 
     public void init() throws IOException, LoadException {
         ConfigureLoader configureLoader = new ConfigureLoader();
@@ -54,12 +56,28 @@ public class MainWindow {
         Component appConfigTabComponent = appConfigTabbedPanel.buildUI(tabbedPane);
 //        Icon appConfigTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.Config.icon));
         tabbedPane.addTab(WindowConstant.AppTabbedPanel.Config.title, null, appConfigTabComponent, WindowConstant.AppTabbedPanel.Config.tip);
+        tabbedPane.setEnabledAt(0, true);
 
         // 从 U 盘复制日志页面
         appCopyTabbedPanel = new AppCopyTabbedPanel(context);
         Component appCopyTabComponent = appCopyTabbedPanel.buildUI(tabbedPane);
 //        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
         tabbedPane.addTab(WindowConstant.AppTabbedPanel.CopyFromUDisk.title, null, appCopyTabComponent, WindowConstant.AppTabbedPanel.CopyFromUDisk.tip);
+        tabbedPane.setEnabledAt(1, true);
+
+        // 从 U 盘移动日志页面
+        appMoveTabbedPanel = new AppMoveTabbedPanel(context);
+        Component appMoveTabComponent = appMoveTabbedPanel.buildUI(tabbedPane);
+//        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.CopyFromUDisk.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.MoveFromUDisk.title, null, appMoveTabComponent, WindowConstant.AppTabbedPanel.MoveFromUDisk.tip);
+        tabbedPane.setEnabledAt(2, false);
+
+        // 上传日志到 OSS 页面
+        appUploadTabbedPanel = new AppUploadTabbedPanel(context);
+        Component appUploadTabComponent = appUploadTabbedPanel.buildUI(tabbedPane);
+//        Icon appCopyTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.UploadToOSS.icon));
+        tabbedPane.addTab(WindowConstant.AppTabbedPanel.UploadToOSS.title, null, appUploadTabComponent, WindowConstant.AppTabbedPanel.UploadToOSS.tip);
+        tabbedPane.setEnabledAt(3, true);
 
         tabbedPane.setSelectedComponent(appCopyTabComponent);
         mainFrame.setContentPane(tabbedPane);
@@ -77,6 +95,8 @@ public class MainWindow {
     public void destroy() {
         appConfigTabbedPanel.close();
         appCopyTabbedPanel.close();
+        appMoveTabbedPanel.close();
+        appUploadTabbedPanel.close();
     }
 
     public static void main(String[] args) {
