@@ -14,6 +14,8 @@ import cn.savor.standalone.log.command.ICommand;
 import cn.savor.standalone.log.command.local.file.move.CommandMove;
 import cn.savor.standalone.log.gui.bean.ApplicationContext;
 import cn.savor.standalone.log.gui.bean.PageContext;
+import cn.savor.standalone.log.gui.io.JTextAreaAppendOutputStream;
+import cn.savor.standalone.log.gui.io.JTextAreaSetTextOutputStream;
 import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.util.Constants;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
@@ -30,7 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,20 +80,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
         textArea.setEnabled(false);
 
         //安装一个流，将该流定向到output中
-        sourceOutputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void write(byte[] bytes, int offset, int length) throws IOException {
-                synchronized (this) {
-                    textArea.setText(new String(bytes, offset, length));
-                }
-            }
-        };
-
+        sourceOutputStream = new JTextAreaSetTextOutputStream(textArea);
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.NORTH);
@@ -143,13 +131,12 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("\n准备移动一代单机版日志 ... ");
+                    messagePrintln("准备移动一代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "移动一代单机版日志时，没有源目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("移动一代单机版日志时，没有源目录");
                     }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
@@ -157,8 +144,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "移动一代单机版日志时，没有目标目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("移动一代单机版日志时，没有目标目录");
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
                     argList.add("regex=^\\d+_\\d*_\\d*\\.csv(:?\\.gz)?$");
@@ -168,10 +154,12 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("一代单机版日志移动完成\n");
+                    messagePrintln("一代单机版日志移动完成");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
+                messageNewLine();
+                messageNewLine();
                 runningStatus = THIS_STATUS_OFFLINE_V1_END;
             }
         });
@@ -185,13 +173,12 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("\n准备移动三代单机版日志 ... ");
+                    messagePrintln("准备移动三代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String[] sourcePathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (sourcePathArray == null) {
-                        String errorMessage = "移动三代单机版日志时，没有源目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("移动三代单机版日志时，没有源目录");
                     }
                     for (String sourcePath : sourcePathArray) {
                         argList.add("srcDir=" + sourcePath);
@@ -199,8 +186,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     String targetDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
                     if (StringUtil.isBlank(targetDirectoryPath)) {
-                        String errorMessage = "移动三代单机版日志时，没有目标目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("移动三代单机版日志时，没有目标目录");
                     }
                     argList.add("tarDir=" + targetDirectoryPath);
                     argList.add("regex=^([0-9A-Fa-f]{12})_\\d*_standalone\\.blog\\.zip$");
@@ -210,10 +196,12 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始移动： ");
                     command.execute();
-                    messagePrintln("三代单机版日志移动完成\n");
+                    messagePrintln("三代单机版日志移动完成");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
+                messageNewLine();
+                messageNewLine();
                 runningStatus = THIS_STATUS_OFFLINE_V3_END;
             }
         });
@@ -241,24 +229,8 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
         textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
         textArea.setEnabled(false);
 
-        scrollPane.setViewportView(textArea);
-        configurePanel.add(scrollPane);
-
         //安装一个流，将该流定向到output中
-        messageOutputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void write(byte[] bytes, int offset, int length) throws IOException {
-                synchronized (this) {
-                    textArea.append(new String(bytes, offset, length));
-                }
-            }
-        };
-
+        messageOutputStream = new JTextAreaAppendOutputStream(textArea);
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.SOUTH);

@@ -10,7 +10,7 @@
  */
 package cn.savor.standalone.log.gui.page;
 
-import cn.savor.standalone.log.gui.DialogUI;
+import cn.savor.standalone.log.gui.util.DialogUI;
 import cn.savor.standalone.log.gui.bean.ApplicationContext;
 import cn.savor.standalone.log.gui.bean.PageContext;
 import cn.savor.standalone.log.gui.listener.ComboBoxActionListener;

@@ -11,13 +11,12 @@
 package cn.savor.standalone.log.gui.page;
 
 import cn.savor.standalone.log.gui.bean.PageContext;
+import cn.savor.standalone.log.gui.io.AbstractTextAreaOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * @author <a href="http://www.lizhaoweb.cn">李召(John.Lee)</a>
@@ -33,8 +32,8 @@ public abstract class AppAbstractTabbedPanel {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     PageContext context;
-    OutputStream sourceOutputStream;
-    OutputStream messageOutputStream;
+    AbstractTextAreaOutputStream sourceOutputStream;
+    AbstractTextAreaOutputStream messageOutputStream;
 
     public Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
@@ -48,40 +47,36 @@ public abstract class AppAbstractTabbedPanel {
         return mainPanel;
     }
 
-    void sourcePrintln(String string) {
-        try {
-            String content = string + "\n";
-            sourceOutputStream.write(content.getBytes());
-        } catch (IOException e) {
-            this.sourcePrintlnError(e);
-        }
+    void sourceNewLine() {
+        sourceOutputStream.newLine();
     }
 
-    void sourcePrintlnError(Exception e) {
-        try {
-            logger.error(e.getMessage(), e);
-            String errorString = String.format("SourceError : %s\n", e.getMessage());
-            sourceOutputStream.write(errorString.getBytes());
-        } catch (IOException e1) {
-            logger.error(e1.getMessage(), e1);
-        }
+    void sourcePrintln(String string) {
+        sourceOutputStream.println(string);
+    }
+
+    void sourcePrintln(Object object) {
+        sourceOutputStream.println(object);
+    }
+
+    void messageNewLine() {
+        messageOutputStream.newLine();
     }
 
     void messagePrintln(String string) {
-        try {
-            String content = string + "\n";
-            messageOutputStream.write(content.getBytes());
-        } catch (IOException e) {
-            this.messagePrintlnError(e);
-        }
+        messageOutputStream.println(string);
     }
 
-    void messagePrintlnError(Exception e) {
+    void messagePrintln(Object object) {
+        messageOutputStream.println(object);
+    }
+
+    void messagePrintlnError(Throwable throwable) {
         try {
-            logger.error(e.getMessage(), e);
-            String errorString = String.format("MessageError : %s\n", e.getMessage());
-            messageOutputStream.write(errorString.getBytes());
-        } catch (IOException e1) {
+            logger.error(throwable.getMessage(), throwable);
+//            String errorString = String.format("MessageError : %s\n", e.getMessage());
+            messageOutputStream.println(throwable);
+        } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
     }
@@ -93,4 +88,9 @@ public abstract class AppAbstractTabbedPanel {
     abstract void createMessagePanel(JComponent parentPanel);
 
     abstract void close();
+
+    private interface IOutputStream {
+
+
+    }
 }

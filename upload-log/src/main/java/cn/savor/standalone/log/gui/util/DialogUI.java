@@ -8,7 +8,7 @@
  * @EMAIL 404644381@qq.com
  * @Time : 18:42
  */
-package cn.savor.standalone.log.gui;
+package cn.savor.standalone.log.gui.util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

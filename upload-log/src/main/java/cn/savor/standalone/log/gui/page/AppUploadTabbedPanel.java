@@ -14,6 +14,8 @@ import cn.savor.standalone.log.command.ICommand;
 import cn.savor.standalone.log.command.oss.upload.CommandUpload;
 import cn.savor.standalone.log.gui.bean.ApplicationContext;
 import cn.savor.standalone.log.gui.bean.PageContext;
+import cn.savor.standalone.log.gui.io.JTextAreaAppendOutputStream;
+import cn.savor.standalone.log.gui.io.JTextAreaSetTextOutputStream;
 import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.util.Constants;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
@@ -27,7 +29,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,20 +75,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         textArea.setEnabled(false);
 
         //安装一个流，将该流定向到output中
-        sourceOutputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void write(byte[] bytes, int offset, int length) throws IOException {
-                synchronized (this) {
-                    textArea.setText(new String(bytes, offset, length));
-                }
-            }
-        };
-
+        sourceOutputStream = new JTextAreaSetTextOutputStream(textArea);
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.NORTH);
@@ -108,48 +96,42 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("\n准备上传一代单机版日志 ... ");
+                    messagePrintln("准备上传一代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        String errorMessage = "上传一代单机版日志时，没有源目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有源目录");
                     }
                     argList.add("fromDir=" + sourceDirectoryPath);
 
                     String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
                     if (StringUtil.isBlank(tempDirectoryPath)) {
-                        String errorMessage = "上传一代单机版日志时，没有临时目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有临时目录");
                     }
                     argList.add("tempDir=" + tempDirectoryPath);
 
                     String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(backupDirectoryPath)) {
-                        String errorMessage = "上传一代单机版日志时，没有备份目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有备份目录");
                     }
                     argList.add("backupDir=" + backupDirectoryPath);
 
                     String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
                     if (StringUtil.isBlank(bucketName)) {
-                        String errorMessage = "上传一代单机版日志时，没有 OSS 桶";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 桶");
                     }
                     argList.add("bucketName=" + bucketName);
 
                     String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
                     if (StringUtil.isBlank(keyPrefix)) {
-                        String errorMessage = "上传一代单机版日志时，没有 OSS 键";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 键");
                     }
                     argList.add("keyPrefix=" + keyPrefix);
 
                     String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1);
                     if (StringUtil.isBlank(areaUrl)) {
-                        String errorMessage = "上传一代单机版日志时，没有区域 url 地址";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传一代单机版日志时，没有区域 url 地址");
                     }
                     argList.add("areaUrl=" + areaUrl);
 
@@ -158,10 +140,12 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("一代单机版日志上传完成\n");
+                    messagePrintln("一代单机版日志上传完成");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
+                messageNewLine();
+                messageNewLine();
                 runningStatus = THIS_STATUS_OFFLINE_V1_END;
             }
         });
@@ -175,48 +159,42 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                 try {
                     checkRunningStatus();
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("\n准备上传三代单机版日志 ... ");
+                    messagePrintln("准备上传三代单机版日志 ... ");
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
                     if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        String errorMessage = "上传三代单机版日志时，没有源目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有源目录");
                     }
                     argList.add("fromDir=" + sourceDirectoryPath);
 
                     String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
                     if (StringUtil.isBlank(tempDirectoryPath)) {
-                        String errorMessage = "上传三代单机版日志时，没有临时目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有临时目录");
                     }
                     argList.add("tempDir=" + tempDirectoryPath);
 
                     String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
                     if (StringUtil.isBlank(backupDirectoryPath)) {
-                        String errorMessage = "上传三代单机版日志时，没有备份目录";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有备份目录");
                     }
                     argList.add("backupDir=" + backupDirectoryPath);
 
                     String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
                     if (StringUtil.isBlank(bucketName)) {
-                        String errorMessage = "上传三代单机版日志时，没有 OSS 桶";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 桶");
                     }
                     argList.add("bucketName=" + bucketName);
 
                     String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
                     if (StringUtil.isBlank(keyPrefix)) {
-                        String errorMessage = "上传三代单机版日志时，没有 OSS 键";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 键");
                     }
                     argList.add("keyPrefix=" + keyPrefix);
 
                     String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3);
                     if (StringUtil.isBlank(areaUrl)) {
-                        String errorMessage = "上传三代单机版日志时，没有区域 url 地址";
-                        throw new IllegalArgumentException(errorMessage);
+                        throw new IllegalArgumentException("上传三代单机版日志时，没有区域 url 地址");
                     }
                     argList.add("areaUrl=" + areaUrl);
 
@@ -225,10 +203,12 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
 
                     messagePrintln("\t开始上传： ");
                     command.execute();
-                    messagePrintln("三代单机版日志上传完成\n");
+                    messagePrintln("三代单机版日志上传完成");
                 } catch (Exception e) {
                     messagePrintlnError(e);
                 }
+                messageNewLine();
+                messageNewLine();
                 runningStatus = THIS_STATUS_OFFLINE_V3_END;
             }
         });
@@ -256,24 +236,8 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
         textArea.setEnabled(false);
 
-        scrollPane.setViewportView(textArea);
-        configurePanel.add(scrollPane);
-
         //安装一个流，将该流定向到output中
-        messageOutputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void write(byte[] bytes, int offset, int length) throws IOException {
-                synchronized (this) {
-                    textArea.append(new String(bytes, offset, length));
-                }
-            }
-        };
-
+        messageOutputStream = new JTextAreaAppendOutputStream(textArea);
         scrollPane.setViewportView(textArea);
         configurePanel.add(scrollPane);
         parentPanel.add(configurePanel, BorderLayout.SOUTH);
