@@ -30,6 +30,7 @@ import java.awt.*;
  * Date of last commit:$Date$<br>
  */
 public abstract class AppAbstractTabbedPanel {
+    static final String INDENT = "        ";
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -53,6 +54,11 @@ public abstract class AppAbstractTabbedPanel {
         sourceOutputStream.println(string);
     }
 
+    void sourcePrintln(String format, Object... args) {
+        String string = String.format(format, args);
+        sourceOutputStream.println(string);
+    }
+
     void sourcePrintln(Object object) {
         sourceOutputStream.println(object);
     }
@@ -62,6 +68,25 @@ public abstract class AppAbstractTabbedPanel {
     }
 
     void messagePrintln(String string) {
+        messageOutputStream.println(string);
+    }
+
+    void messagePrintln(int indent, String string) {
+        StringBuffer indentString = new StringBuffer();
+        for (int count = 0; count < indent; count++) {
+            indentString.append(INDENT);
+        }
+        indentString.append(string);
+        this.messagePrintln(indentString);
+    }
+
+    void messagePrintln(int indent, String format, Object... args) {
+        String string = String.format(format, args);
+        this.messagePrintln(indent, string);
+    }
+
+    void messagePrintln(String format, Object... args) {
+        String string = String.format(format, args);
         messageOutputStream.println(string);
     }
 

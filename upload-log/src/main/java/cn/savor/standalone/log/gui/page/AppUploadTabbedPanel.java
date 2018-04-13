@@ -142,7 +142,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始上传： ");
+                    messagePrintln(1, "开始上传： ");
                     command.execute();
                     messagePrintln("一代单机版日志上传完成");
                 } catch (Exception e) {
@@ -207,7 +207,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始上传： ");
+                    messagePrintln(1, "开始上传： ");
                     command.execute();
                     messagePrintln("三代单机版日志上传完成");
                 } catch (Exception e) {

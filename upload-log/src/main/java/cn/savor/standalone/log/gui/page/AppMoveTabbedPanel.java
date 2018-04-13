@@ -106,10 +106,30 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                     messagePrintln("开始扫描 U 盘 ... ");
                     context.removeParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     File[] usbDiskRoots = FileUtil.listRootsForWindows(Constant.DriveType.Windows.REMOVABLE);
-                    for (File usbDiskRoot : usbDiskRoots) {
-                        File sourceFile = new File(usbDiskRoot, "log");
-                        String sourceFilePath = FileUtil.getCanonicalPath(sourceFile);
-                        context.addParameter(WindowConstant.Page.Key.MoveFromUDisk.SOURCE, sourceFilePath);
+                    if (usbDiskRoots == null || usbDiskRoots.length < 1) {
+                        messagePrintln(1, "无法读取 U 盘列表");
+                    } else {
+                        for (File usbDiskRoot : usbDiskRoots) {
+                            File logDirectory = new File(usbDiskRoot, "log");
+                            if (!logDirectory.exists()) {
+                                messagePrintln(1, "%s 盘没有 'log' 目录", usbDiskRoot);
+                                continue;
+                            }
+                            if (!logDirectory.isDirectory()) {
+                                messagePrintln(1, "%s 盘下的 'log'，不是目录", usbDiskRoot);
+                                continue;
+                            }
+                            if (!logDirectory.canExecute()) {
+                                messagePrintln(1, "%s 盘下的 log 目录，不能执行", usbDiskRoot);
+                                continue;
+                            }
+                            if (!logDirectory.canRead()) {
+                                messagePrintln(1, "%s 盘下的 log 目录，不能读取", usbDiskRoot);
+                                continue;
+                            }
+                            String logDirectoryPath = FileUtil.getCanonicalPath(logDirectory);
+                            context.addParameter(WindowConstant.Page.Key.MoveFromUDisk.SOURCE, logDirectoryPath);
+                        }
                     }
                     String[] pathArray = context.getParameters(WindowConstant.Page.Key.MoveFromUDisk.SOURCE);
                     if (pathArray == null) {
@@ -158,7 +178,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                     ICommand command = new CommandMove(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始移动： ");
+                    messagePrintln(1, "开始移动： ");
                     command.execute();
                     messagePrintln("一代单机版日志移动完成");
                 } catch (Exception e) {
@@ -200,7 +220,7 @@ public class AppMoveTabbedPanel extends AppAbstractTabbedPanel {
                     ICommand command = new CommandMove(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
 
-                    messagePrintln("\t开始移动： ");
+                    messagePrintln(1, "开始移动： ");
                     command.execute();
                     messagePrintln("三代单机版日志移动完成");
                 } catch (Exception e) {
