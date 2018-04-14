@@ -11,7 +11,7 @@
 
     <groupId>cn.savor.standalone</groupId>
     <artifactId>upload-log</artifactId>
-    <version>1.0.0.0.2-SNAPSHOT</version>
+    <version>1.0.0.0.3-SNAPSHOT</version>
 
     <name>Stand-Alone [Upload-Log]</name>
     <packaging>jar</packaging>
@@ -92,7 +92,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>cn.savor.standalone.log.Main</mainClass>
+                            <mainClass>cn.savor.standalone.log.gui.GuiMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -122,9 +122,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <descriptor>
-                            src/main/assembly/zip-for-windows.xml
-                        </descriptor>
+                        <descriptor>src/main/assembly/zip-for-windows.xml</descriptor>
                         <descriptor>src/main/assembly/zip-for-macos.xml</descriptor>
                     </descriptors>
                 </configuration>

@@ -1,0 +1,11 @@
+log4j.rootLogger=INFO, Console, stdout
+
+###### Console appender definition #######
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=%d{ABSOLUTE}%-5p[%c{3}]%m%n
+
+###### Stdout appender definition #######
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%5p[%t]-%m%n

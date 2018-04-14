@@ -3,7 +3,7 @@
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
     <id>windows-package</id>
     <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>StandAlong</baseDirectory>
+    <baseDirectory>SavorToolBox</baseDirectory>
     <formats>
         <format>zip</format>
     </formats>
@@ -18,12 +18,19 @@
             </includes>
         </fileSet>
 
-        <!-- Soft -->
+        <!--&lt;!&ndash; Soft &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/soft/windows</directory>-->
+            <!--<outputDirectory>soft</outputDirectory>-->
+            <!--<includes>-->
+                <!--<include>*.zip</include>-->
+            <!--</includes>-->
+        <!--</fileSet>-->
         <fileSet>
-            <directory>src/main/run/soft/windows</directory>
-            <outputDirectory>soft</outputDirectory>
+            <directory>src/main/run/exe/windows</directory>
+            <outputDirectory>/</outputDirectory>
             <includes>
-                <include>*.*</include>
+                <include>STB.exe</include>
             </includes>
         </fileSet>
 
@@ -31,61 +38,30 @@
         <fileSet>
             <directory>src/main/run/exe/windows</directory>
             <outputDirectory>bin</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/libs</directory>
-            <outputDirectory>bin</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/shell/windows</directory>
-            <outputDirectory>bin</outputDirectory>
-            <includes>
-                <include>*.cmd</include>
-                <include>*.vbs</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/shell/windows/media</directory>
-            <outputDirectory>bin</outputDirectory>
-            <includes>
-                <include>*.cmd</include>
-                <include>*.vbs</include>
-            </includes>
+            <excludes>
+                <exclude>STB.exe</exclude>
+                <exclude>STB.exe_a</exclude>
+            </excludes>
         </fileSet>
 
-        <!-- Sbin -->
-        <fileSet>
-            <directory>src/main/run/shell/windows</directory>
-            <outputDirectory>sbin</outputDirectory>
-            <includes>
-                <include>*.bat</include>
-            </includes>
-            <excludes>
-                <exclude>*[alone].bat</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/shell/windows/media</directory>
-            <outputDirectory>sbin</outputDirectory>
-            <includes>
-                <include>*.bat</include>
-            </includes>
-            <excludes>
-                <exclude>*[alone].bat</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/shell/windows</directory>
-            <outputDirectory>sbin/alone</outputDirectory>
-            <includes>
-                <include>*[alone].bat</include>
-            </includes>
-        </fileSet>
+        <!--&lt;!&ndash; Sbin &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/shell/windows</directory>-->
+            <!--<outputDirectory>sbin</outputDirectory>-->
+            <!--<excludes>-->
+                <!--<exclude>*</exclude>-->
+            <!--</excludes>-->
+        <!--</fileSet>-->
 
         <!-- Conf -->
         <fileSet>
             <directory>src/main/run/conf</directory>
             <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>app.ini</include>
+                <include>config.properties</include>
+                <include>logback.xml</include>
+            </includes>
         </fileSet>
 
         <!-- Help -->
@@ -97,6 +73,7 @@
             </includes>
             <excludes>
                 <exclude>ReadMe.md</exclude>
+                <exclude>ReadMe.md_bak</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -110,48 +87,41 @@
             </excludes>
         </fileSet>
 
-        <!-- Media -->
-        <fileSet>
-            <directory>src/main/run/conf</directory>
-            <outputDirectory>media/source</outputDirectory>
-            <excludes>
-                <exclude>*</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/run/conf</directory>
-            <outputDirectory>media/target</outputDirectory>
-            <excludes>
-                <exclude>*</exclude>
-            </excludes>
-        </fileSet>
+        <!--&lt;!&ndash; Temp &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/conf</directory>-->
+            <!--<outputDirectory>temp</outputDirectory>-->
+            <!--<excludes>-->
+                <!--<exclude>*</exclude>-->
+            <!--</excludes>-->
+        <!--</fileSet>-->
 
-        <!-- Data -->
-        <fileSet>
-            <directory>src/main/run/conf</directory>
-            <outputDirectory>data</outputDirectory>
-            <excludes>
-                <exclude>*</exclude>
-            </excludes>
-        </fileSet>
+        <!--&lt;!&ndash; Data &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/conf</directory>-->
+            <!--<outputDirectory>data</outputDirectory>-->
+            <!--<excludes>-->
+                <!--<exclude>*</exclude>-->
+            <!--</excludes>-->
+        <!--</fileSet>-->
 
-        <!-- Temp -->
-        <fileSet>
-            <directory>src/main/run/conf</directory>
-            <outputDirectory>temp</outputDirectory>
-            <excludes>
-                <exclude>*</exclude>
-            </excludes>
-        </fileSet>
+        <!--&lt;!&ndash; Backup &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/conf</directory>-->
+            <!--<outputDirectory>backup</outputDirectory>-->
+            <!--<excludes>-->
+                <!--<exclude>*</exclude>-->
+            <!--</excludes>-->
+        <!--</fileSet>-->
 
-        <!-- Logs -->
-        <fileSet>
-            <directory>src/main/run/conf</directory>
-            <outputDirectory>logs</outputDirectory>
-            <excludes>
-                <exclude>*</exclude>
-            </excludes>
-        </fileSet>
+        <!--&lt;!&ndash; Logs &ndash;&gt;-->
+        <!--<fileSet>-->
+            <!--<directory>src/main/run/conf</directory>-->
+            <!--<outputDirectory>logs</outputDirectory>-->
+            <!--<excludes>-->
+                <!--<exclude>*</exclude>-->
+            <!--</excludes>-->
+        <!--</fileSet>-->
 
     </fileSets>
     <dependencySets>

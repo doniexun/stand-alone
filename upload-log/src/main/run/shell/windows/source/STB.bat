@@ -1,0 +1,16 @@
+@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
+
+@SET APP_HOME=%~dp0
+@SET CUR_FILE_MAIN_NAME=%~n0
+
+ECHO %APP_HOME%  %CUR_FILE_MAIN_NAME%
+if "%~1" == "" (
+    SET EXE=install
+    GOTO run
+)
+SET EXE=%~1
+
+:run
+START "" "!APP_HOME!\bin\!EXE!"
+
+:eof
