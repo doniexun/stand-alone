@@ -64,12 +64,17 @@ public class ConfigureLoader {
         Properties properties = fileLoader.loadConfigFile(configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.CITY, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.BUCKET, configure);
-        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1, configure);
-        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3, configure);
-        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.MEDIA, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.Directory.Temp._ROOT, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.Directory.Data._ROOT, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.Directory.Backup._ROOT, configure);
+
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1, configure);
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.Url.Area.OFFLINE_V1, configure);
+
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3, configure);
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.Url.Area.OFFLINE_V3, configure);
+
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.ObjectKey.MEDIA, configure);
 
 
         // ============================= 校验 Start =============================

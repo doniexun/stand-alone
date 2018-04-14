@@ -39,16 +39,6 @@ public abstract class AbstractTextAreaOutputStream extends OutputStream {
 
     }
 
-    public void newLine() {
-        synchronized (this) {
-            try {
-                this.write("\n".getBytes());
-            } catch (IOException e) {
-                this.println(e);
-            }
-        }
-    }
-
     public void print(String string) {
         synchronized (this) {
             try {
@@ -63,6 +53,10 @@ public abstract class AbstractTextAreaOutputStream extends OutputStream {
         synchronized (this) {
             this.print(String.valueOf(object));
         }
+    }
+
+    public void println() {
+        this.newLine();
     }
 
     public void println(String string) {
@@ -85,6 +79,16 @@ public abstract class AbstractTextAreaOutputStream extends OutputStream {
                 this.write(errorString.getBytes());
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void newLine() {
+        synchronized (this) {
+            try {
+                this.write("\n".getBytes());
+            } catch (IOException e) {
+                this.println(e);
             }
         }
     }

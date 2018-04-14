@@ -30,8 +30,8 @@ import java.io.OutputStream;
  */
 @NoArgsConstructor
 public abstract class AbstractCommand implements ICommand {
-
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final String INDENT = "        ";
 
     private OutputStream outputStream;
     private boolean hasOutputStream;
@@ -41,7 +41,7 @@ public abstract class AbstractCommand implements ICommand {
         hasOutputStream = true;
     }
 
-    protected void write(byte bytes[]) {
+    private void write(byte bytes[]) {
         synchronized (this) {
             try {
                 if (outputStream == null) {
@@ -55,7 +55,17 @@ public abstract class AbstractCommand implements ICommand {
         }
     }
 
-    protected void print(String string) {
+    private void newLine() {
+        synchronized (this) {
+            if (hasOutputStream) {
+                this.write("\n".getBytes());
+            } else {
+                System.out.println();
+            }
+        }
+    }
+
+    public void print(String string) {
         synchronized (this) {
             if (hasOutputStream) {
                 this.write(string.getBytes());
@@ -65,26 +75,42 @@ public abstract class AbstractCommand implements ICommand {
         }
     }
 
-    protected void print(Object object) {
+    public void print(Object object) {
         synchronized (this) {
             this.print(String.valueOf(object));
         }
     }
 
-    protected void print(String format, Object... args) {
+    public void print(String format, Object... args) {
         synchronized (this) {
             String string = String.format(format, args);
             this.print(string);
         }
     }
 
+    public void println(){
+        this.newLine();
+    }
+
     public void println(String string) {
         synchronized (this) {
             if (hasOutputStream) {
-                this.print(string + "\n");
+                this.print(string);
+                this.newLine();
             } else {
                 System.out.println(string);
             }
+        }
+    }
+
+    public void println(int indent, String string) {
+        synchronized (this) {
+            StringBuffer indentString = new StringBuffer();
+            for (int count = 0; count < indent; count++) {
+                indentString.append(INDENT);
+            }
+            indentString.append(string);
+            this.println(indentString);
         }
     }
 
@@ -98,6 +124,13 @@ public abstract class AbstractCommand implements ICommand {
         synchronized (this) {
             String string = String.format(format, args);
             this.println(string);
+        }
+    }
+
+    public void println(int indent, String format, Object... args) {
+        synchronized (this) {
+            String string = String.format(format, args);
+            this.println(indent, string);
         }
     }
 }

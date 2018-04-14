@@ -51,56 +51,76 @@ public abstract class AppAbstractTabbedPanel {
     }
 
     void sourcePrintln(String string) {
-        sourceOutputStream.println(string);
+        synchronized (this) {
+            sourceOutputStream.println(string);
+        }
     }
 
     void sourcePrintln(String format, Object... args) {
-        String string = String.format(format, args);
-        sourceOutputStream.println(string);
+        synchronized (this) {
+            String string = String.format(format, args);
+            sourceOutputStream.println(string);
+        }
     }
 
     void sourcePrintln(Object object) {
-        sourceOutputStream.println(object);
+        synchronized (this) {
+            sourceOutputStream.println(object);
+        }
     }
 
     void messageNewLine() {
-        messageOutputStream.newLine();
+        synchronized (this) {
+            messageOutputStream.println();
+        }
     }
 
     void messagePrintln(String string) {
-        messageOutputStream.println(string);
+        synchronized (this) {
+            messageOutputStream.println(string);
+        }
     }
 
     void messagePrintln(int indent, String string) {
-        StringBuffer indentString = new StringBuffer();
-        for (int count = 0; count < indent; count++) {
-            indentString.append(INDENT);
+        synchronized (this) {
+            StringBuffer indentString = new StringBuffer();
+            for (int count = 0; count < indent; count++) {
+                indentString.append(INDENT);
+            }
+            indentString.append(string);
+            this.messagePrintln(indentString);
         }
-        indentString.append(string);
-        this.messagePrintln(indentString);
     }
 
     void messagePrintln(int indent, String format, Object... args) {
-        String string = String.format(format, args);
-        this.messagePrintln(indent, string);
+        synchronized (this) {
+            String string = String.format(format, args);
+            this.messagePrintln(indent, string);
+        }
     }
 
     void messagePrintln(String format, Object... args) {
-        String string = String.format(format, args);
-        messageOutputStream.println(string);
+        synchronized (this) {
+            String string = String.format(format, args);
+            messageOutputStream.println(string);
+        }
     }
 
     void messagePrintln(Object object) {
-        messageOutputStream.println(object);
+        synchronized (this) {
+            messageOutputStream.println(object);
+        }
     }
 
     void messagePrintlnError(Throwable throwable) {
-        try {
-            logger.error(throwable.getMessage(), throwable);
+        synchronized (this) {
+            try {
+                logger.error(throwable.getMessage(), throwable);
 //            String errorString = String.format("MessageError : %s\n", e.getMessage());
-            messageOutputStream.println(throwable);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+                messageOutputStream.println(throwable);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 

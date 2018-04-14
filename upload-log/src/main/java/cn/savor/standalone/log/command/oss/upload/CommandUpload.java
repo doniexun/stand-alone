@@ -20,6 +20,7 @@ import com.aliyun.oss.model.PutObjectResult;
 import lombok.NoArgsConstructor;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.HttpClientSimpleUtil;
+import net.lizhaoweb.common.util.base.HttpUtil;
 import net.lizhaoweb.common.util.base.JsonUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
 import org.apache.commons.io.FileUtils;
@@ -104,13 +105,7 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
                 File uploadFile = compressionFile;
 
                 // 上传日志文件到 OSS
-                String ossKey = String.format("%s/%s", ossKeyPrefix, uploadFile.getName());
-                while (ossKey.contains("\\")) {
-                    ossKey = ossKey.replace("\\", "/");
-                }
-                while (ossKey.contains("//")) {
-                    ossKey = ossKey.replace("//", "/");
-                }
+                String ossKey = HttpUtil.formatPath(String.format("%s/%s", ossKeyPrefix, uploadFile.getName()));
                 PutObjectResult putObjectResult = ossClient.putObject(ossBucketName, ossKey, uploadFile);
 
                 // 上传 OSS 成功后，删除本地文件
@@ -132,7 +127,8 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
         }
 
         // 文件操作失败提示
-        this.println("\n\n以下文件上传成功，但移动失败：");
+        this.println("/ ------------------------------- 执行结果展示开始 ------------------------------- \\");
+        this.println("以下文件上传成功，但移动失败：");
         for (File file : notMoveFileList) {
             this.println(String.format("[%s] >>> × >>> [%s]", file, backupDirectory));
         }
@@ -140,11 +136,12 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
 //        for (File file : notDeleteFileList) {
 //            this.println(file);
 //        }
-        this.println("\n\n以下文件操作失败：");
+        this.println();
+        this.println("以下文件操作失败：");
         for (File file : notUploadFileList) {
             this.println(file);
         }
-        this.println("\n\n全部文件已经上传到 OSS 完毕\n\n\n");
+        this.println("\\ ------------------------------- 执行结果展示结束 ------------------------------- /");
     }
 
     /**
