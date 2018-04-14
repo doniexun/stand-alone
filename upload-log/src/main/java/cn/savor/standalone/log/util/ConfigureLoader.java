@@ -78,9 +78,7 @@ public class ConfigureLoader {
 
 
         // ============================= 校验 Start =============================
-        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT))) {
-            configure.putConfig(Constants.Configure.Keys.Directory.Temp._ROOT, FileUtil.getTempDirectoryPath());
-        }
+        this.loadCheckForTemp();
         this.loadCheckForData();
         this.loadCheckForBackup();
         // ============================= 校验 End =============================
@@ -96,11 +94,11 @@ public class ConfigureLoader {
             File defaultDirectory = new File(defaultDirectoryName);
             configure.putConfig(Constants.Configure.Keys.Directory.Backup._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
         }
-        String defaultDataDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup._ROOT);
+        String defaultBackupDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup._ROOT);
 
         // upload
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload._ROOT))) {
-            String defaultDirectoryName = String.format("%s/%s", defaultDataDirectoryName, Constants.Configure.Directory.UPLOAD);
+            String defaultDirectoryName = String.format("%s/%s", defaultBackupDirectoryName, Constants.Configure.Directory.UPLOAD);
             File defaultDirectory = new File(defaultDirectoryName);
             configure.putConfig(Constants.Configure.Keys.Directory.Backup.Upload._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
         }
@@ -164,6 +162,39 @@ public class ConfigureLoader {
             configure.putConfig(Constants.Configure.Keys.Directory.Data.MEDIA, FileUtil.getCanonicalPath(defaultDirectory));
         }
 //        String defaultMediaDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data.MEDIA);
+    }
+
+    // 校验 Temp
+    private void loadCheckForTemp() {
+        // temp
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT))) {
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp._ROOT, FileUtil.getTempDirectoryPath());
+        }
+        String defaultTempDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
+
+        // upload
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload._ROOT))) {
+            String defaultDirectoryName = String.format("%s/%s", defaultTempDirectoryName, Constants.Configure.Directory.UPLOAD);
+            File defaultDirectory = new File(defaultDirectoryName);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Upload._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+        String defaultUploadDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload._ROOT);
+
+        // standalone_v1
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1))) {
+            String defaultDirectoryName = String.format("%s/%s", defaultUploadDirectoryName, Constants.Configure.Directory.STANDALONE_V1);
+            File defaultDirectory = new File(defaultDirectoryName);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1);
+
+        // standalone_v3
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3))) {
+            String defaultDirectoryName = String.format("%s/%s", defaultUploadDirectoryName, Constants.Configure.Directory.STANDALONE_V3);
+            File defaultDirectory = new File(defaultDirectoryName);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3);
     }
 
     private void loadUIDataFromProperties(Properties properties, String key, Configure configure) {

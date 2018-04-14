@@ -109,7 +109,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     }
                     argList.add("fromDir=" + sourceDirectoryPath);
 
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
+                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1);
                     if (StringUtil.isBlank(tempDirectoryPath)) {
                         throw new IllegalArgumentException("上传一代单机版日志时，没有临时目录");
                     }
@@ -133,11 +133,11 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     }
                     argList.add("keyPrefix=" + keyPrefix);
 
-                    String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1);
-                    if (StringUtil.isBlank(areaUrl)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有区域 url 地址");
-                    }
-                    argList.add("areaUrl=" + areaUrl);
+//                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1), context.getConfig(Constants.Configure.Keys.CITY));
+//                    if (StringUtil.isBlank(areaUrl)) {
+//                        throw new IllegalArgumentException("上传一代单机版日志时，没有区域 url 地址");
+//                    }
+//                    argList.add("areaUrl=" + areaUrl);
 
                     ICommand command = new CommandUpload(messageOutputStream);
                     ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
@@ -174,7 +174,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     }
                     argList.add("fromDir=" + sourceDirectoryPath);
 
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
+                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3);
                     if (StringUtil.isBlank(tempDirectoryPath)) {
                         throw new IllegalArgumentException("上传三代单机版日志时，没有临时目录");
                     }
@@ -198,7 +198,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     }
                     argList.add("keyPrefix=" + keyPrefix);
 
-                    String areaUrl = context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3);
+                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
                     if (StringUtil.isBlank(areaUrl)) {
                         throw new IllegalArgumentException("上传三代单机版日志时，没有区域 url 地址");
                     }

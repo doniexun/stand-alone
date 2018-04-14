@@ -88,6 +88,15 @@ public class Constants {
                  */
                 public static class Temp {
                     public static final String _ROOT = "cn.savor.offline.log.configure.directory.temp";
+
+                    /**
+                     * 上传
+                     */
+                    public static class Upload {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.temp.upload";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.temp.upload.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.temp.upload.offlineV3";
+                    }
                 }
 
                 /**
