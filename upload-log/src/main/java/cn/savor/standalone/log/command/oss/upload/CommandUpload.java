@@ -129,8 +129,12 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
         // 文件操作失败提示
         this.println("/ ------------------------------- 执行结果展示开始 ------------------------------- \\");
         this.println("以下文件上传成功，但移动失败：");
-        for (File file : notMoveFileList) {
-            this.println(String.format("[%s] >>> × >>> [%s]", file, backupDirectory));
+        if (notMoveFileList == null || notMoveFileList.size() < 1) {
+            this.println(1, "无");
+        } else {
+            for (File file : notMoveFileList) {
+                this.println(1, String.format("[%s] >>> × >>> [%s]", file, backupDirectory));
+            }
         }
 //        this.println("\n\n以下文件上传成功，但删除失败：");
 //        for (File file : notDeleteFileList) {
@@ -138,8 +142,12 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
 //        }
         this.println();
         this.println("以下文件操作失败：");
-        for (File file : notUploadFileList) {
-            this.println(file);
+        if (notUploadFileList == null || notUploadFileList.size() < 1) {
+            this.println(1, "无");
+        } else {
+            for (File file : notUploadFileList) {
+                this.println(1, file);
+            }
         }
         this.println("\\ ------------------------------- 执行结果展示结束 ------------------------------- /");
     }

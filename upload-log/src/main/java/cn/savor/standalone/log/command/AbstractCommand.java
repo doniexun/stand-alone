@@ -88,7 +88,7 @@ public abstract class AbstractCommand implements ICommand {
         }
     }
 
-    public void println(){
+    public void println() {
         this.newLine();
     }
 
@@ -117,6 +117,12 @@ public abstract class AbstractCommand implements ICommand {
     public void println(Object object) {
         synchronized (this) {
             this.println(String.valueOf(object));
+        }
+    }
+
+    public void println(int indent, Object object) {
+        synchronized (this) {
+            this.println(indent, String.valueOf(object));
         }
     }
 
