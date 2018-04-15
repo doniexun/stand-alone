@@ -10,7 +10,6 @@
  */
 package cn.savor.standalone.log.model;
 
-import cn.savor.standalone.log.model.ItemKeyValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.lizhaoweb.common.util.base.FileUtil;
@@ -53,7 +52,8 @@ public class Configure {
 
     public Configure() {
         this.currentWorkDirectoryPath = System.getProperty("user.dir");
-        this.workDirectoryPath = FileUtil.getCanonicalPath(new File(this.currentWorkDirectoryPath, ".."));
+//        this.workDirectoryPath = FileUtil.getCanonicalPath(new File(this.currentWorkDirectoryPath, ".."));
+        this.workDirectoryPath = FileUtil.getCanonicalPath(new File(this.currentWorkDirectoryPath));
         this.uiDataMap = new ConcurrentHashMap<>();
         this.configMap = new ConcurrentHashMap<>();
     }
