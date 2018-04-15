@@ -149,6 +149,7 @@ public class Constants {
         public static class Directory {
             public static final String USER_HOME = ".offline_logs";
             public static final String USER_WORK = "conf";
+            public static final String TEMP = "temp";
             public static final String DATA = "data";
             public static final String BACKUP = "backup";
             public static final String UPLOAD = "upload";
