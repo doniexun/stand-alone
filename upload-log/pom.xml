@@ -123,7 +123,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <descriptor>src/main/assembly/zip-for-windows.xml</descriptor>
-                        <descriptor>src/main/assembly/zip-for-macos.xml</descriptor>
+                        <!--<descriptor>src/main/assembly/zip-for-macos.xml</descriptor>-->
                     </descriptors>
                 </configuration>
                 <executions>
