@@ -160,7 +160,7 @@ public class ConfigureLoader {
         // temp
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT))) {
             File defaultDirectory = new File(configure.getWorkDirectoryPath(), Constants.Configure.Directory.TEMP);
-            configure.putConfig(Constants.Configure.Keys.Directory.Data._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
 //            configure.putConfig(Constants.Configure.Keys.Directory.Temp._ROOT, FileUtil.getTempDirectoryPath());
         }
         String defaultTempDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
