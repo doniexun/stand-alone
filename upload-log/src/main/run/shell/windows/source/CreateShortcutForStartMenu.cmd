@@ -2,9 +2,6 @@
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 
-::设置快捷方式路径（必选/必填）
-SET LnkPath=
-
 ::设置快捷方式名称（必选/必填）
 SET LnkName=%~2
 
@@ -19,16 +16,15 @@ SET ProgramParameter=%~5
 
 IF NOT DEFINED WorkDir call:GetWorkDir "%Program%"
 (ECHO Set WshShell=CreateObject("WScript.Shell"^)
-::ECHO strDesktop=WshShell.SpecialFolders("Desktop"^)
-::ECHO Set operatingSystemShellLink=WshShell.CreateShortcut(strDesktop^&"\%LnkName%.lnk"^)
-ECHO Set operatingSystemShellLink=WshShell.CreateShortcut("%LnkPath%\%LnkName%.lnk")
+ECHO strDesktop=WshShell.SpecialFolders("Programs"^)
+ECHO Set operatingSystemShellLink=WshShell.CreateShortcut(strDesktop^&"\%LnkName%.lnk"^)
 ECHO operatingSystemShellLink.TargetPath="%Program%"
 ECHO operatingSystemShellLink.Arguments=%ProgramParameter%
 ECHO operatingSystemShellLink.WorkingDirectory="%WorkDir%"
 ECHO operatingSystemShellLink.WindowStyle=1
 ECHO operatingSystemShellLink.Description="%Desc%"
 ECHO operatingSystemShellLink.Save) > makeLnk.vbs
-::ECHO 桌面快捷方式创建成功！
+::ECHO 开始菜单快捷方式创建成功！
 makeLnk.vbs
 del /f /q makeLnk.vbs
 GOTO :eof
