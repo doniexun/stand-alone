@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 
@@ -14,19 +14,41 @@ SET Desc=%~4
 ::设置程序对应的参数
 SET ProgramParameter=%~5
 
+
+SET VBS_SCRIPT_NAME=%Temp%\makeLnk.vbs
+
 IF NOT DEFINED WorkDir call:GetWorkDir "%Program%"
 (ECHO Set WshShell=CreateObject("WScript.Shell"^)
 ECHO strDesktop=WshShell.SpecialFolders("Programs"^)
-ECHO Set operatingSystemShellLink=WshShell.CreateShortcut(strDesktop^&"\%LnkName%.lnk"^)
+ECHO Set fso=CreateObject("Scripting.FileSystemObject"^)
+ECHO lnkFileName=strDesktop^&"\%LnkName%.lnk"
+ECHO lnkFilePath=left(lnkFileName, instrrev(lnkFileName, "\"^)^)
+ECHO If fso.folderExists(lnkFilePath^) Then
+ECHO Else
+ECHO 	fso.createFolder(lnkFilePath^)
+ECHO End If
+ECHO Set operatingSystemShellLink=WshShell.CreateShortcut(lnkFileName^)
 ECHO operatingSystemShellLink.TargetPath="%Program%"
 ECHO operatingSystemShellLink.Arguments=%ProgramParameter%
 ECHO operatingSystemShellLink.WorkingDirectory="%WorkDir%"
 ECHO operatingSystemShellLink.WindowStyle=1
 ECHO operatingSystemShellLink.Description="%Desc%"
-ECHO operatingSystemShellLink.Save) > makeLnk.vbs
-::ECHO 开始菜单快捷方式创建成功！
-makeLnk.vbs
-del /f /q makeLnk.vbs
+ECHO operatingSystemShellLink.Save) > "!VBS_SCRIPT_NAME%!"
+If ERRORLEVEL 1 (
+    Exit /B 1
+)
+
+Call "!VBS_SCRIPT_NAME%!"
+If ERRORLEVEL 1 (
+    DEL /f /q "!VBS_SCRIPT_NAME%!"
+    Exit /B 1
+)
+
+DEL /f /q "!VBS_SCRIPT_NAME%!"
+If ERRORLEVEL 1 (
+    Exit /B 1
+)
+
 GOTO :eof
 
 :GetWorkDir

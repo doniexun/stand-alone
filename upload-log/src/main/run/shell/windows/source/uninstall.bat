@@ -36,7 +36,7 @@ CALL "!WORK_DIR!\WindowsCurrentUserDesktop"
 SET SHORTCUT_NAME=热点运维工具
 
 ECHO 删除快捷方式……
-DEL /F /S /Q "!WINDOWS_CURRENT_USER_PROGRAMS!\!SHORTCUT_NAME!.lnk"
+RMDIR /S /Q "!WINDOWS_CURRENT_USER_PROGRAMS!\!SHORTCUT_NAME!"
 DEL /F /S /Q "!WINDOWS_CURRENT_USER_DESKTOP!\!SHORTCUT_NAME!.lnk"
 ECHO 删除方式创建完毕。
 
@@ -46,6 +46,7 @@ GoTo end
 Echo     程序安装成功
 MSG %UserName% /server:127.0.0.1 /time:7 "服务卸载完毕"
 Echo.
+pause
 GoTo eof
 
 :::eof
