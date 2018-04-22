@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 FOR /f "tokens=2,*" %%i IN ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop"') DO (
     SET Desk=%%j
 )
@@ -6,3 +6,4 @@ FOR /f "tokens=2,*" %%i IN ('reg query "HKCU\Software\Microsoft\Windows\CurrentV
 ECHO WINDOWS_CURRENT_USER_DESKTOP=%WINDOWS_CURRENT_USER_DESKTOP%
 ::ECHO ×ÀÃæÂ·¾¶ÊÇ%WINDOWS_CURRENT_USER_DESKTOP%
 ::PAUSE >nul
+EndLocal

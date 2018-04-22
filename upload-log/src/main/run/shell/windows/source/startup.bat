@@ -1,4 +1,4 @@
-@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 
 TITLE 启动程序
 
@@ -29,4 +29,5 @@ SET MAIN_CLASS=cn.savor.standalone.log.gui.GuiMain
 
 ECHO "已经关闭"
 ::EXIT /B 200
+EndLocal
 EXIT

@@ -1,4 +1,4 @@
-@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 
 TITLE 安装程序
 
@@ -241,7 +241,7 @@ Echo.
 
 Echo     程序安装成功，请在 [开始菜单] 或 [桌面] 中运行'!SHORTCUT_NAME!',来启动程序！
 MSG %UserName% /server:127.0.0.1 /time:10 "服务安装完毕，请在 [开始菜单] 或 [桌面] 中运行'!SHORTCUT_NAME!',来启动程序！"
-GoTo eof
+EndLocal & GoTo eof
 
 
 

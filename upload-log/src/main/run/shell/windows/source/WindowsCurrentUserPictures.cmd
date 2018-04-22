@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO OFF £¦ SetLocal EnableDelayedExpansion & CLS & Echo.
 FOR /f "tokens=3,*" %%i IN ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "My Pictures"') DO (
     SET Pic=%%j
 )
@@ -6,3 +6,4 @@ FOR /f "tokens=3,*" %%i IN ('reg query "HKCU\Software\Microsoft\Windows\CurrentV
 ECHO WINDOWS_CURRENT_USER_PICTURES=%WINDOWS_CURRENT_USER_PICTURES%
 ::ECHO Í¼Æ¬ÊÕ²Ø¼ÐÂ·¾¶ÊÇ%WINDOWS_CURRENT_USER_PICTURES%
 ::PAUSE >nul
+EndLocal

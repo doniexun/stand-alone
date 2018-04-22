@@ -1,4 +1,4 @@
-@ECHO OFF
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 
@@ -31,7 +31,7 @@ ECHO operatingSystemShellLink.Save) > makeLnk.vbs
 ::ECHO 桌面快捷方式创建成功！
 makeLnk.vbs
 del /f /q makeLnk.vbs
-GOTO :eof
+EndLocal & GOTO :eof
 
 :GetWorkDir
 SET WorkDir=%~dp1

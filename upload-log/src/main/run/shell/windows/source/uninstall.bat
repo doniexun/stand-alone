@@ -1,4 +1,4 @@
-@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 
 TITLE 安装程序
 
@@ -40,7 +40,7 @@ RMDIR /S /Q "!WINDOWS_CURRENT_USER_PROGRAMS!\!SHORTCUT_NAME!"
 DEL /F /S /Q "!WINDOWS_CURRENT_USER_DESKTOP!\!SHORTCUT_NAME!.lnk"
 ECHO 删除方式创建完毕。
 
-GoTo end
+EndLocal & GoTo end
 
 :end
 Echo     程序安装成功

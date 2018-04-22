@@ -12,7 +12,7 @@
         <!-- 说明文档 -->
         <fileSet>
             <directory>src/main/run/help</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <includes>
                 <include>ReadMe.md</include>
             </includes>
@@ -28,7 +28,7 @@
         <!--</fileSet>-->
         <fileSet>
             <directory>src/main/run/exe/windows</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <includes>
                 <include>STB.exe</include>
             </includes>

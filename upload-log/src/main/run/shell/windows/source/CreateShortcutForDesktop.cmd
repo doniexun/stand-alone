@@ -1,4 +1,4 @@
-@ECHO OFF & SETLOCAL ENABLEDELAYEDEXPANSION & CLS & ECHO.
+@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 
@@ -49,7 +49,7 @@ If ERRORLEVEL 1 (
     Exit /B 1
 )
 
-GOTO :eof
+EndLocal & GOTO :eof
 
 :GetWorkDir
 SET WorkDir=%~dp1
