@@ -1,4 +1,4 @@
-@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
+@ECHO OFF & SetLocal EnableDelayedExpansion
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 
@@ -29,7 +29,7 @@ ECHO 	fso.createFolder(lnkFilePath^)
 ECHO End If
 ECHO Set operatingSystemShellLink=WshShell.CreateShortcut(lnkFileName^)
 ECHO operatingSystemShellLink.TargetPath="%Program%"
-ECHO operatingSystemShellLink.Arguments=%ProgramParameter%
+ECHO operatingSystemShellLink.Arguments="%ProgramParameter%"
 ECHO operatingSystemShellLink.WorkingDirectory="%WorkDir%"
 ECHO operatingSystemShellLink.WindowStyle=1
 ECHO operatingSystemShellLink.Description="%Desc%"

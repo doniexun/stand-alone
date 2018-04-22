@@ -1,4 +1,4 @@
-@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
+@ECHO OFF & SetLocal EnableDelayedExpansion
 ::设置程序或文件的完整路径（必选/必填）
 SET Program=%~1
 

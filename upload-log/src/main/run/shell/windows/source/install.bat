@@ -19,6 +19,8 @@ IF "!APP_HOME:~-1!" == "\" (
     SET APP_HOME=!APP_HOME:~0,-1!
 )
 ECHO APP_HOME          = !APP_HOME!
+ECHO LONG_BIT          = !LONG_BIT!
+ECHO MAIN_EXE          = !MAIN_EXE!
 
 SET WORK_DIR=%CD%
 IF "!WORK_DIR:~-1!" == "\" (
@@ -31,16 +33,6 @@ IF "!SHELL_DIR:~-1!" == "\" (
     SET SHELL_DIR=!SHELL_DIR:~0,-1!
 )
 ECHO SHELL_DIR         = !SHELL_DIR!
-
-if /i %PROCESSOR_IDENTIFIER:~0,3%==x86 (
-	SET LONG_BIT=32
-) else (
-	SET LONG_BIT=64
-)
-ECHO LONG_BIT          = !LONG_BIT!
-
-SET MAIN_EXE=STB.exe
-ECHO MAIN_EXE          = !MAIN_EXE!
 
 SET DIR_BIN=!APP_HOME!\bin
 ECHO DIR_BIN           = !DIR_BIN!
@@ -78,9 +70,10 @@ SET SHORTCUT_WORK_DIR=!APP_HOME!
 SET SHORTCUT_DESC=用于热点信息科技有限公司运维处理
 SET SHORTCUT_NAME_DESKTOP=热点运维工具
 SET SHORTCUT_NAME_STARTUP=热点运维工具\启动
-SET SHORTCUT_PROGRAM_PARAMETER_STARTUP="startup"
+SET SHORTCUT_PROGRAM_PARAMETER_STARTUP=startup
 SET SHORTCUT_NAME_UNINSTALL=热点运维工具\卸载
-SET SHORTCUT_PROGRAM_PARAMETER_UNINSTALL="uninstall"
+SET SHORTCUT_PROGRAM_PARAMETER_UNINSTALL=uninstall
+SET SHORTCUT_PROGRAM_PARAMETER_VERBOSE=true
 ECHO \ ===================================== 初始化环境变量 ===================================== /
 ECHO.
 
@@ -214,24 +207,29 @@ Echo.
 
 @REM ================================ Create Shortcut ================================
 ECHO / ===================================== 创建快捷方式 ===================================== \
-CALL "%WORK_DIR%\CreateShortcutForDesktop" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_DESKTOP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
+CALL "%WORK_DIR%\CreateShortcutForDesktop" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_DESKTOP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
 If ERRORLEVEL 1 (
     Echo     桌面快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "桌面快捷方式创建失败"
     GoTo eof
 )
-CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_STARTUP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
+Echo     桌面快捷方式创建成功
+
+CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_STARTUP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
 If ERRORLEVEL 1 (
     Echo     开始菜单[启动]快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "开始菜单[启动]快捷方式创建失败"
     GoTo eof
 )
-CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_UNINSTALL!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_UNINSTALL!"
+Echo     开始菜单[启动]快捷方式创建成功
+
+CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_UNINSTALL!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_UNINSTALL!"
 If ERRORLEVEL 1 (
     Echo     开始菜单[卸载]快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "开始菜单[卸载]快捷方式创建失败"
     GoTo eof
 )
+Echo     开始菜单[卸载]快捷方式创建成功
 ECHO \ ===================================== 创建快捷方式 ===================================== /
 Echo.
 
@@ -239,8 +237,9 @@ Echo.
 
 
 
-Echo     程序安装成功，请在 [开始菜单] 或 [桌面] 中运行'!SHORTCUT_NAME!',来启动程序！
-MSG %UserName% /server:127.0.0.1 /time:10 "服务安装完毕，请在 [开始菜单] 或 [桌面] 中运行'!SHORTCUT_NAME!',来启动程序！"
+Echo     程序安装成功。请点击 [开始/所有程序/!SHORTCUT_NAME_STARTUP!] 或 [桌面/!SHORTCUT_NAME_DESKTOP!] 来启动程序！
+MSG %UserName% /server:127.0.0.1 /time:10 "程序安装成功。请点击 [开始/所有程序/!SHORTCUT_NAME_STARTUP!] 或 [桌面/!SHORTCUT_NAME_DESKTOP!] 来启动程序！"
+"!APP_HOME!\bin\sleep" 3000
 EndLocal & GoTo eof
 
 
@@ -257,69 +256,61 @@ EndLocal & GoTo eof
 @REM ================================================ Message
 @REM Env
 :msg_env_not_set
-Echo     环境变量'%~1'没有设置
-MSG %UserName% /server:127.0.0.1 "环境变量'%~1'没有设置"
-GoTo :EOF
+    Echo     环境变量'%~1'没有设置
+    MSG %UserName% /server:127.0.0.1 "环境变量'%~1'没有设置"
+    GoTo :EOF
 
 
 @REM Make Directory
 :msg_make_dir_success
-Echo     目录[%~1]创建成功
-GoTo :EOF
+    Echo     目录[%~1]创建成功
+    GoTo :EOF
 
 :msg_make_dir_failed
-Echo     目录[%~1]创建失败
-MSG %UserName% /server:127.0.0.1 "目录[%~1]创建失败"
-GoTo :EOF
+    Echo     目录[%~1]创建失败
+    MSG %UserName% /server:127.0.0.1 "目录[%~1]创建失败"
+    GoTo :EOF
 
 
 @REM Delete Directory
 :msg_del_dir_success
-Echo     目录[%~1]删除成功
-GoTo :EOF
+    Echo     目录[%~1]删除成功
+    GoTo :EOF
 
 :msg_del_dir_failed
-Echo     目录[%~1]删除失败
-MSG %UserName% /server:127.0.0.1 "目录[%~1]删除失败"
-GoTo :EOF
+    Echo     目录[%~1]删除失败
+    MSG %UserName% /server:127.0.0.1 "目录[%~1]删除失败"
+    GoTo :EOF
 
 
 @REM Delete File
 :msg_del_file_success
-Echo     文件[%~1]删除成功
-GoTo :EOF
+    Echo     文件[%~1]删除成功
+    GoTo :EOF
 
 :msg_del_file_failed
-Echo     文件[%~1]删除失败
-MSG %UserName% /server:127.0.0.1 "目录[%~1]删除失败"
-GoTo :EOF
+    Echo     文件[%~1]删除失败
+    MSG %UserName% /server:127.0.0.1 "目录[%~1]删除失败"
+    GoTo :EOF
 
 
 @REM Download JRE
 :msg_download_jre_success
-Echo     JRE 安装包[%~1]下载成功
-GoTo :EOF
+    Echo     JRE 安装包[%~1]下载成功
+    GoTo :EOF
 
 :msg_download_jre_fail
-Echo     JRE 安装包[%~1]下载失败
-MSG %UserName% /server:127.0.0.1 "JRE 安装包[%~1]下载失败"
-GoTo :EOF
+    Echo     JRE 安装包[%~1]下载失败
+    MSG %UserName% /server:127.0.0.1 "JRE 安装包[%~1]下载失败"
+    GoTo :EOF
 
 
 @REM Download JRE
 :msg_install_jre_success
-Echo     JRE 环境[%~1]安装成功
-GoTo :EOF
+    Echo     JRE 环境[%~1]安装成功
+    GoTo :EOF
 
 :msg_install_jre_fail
-Echo     JRE 环境[%~1]安装失败
-MSG %UserName% /server:127.0.0.1 "JRE 环境[%~1]安装失败"
-GoTo :EOF
-
-:::end
-::GoTo eof
-
-:::eof
-::PAUSE
-::::EXIT /B 0
-::EXIT
+    Echo     JRE 环境[%~1]安装失败
+    MSG %UserName% /server:127.0.0.1 "JRE 环境[%~1]安装失败"
+    GoTo :EOF
