@@ -67,6 +67,9 @@ public class Configure {
     }
 
     public void putConfig(String key, String value) {
+        if (value == null) {
+            return;
+        }
         this.configMap.put(key, value);
     }
 

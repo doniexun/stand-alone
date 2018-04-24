@@ -34,18 +34,18 @@ ECHO operatingSystemShellLink.WorkingDirectory="%WorkDir%"
 ECHO operatingSystemShellLink.WindowStyle=1
 ECHO operatingSystemShellLink.Description="%Desc%"
 ECHO operatingSystemShellLink.Save) > "!VBS_SCRIPT_NAME%!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Exit /B 1
 )
 
 Call "!VBS_SCRIPT_NAME%!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     DEL /f /q "!VBS_SCRIPT_NAME%!"
     Exit /B 1
 )
 
 DEL /f /q "!VBS_SCRIPT_NAME%!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Exit /B 1
 )
 

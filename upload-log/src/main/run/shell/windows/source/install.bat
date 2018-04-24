@@ -85,7 +85,7 @@ ECHO.
 ECHO / ===================================== 初始化目录 ===================================== \
 If NOT EXIST "!DIR_LOG!\" (
     MKDIR "!DIR_LOG!\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_LOG!\"
         GoTo eof
     )
@@ -93,7 +93,7 @@ If NOT EXIST "!DIR_LOG!\" (
 )
 If NOT EXIST "!DIR_TEMP!\upload\standalone_v1\" (
     MKDIR "!DIR_TEMP!\upload\standalone_v1\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_TEMP!\upload\standalone_v1\"
         GoTo eof
     )
@@ -101,7 +101,7 @@ If NOT EXIST "!DIR_TEMP!\upload\standalone_v1\" (
 )
 If NOT EXIST "!DIR_TEMP!\upload\standalone_v3\" (
     MKDIR "!DIR_TEMP!\upload\standalone_v3\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_TEMP!\upload\standalone_v3\"
         GoTo eof
     )
@@ -109,7 +109,7 @@ If NOT EXIST "!DIR_TEMP!\upload\standalone_v3\" (
 )
 If NOT EXIST "!DIR_DATA!\upload\standalone_v1\" (
     MKDIR "!DIR_DATA!\upload\standalone_v1\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_DATA!\upload\standalone_v1\"
         GoTo eof
     )
@@ -117,7 +117,7 @@ If NOT EXIST "!DIR_DATA!\upload\standalone_v1\" (
 )
 If NOT EXIST "!DIR_DATA!\upload\standalone_v3\" (
     MKDIR "!DIR_DATA!\upload\standalone_v3\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_DATA!\upload\standalone_v3\"
         GoTo eof
     )
@@ -125,7 +125,7 @@ If NOT EXIST "!DIR_DATA!\upload\standalone_v3\" (
 )
 If NOT EXIST "!DIR_BACKUP!\upload\standalone_v1\" (
     MKDIR "!DIR_BACKUP!\upload\standalone_v1\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_BACKUP!\upload\standalone_v1\"
         GoTo eof
     )
@@ -133,7 +133,7 @@ If NOT EXIST "!DIR_BACKUP!\upload\standalone_v1\" (
 )
 If NOT EXIST "!DIR_BACKUP!\upload\standalone_v3\" (
     MKDIR "!DIR_BACKUP!\upload\standalone_v3\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!DIR_BACKUP!\upload\standalone_v3\"
         GoTo eof
     )
@@ -152,7 +152,7 @@ ECHO / ===================================== 安装 JRE 环境 =====================
 If EXIST "!JRE_HOME!" (
     If NOT EXIST "!JRE_HOME!\" (
         DEL /F /Q /S "!JRE_HOME!"
-        If ERRORLEVEL 1 (
+        If ErrorLevel 1 (
             Call :msg_del_dir_failed "!JRE_HOME!"
             GoTo eof
         )
@@ -162,7 +162,7 @@ If EXIST "!JRE_HOME!" (
 @REM Create %JRE_HOME%
 If NOT EXIST "!JRE_HOME!\" (
     MKDIR "!JRE_HOME!\"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_make_dir_failed "!JRE_HOME!\"
         GoTo eof
     )
@@ -171,14 +171,14 @@ If NOT EXIST "!JRE_HOME!\" (
 @REM Download JRE-Package
 if /i %LONG_BIT%==32 (
     "!DIR_BIN!\wget" "!URL_JRE_X86!" -O "!JRE_ZIP_DOWNLOAD!"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_download_jre_fail "!URL_JRE_X86!"
         GoTo eof
     )
     Call :msg_download_jre_success "!URL_JRE_X86!"
 ) else (
     "!DIR_BIN!\wget" "!URL_JRE_X64!" -O "!JRE_ZIP_DOWNLOAD!"
-    If ERRORLEVEL 1 (
+    If ErrorLevel 1 (
         Call :msg_download_jre_fail "!URL_JRE_X64!"
         GoTo eof
     )
@@ -186,14 +186,14 @@ if /i %LONG_BIT%==32 (
 )
 @REM Install JRE
 "!DIR_BIN!\7z" x "!JRE_ZIP_DOWNLOAD!" -o"!JRE_HOME!" -aoa
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Call :msg_install_jre_fail "!JRE_HOME!"
     GoTo eof
 )
 Call :msg_install_jre_success "!JRE_HOME!"
 @REM Delete JRE-Package
 DEL "!JRE_ZIP_DOWNLOAD!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Call :msg_del_file_failed "!JRE_ZIP_DOWNLOAD!"
     GoTo eof
 )
@@ -208,7 +208,7 @@ Echo.
 @REM ================================ Create Shortcut ================================
 ECHO / ===================================== 创建快捷方式 ===================================== \
 CALL "%WORK_DIR%\CreateShortcutForDesktop" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_DESKTOP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Echo     桌面快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "桌面快捷方式创建失败"
     GoTo eof
@@ -216,7 +216,7 @@ If ERRORLEVEL 1 (
 Echo     桌面快捷方式创建成功
 
 CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_STARTUP!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_STARTUP!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Echo     开始菜单[启动]快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "开始菜单[启动]快捷方式创建失败"
     GoTo eof
@@ -224,7 +224,7 @@ If ERRORLEVEL 1 (
 Echo     开始菜单[启动]快捷方式创建成功
 
 CALL "%WORK_DIR%\CreateShortcutForStartMenu" "!SHORTCUT_PROGRAM!" "!SHORTCUT_NAME_UNINSTALL!" "!SHORTCUT_WORK_DIR!" "!SHORTCUT_DESC!" "!SHORTCUT_PROGRAM_PARAMETER_VERBOSE! !SHORTCUT_PROGRAM_PARAMETER_UNINSTALL!"
-If ERRORLEVEL 1 (
+If ErrorLevel 1 (
     Echo     开始菜单[卸载]快捷方式创建失败
     MSG %UserName% /server:127.0.0.1 "开始菜单[卸载]快捷方式创建失败"
     GoTo eof

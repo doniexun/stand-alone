@@ -20,13 +20,13 @@ IF "!SHELL_DIR:~-1!" == "\" (
 ECHO SHELL_DIR         = !SHELL_DIR!
 
 CALL "!WORK_DIR!\WindowsCurrentUserPrograms"
-If Not ERRORLEVEL 0 (
+If Not ErrorLevel 0 (
     Call :msg_env_load_fail "!WORK_DIR!\WindowsCurrentUserPrograms"
     GoTo eof
 )
 
 CALL "!WORK_DIR!\WindowsCurrentUserDesktop"
-If Not ERRORLEVEL 0 (
+If Not ErrorLevel 0 (
     Call :msg_env_load_fail "!WORK_DIR!\WindowsCurrentUserDesktop"
     GoTo eof
 )
@@ -42,14 +42,14 @@ ECHO.
 @REM ================================ Create Shortcut ================================
 ECHO / ===================================== 删除快捷方式 ===================================== \
 RMDIR /S /Q "!WINDOWS_CURRENT_USER_PROGRAMS!\!SHORTCUT_NAME!"
-If Not ERRORLEVEL 0 (
+If Not ErrorLevel 0 (
     Echo     删除开始菜单快捷方式失败
     MSG %UserName% /server:127.0.0.1 "'%~1' 删除开始菜单快捷方式失败"
     GoTo eof
 )
 
 DEL /F /S /Q "!WINDOWS_CURRENT_USER_DESKTOP!\!SHORTCUT_NAME!.lnk"
-If Not ERRORLEVEL 0 (
+If Not ErrorLevel 0 (
     Echo     删除桌面快捷方式失败
     MSG %UserName% /server:127.0.0.1 "'%~1' 删除桌面快捷方式失败"
     GoTo eof

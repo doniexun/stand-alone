@@ -20,6 +20,7 @@ import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.util.Constants;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.IOUtil;
+import net.lizhaoweb.common.util.base.OSUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
 
 import javax.swing.*;
@@ -101,6 +102,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     messagePrintln("准备上传一代单机版日志 ... ");
 
                     //TODO 本机时间校验
+                    OSUtil.correctingOSTimeForWindows("http://mobile.littlehotspot.com/systemtime.php");
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
@@ -166,6 +168,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     messagePrintln("准备上传三代单机版日志 ... ");
 
                     //TODO 本机时间校验
+                    OSUtil.correctingOSTimeForWindows("http://mobile.littlehotspot.com/systemtime.php");
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);

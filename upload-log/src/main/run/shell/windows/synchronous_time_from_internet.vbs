@@ -1,38 +1,38 @@
 On Error Resume Next
 
-Wscript.Echo "正在校正计算机时间 ……"
+WScript.Echo "正在校正计算机时间 ……"
 
 Set args = WScript.Arguments
 If args.Count >= 1 Then
 	timeSyncURL= WScript.Arguments(0)
-    Wscript.Echo "    时间校准地址 ： " & timeSyncURL
+    WScript.Echo "    时间校准地址 ： " & timeSyncURL
 	'MsgBox "test  " & name
 Else
-	Wscript.Quit 999
+	WScript.Quit 999
 End If
 
 call runAsAdmin()
 If Err.Number <> 0 Then
-	Wscript.Quit Err.Number
+	WScript.Quit Err.Number
 End If
 
 timeStamp = getTimeFromInternet()
 If Err.Number <> 0 Then
-	Wscript.Quit Err.Number
+	WScript.Quit Err.Number
 End If
 
 strNewDateTime = convertDateTime(timeStamp)
 If Err.Number <> 0 Then
-	Wscript.Quit Err.Number
+	WScript.Quit Err.Number
 End If
 
 call syncDateTime(strNewDateTime, Now())
 If Err.Number <> 0 Then
-	Wscript.Quit Err.Number
+	WScript.Quit Err.Number
 End If
 
 
-Wscript.Echo "计算机时间校正完成"
+WScript.Echo "计算机时间校正完成"
 
 Function getTimeFromInternet()
     Dim strUrl, strText
@@ -51,7 +51,7 @@ Function getTimeFromInternet()
     	getTimeFromInternet = Int(Left(strText, 10))
 	End If
     'MsgBox Err.Number
-    'If Err.Number <> 0 Then Wscript.Quit Err.Number
+    'If Err.Number <> 0 Then WScript.Quit Err.Number
 End Function
 
 Function convertDateTime(intUnixTime)
@@ -71,7 +71,7 @@ Sub syncDateTime(ByVal strNewDateTime, strOldDateTime)
     Dim ss, objDateTime, dtmNewDateTime
     ss = DateDiff("s", strOldDateTime, strNewDateTime)
     If Abs(ss) < 1 Then
-    	Wscript.Echo "    本机时间非常准确无需校对！"
+    	WScript.Echo "    本机时间非常准确无需校对！"
         'MsgBox "本机时间非常准确无需校对！"
         Exit Sub
     End If
@@ -86,7 +86,7 @@ Sub syncDateTime(ByVal strNewDateTime, strOldDateTime)
     For Each objOS in colOSes
         objOS.SetDateTime dtmNewDateTime
     Next
-    Wscript.Echo "    校准前：" & strOldDateTime & vbLf & "    校准后：" & Now()
+    WScript.Echo "    校准前：" & strOldDateTime & vbLf & "    校准后：" & Now()
     'MsgBox "校准前：" & strOldDateTime & vbLf & "校准后：" & Now()
 End Sub
 

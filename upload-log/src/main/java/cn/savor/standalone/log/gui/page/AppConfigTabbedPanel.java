@@ -258,6 +258,7 @@ public class AppConfigTabbedPanel extends AppAbstractTabbedPanel {
         ossObjectKeyComboBox.setName(WindowConstant.AppTabbedPanel.Config.OSSObjectKey.fieldName);
         ossObjectKeyComboBox.addActionListener(new ComboBoxActionListener(context));
         ossObjectKeyComboBox.setSelectedItem(ossObjectKeySelectedItem);
+        ossObjectKeyComboBox.setEnabled(false);
         rowPanel.add(ossObjectKeyComboBox);
     }
 
