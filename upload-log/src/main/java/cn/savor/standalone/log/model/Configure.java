@@ -15,8 +15,10 @@ import lombok.Setter;
 import net.lizhaoweb.common.util.base.FileUtil;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -78,6 +80,18 @@ public class Configure {
     }
 
     public Set<Map.Entry<String, String>> getConfigs() {
-        return configMap.entrySet();
+        Map<String, String> sortMap = new TreeMap<>(new StringComparator());
+        sortMap.putAll(configMap);
+        return sortMap.entrySet();
+    }
+
+    /**
+     * 字符串比较器。
+     */
+    private static class StringComparator implements Comparator<String> {
+        @Override
+        public int compare(String str1, String str2) {
+            return str1.compareTo(str2);
+        }
     }
 }

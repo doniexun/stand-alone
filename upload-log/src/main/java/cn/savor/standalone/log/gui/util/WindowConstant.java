@@ -144,6 +144,24 @@ public class WindowConstant {
                 public static final String title = "信息";
             }
         }
+
+        public static class DownloadFromOSS {
+            public static final String title = "上传到云";
+            public static final String icon = "/images/icon_upload.png";
+            public static final String tip = "把日志文件从此电脑上传到 OSS";
+
+            public static class ConfigurePanel {
+                public static final String title = "数据源";
+            }
+
+            public static class OperationPanel {
+                public static final String title = "操作";
+            }
+
+            public static class MessagePanel {
+                public static final String title = "信息";
+            }
+        }
     }
 
     public static class Page {

@@ -62,6 +62,7 @@ public class ConfigureLoader {
     public ConfigureLoader loadConfig() throws LoadException {
         // 加载
         Properties properties = fileLoader.loadConfigFile(configure);
+        this.loadConfigFromProperties(properties, Constants.Configure.Keys.Url.TIME_SYNC, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.CITY, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.OSS.BUCKET, configure);
         this.loadConfigFromProperties(properties, Constants.Configure.Keys.Directory.Temp._ROOT, configure);
@@ -95,7 +96,7 @@ public class ConfigureLoader {
         }
         String defaultBackupDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup._ROOT);
 
-        // upload
+        // =========================================== upload ===========================================
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload._ROOT))) {
             File defaultDirectory = new File(defaultBackupDirectoryName, Constants.Configure.Directory.UPLOAD);
             configure.putConfig(Constants.Configure.Keys.Directory.Backup.Upload._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
@@ -107,14 +108,35 @@ public class ConfigureLoader {
             File defaultDirectory = new File(defaultUploadDirectoryName, Constants.Configure.Directory.STANDALONE_V1);
             configure.putConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1, FileUtil.getCanonicalPath(defaultDirectory));
         }
-//        String defaultOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
+//        String defaultUploadOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
 
         // standalone_v3
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3))) {
             File defaultDirectory = new File(defaultUploadDirectoryName, Constants.Configure.Directory.STANDALONE_V3);
             configure.putConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
         }
-//        String defaultOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
+//        String defaultUploadOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
+
+        // =========================================== download ===========================================
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download._ROOT))) {
+            File defaultDirectory = new File(defaultBackupDirectoryName, Constants.Configure.Directory.DOWNLOAD);
+            configure.putConfig(Constants.Configure.Keys.Directory.Backup.Download._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+        String defaultDownloadDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download._ROOT);
+
+        // standalone_v1
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V1))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V1);
+            configure.putConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V1, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V1);
+
+        // standalone_v3
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V3))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V3);
+            configure.putConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V3);
     }
 
     // 校验 Data
@@ -126,7 +148,7 @@ public class ConfigureLoader {
         }
         String defaultDataDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data._ROOT);
 
-        // upload
+        // =========================================== upload ===========================================
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Data.Upload._ROOT))) {
             File defaultDirectory = new File(defaultDataDirectoryName, Constants.Configure.Directory.UPLOAD);
             configure.putConfig(Constants.Configure.Keys.Directory.Data.Upload._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
@@ -147,7 +169,28 @@ public class ConfigureLoader {
         }
 //        String defaultOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
 
-        // media
+        // =========================================== download ===========================================
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Data.Download._ROOT))) {
+            File defaultDirectory = new File(defaultDataDirectoryName, Constants.Configure.Directory.DOWNLOAD);
+            configure.putConfig(Constants.Configure.Keys.Directory.Data.Download._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+        String defaultDownloadDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data.Download._ROOT);
+
+        // standalone_v1
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V1))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V1);
+            configure.putConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V1, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V1);
+
+        // standalone_v3
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V3))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V3);
+            configure.putConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V3);
+
+        // =========================================== media ===========================================
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Data.MEDIA))) {
             File defaultDirectory = new File(defaultDataDirectoryName, Constants.Configure.Directory.MEDIA);
             configure.putConfig(Constants.Configure.Keys.Directory.Data.MEDIA, FileUtil.getCanonicalPath(defaultDirectory));
@@ -165,7 +208,7 @@ public class ConfigureLoader {
         }
         String defaultTempDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp._ROOT);
 
-        // upload
+        // =========================================== upload ===========================================
         if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload._ROOT))) {
             File defaultDirectory = new File(defaultTempDirectoryName, Constants.Configure.Directory.UPLOAD);
             configure.putConfig(Constants.Configure.Keys.Directory.Temp.Upload._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
@@ -185,6 +228,27 @@ public class ConfigureLoader {
             configure.putConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
         }
 //        String defaultOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3);
+
+        // =========================================== download ===========================================
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download._ROOT))) {
+            File defaultDirectory = new File(defaultTempDirectoryName, Constants.Configure.Directory.DOWNLOAD);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Download._ROOT, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+        String defaultDownloadDirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download._ROOT);
+
+        // standalone_v1
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V1))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V1);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V1, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV1DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V1);
+
+        // standalone_v3
+        if (StringUtil.isBlank(configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V3))) {
+            File defaultDirectory = new File(defaultDownloadDirectoryName, Constants.Configure.Directory.STANDALONE_V3);
+            configure.putConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V3, FileUtil.getCanonicalPath(defaultDirectory));
+        }
+//        String defaultDownloadOfflineV3DirectoryName = configure.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V3);
     }
 
     private void loadUIDataFromProperties(Properties properties, String key, Configure configure) {

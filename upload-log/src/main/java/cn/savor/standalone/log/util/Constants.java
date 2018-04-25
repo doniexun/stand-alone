@@ -53,6 +53,7 @@ public class Constants {
              * URL
              */
             public static class Url {
+                public static final String TIME_SYNC = "cn.savor.offline.log.configure.url.time.sync";
 
                 /**
                  * 区域
@@ -97,6 +98,15 @@ public class Constants {
                         public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.temp.upload.offlineV1";
                         public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.temp.upload.offlineV3";
                     }
+
+                    /**
+                     * 下载
+                     */
+                    public static class Download {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.temp.download";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.temp.download.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.temp.download.offlineV3";
+                    }
                 }
 
                 /**
@@ -112,6 +122,15 @@ public class Constants {
                         public static final String _ROOT = "cn.savor.offline.log.configure.directory.backup.upload";
                         public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.backup.upload.offlineV1";
                         public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.backup.upload.offlineV3";
+                    }
+
+                    /**
+                     * 下载
+                     */
+                    public static class Download {
+                        public static final String _ROOT = "cn.savor.offline.log.configure.directory.backup.download";
+                        public static final String OFFLINE_V1 = "cn.savor.offline.log.configure.directory.backup.download.offlineV1";
+                        public static final String OFFLINE_V3 = "cn.savor.offline.log.configure.directory.backup.download.offlineV3";
                     }
                 }
 
@@ -153,6 +172,7 @@ public class Constants {
             public static final String DATA = "data";
             public static final String BACKUP = "backup";
             public static final String UPLOAD = "upload";
+            public static final String DOWNLOAD = "download";
             public static final String STANDALONE_V1 = "standalone_v1";
             public static final String STANDALONE_V3 = "standalone_v3";
             public static final String MEDIA = "media";
@@ -175,6 +195,15 @@ public class Constants {
             public static final int RUNNING = 1;
             public static final int STOPPING = 2;
             public static final int STOPPED = 3;
+        }
+    }
+
+    public static class OSS{
+        public static final String ENDPOINT = "oss-cn-beijing.aliyuncs.com";
+
+        public static class CredentialsProvider{
+            public static final String  ACCESS_KEY_ID = "LTAI5h1iEI5N7Zjj";
+            public static final String  SECRET_ACCESS_KEY = "m2Mn3HAqhfXZm7o4r9tsUfqrXh2NxE";
         }
     }
 }

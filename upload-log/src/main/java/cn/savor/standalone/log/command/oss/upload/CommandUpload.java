@@ -16,7 +16,12 @@ import cn.savor.standalone.log.command.ICommand;
 import cn.savor.standalone.log.command.oss.OSSObjectOperation;
 import cn.savor.standalone.log.command.oss.upload.bean.LocalFile;
 import cn.savor.standalone.log.command.oss.upload.service.LocalSystem;
+import cn.savor.standalone.log.util.Constants;
+import com.aliyun.oss.ClientConfiguration;
+import com.aliyun.oss.common.auth.CredentialsProvider;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.model.PutObjectResult;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NoArgsConstructor;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
 import net.lizhaoweb.common.util.base.HttpClientSimpleUtil;
@@ -78,10 +83,12 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
 
         if (StringUtil.isNotBlank(areaUrl)) {
             String json = HttpClientSimpleUtil.get(areaUrl);
-            Map<String, Object> data = JsonUtil.toBean(json, Map.class);
-            Integer code = (Integer) data.get("code");
-            if (code == 10000) {
-                String id = ((Map<String, String>) data.get("result")).get("id");
+            TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
+            };
+            Map<String, Object> response = JsonUtil.toBean(json, typeReference);
+            if ("10000".equals(response.get("code"))) {
+                Map<String, String> result = (Map<String, String>) response.get("result");
+                String id = result.get("id");
                 if (StringUtil.isBlank(id)) {
                     throw new IllegalArgumentException("获取城市编码失败，请核查日志文件所属区域是否配置正确");
                 }
@@ -102,11 +109,9 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
         File backupDirectory = new File(backupDir);
         for (File compressionFile : localFile.getFileList()) {
             try {
-                File uploadFile = compressionFile;
-
                 // 上传日志文件到 OSS
-                String ossKey = HttpUtil.formatPath(String.format("%s/%s", ossKeyPrefix, uploadFile.getName()));
-                PutObjectResult putObjectResult = ossClient.putObject(ossBucketName, ossKey, uploadFile);
+                String ossKey = HttpUtil.formatPath(String.format("%s/%s", ossKeyPrefix, compressionFile.getName()));
+                PutObjectResult putObjectResult = ossClient.putObject(ossBucketName, ossKey, compressionFile);
 
                 // 上传 OSS 成功后，删除本地文件
                 String ossFileETag = putObjectResult.getETag();
@@ -129,7 +134,7 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
         // 文件操作失败提示
         this.println("/ ------------------------------- 执行结果展示开始 ------------------------------- \\");
         this.println("以下文件上传成功，但移动失败：");
-        if (notMoveFileList == null || notMoveFileList.size() < 1) {
+        if (notMoveFileList.size() < 1) {
             this.println(1, "无");
         } else {
             for (File file : notMoveFileList) {
@@ -142,7 +147,7 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
 //        }
         this.println();
         this.println("以下文件操作失败：");
-        if (notUploadFileList == null || notUploadFileList.size() < 1) {
+        if (notUploadFileList.size() < 1) {
             this.println(1, "无");
         } else {
             for (File file : notUploadFileList) {
@@ -168,9 +173,9 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
     }
 
     private IOSSClient getOssClient() {
-        String endpoint = "oss-cn-beijing.aliyuncs.com";
-        String accessKeyId = "LTAI5h1iEI5N7Zjj";
-        String secretAccessKey = "m2Mn3HAqhfXZm7o4r9tsUfqrXh2NxE";
-        return new OSSClientForSavor(endpoint, accessKeyId, secretAccessKey);
+        ClientConfiguration config = new ClientConfiguration();
+        CredentialsProvider credsProvider = new DefaultCredentialProvider(Constants.OSS.CredentialsProvider.ACCESS_KEY_ID, Constants.OSS.CredentialsProvider.SECRET_ACCESS_KEY);
+
+        return new OSSClientForSavor(Constants.OSS.ENDPOINT, credsProvider, config);
     }
 }

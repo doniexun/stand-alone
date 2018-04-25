@@ -91,6 +91,7 @@ If NOT EXIST "!DIR_LOG!\" (
     )
     Call :msg_make_dir_success "!DIR_LOG!\"
 )
+
 If NOT EXIST "!DIR_TEMP!\upload\standalone_v1\" (
     MKDIR "!DIR_TEMP!\upload\standalone_v1\"
     If ErrorLevel 1 (
@@ -107,6 +108,23 @@ If NOT EXIST "!DIR_TEMP!\upload\standalone_v3\" (
     )
     Call :msg_make_dir_success "!DIR_TEMP!\upload\standalone_v3\"
 )
+If NOT EXIST "!DIR_TEMP!\download\standalone_v1\" (
+    MKDIR "!DIR_TEMP!\download\standalone_v1\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_TEMP!\download\standalone_v1\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_TEMP!\download\standalone_v1\"
+)
+If NOT EXIST "!DIR_TEMP!\download\standalone_v3\" (
+    MKDIR "!DIR_TEMP!\download\standalone_v3\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_TEMP!\download\standalone_v3\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_TEMP!\download\standalone_v3\"
+)
+
 If NOT EXIST "!DIR_DATA!\upload\standalone_v1\" (
     MKDIR "!DIR_DATA!\upload\standalone_v1\"
     If ErrorLevel 1 (
@@ -123,6 +141,23 @@ If NOT EXIST "!DIR_DATA!\upload\standalone_v3\" (
     )
     Call :msg_make_dir_success "!DIR_DATA!\upload\standalone_v3\"
 )
+If NOT EXIST "!DIR_DATA!\download\standalone_v1\" (
+    MKDIR "!DIR_DATA!\download\standalone_v1\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_DATA!\download\standalone_v1\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_DATA!\download\standalone_v1\"
+)
+If NOT EXIST "!DIR_DATA!\download\standalone_v3\" (
+    MKDIR "!DIR_DATA!\download\standalone_v3\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_DATA!\download\standalone_v3\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_DATA!\download\standalone_v3\"
+)
+
 If NOT EXIST "!DIR_BACKUP!\upload\standalone_v1\" (
     MKDIR "!DIR_BACKUP!\upload\standalone_v1\"
     If ErrorLevel 1 (
@@ -138,6 +173,22 @@ If NOT EXIST "!DIR_BACKUP!\upload\standalone_v3\" (
         GoTo eof
     )
     Call :msg_make_dir_success "!DIR_BACKUP!\upload\standalone_v3\"
+)
+If NOT EXIST "!DIR_BACKUP!\download\standalone_v1\" (
+    MKDIR "!DIR_BACKUP!\download\standalone_v1\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_BACKUP!\download\standalone_v1\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_BACKUP!\download\standalone_v1\"
+)
+If NOT EXIST "!DIR_BACKUP!\download\standalone_v3\" (
+    MKDIR "!DIR_BACKUP!\download\standalone_v3\"
+    If ErrorLevel 1 (
+        Call :msg_make_dir_failed "!DIR_BACKUP!\download\standalone_v3\"
+        GoTo eof
+    )
+    Call :msg_make_dir_success "!DIR_BACKUP!\download\standalone_v3\"
 )
 ECHO \ ===================================== ³õÊ¼»¯Ä¿Â¼ ===================================== /
 ECHO.

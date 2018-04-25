@@ -92,7 +92,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         configurePanel.setBorder(configurePanelTitledBorder);
 
         JButton uploadOfflineV1Button = new JButton("上传一代");
-        uploadOfflineV1Button.setToolTipText("从 U 盘中把一代单机版日志复现到此台电脑上");
+        uploadOfflineV1Button.setToolTipText("从此台电脑中把一代单机版日志上传到云");
         uploadOfflineV1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -101,8 +101,9 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     runningStatus = THIS_STATUS_OFFLINE_V1_START;
                     messagePrintln("准备上传一代单机版日志 ... ");
 
-                    //TODO 本机时间校验
-                    OSUtil.correctingOSTimeForWindows("http://mobile.littlehotspot.com/systemtime.php");
+                    // 本机时间校准
+                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
@@ -158,7 +159,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         configurePanel.add(uploadOfflineV1Button);
 
         JButton uploadOfflineV3Button = new JButton("上传三代");
-        uploadOfflineV3Button.setToolTipText("从 U 盘中把三代单机版日志复现到此台电脑上");
+        uploadOfflineV3Button.setToolTipText("从此台电脑中把三代单机版日志上传到云");
         uploadOfflineV3Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -167,8 +168,9 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                     runningStatus = THIS_STATUS_OFFLINE_V3_START;
                     messagePrintln("准备上传三代单机版日志 ... ");
 
-                    //TODO 本机时间校验
-                    OSUtil.correctingOSTimeForWindows("http://mobile.littlehotspot.com/systemtime.php");
+                    // 本机时间校准
+                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
 
                     List<String> argList = new ArrayList<>();
                     String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
