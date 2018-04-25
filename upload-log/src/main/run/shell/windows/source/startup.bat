@@ -14,20 +14,34 @@ IF "!APP_HOME:~-1!" == "\" (
 )
 ECHO APP_HOME          = !APP_HOME!
 
-SET JAVA_HOME=!APP_HOME!\java\jre
-ECHO JAVA_HOME         = %JAVA_HOME%
+SET APP_TMPDIR=!APP_HOME!\temp
+ECHO APP_TMPDIR        = !APP_TMPDIR!
 
-SET CLASSPATH=.;%JAVA_HOME%\lib\rt.jar
+SET JAVA_HOME=!APP_HOME!\java\jre
+ECHO JAVA_HOME         = !JAVA_HOME!
+
+SET JAVA_EXE=!JAVA_HOME!\bin\java
+ECHO JAVA_EXE          = !JAVA_EXE!
+
+SET MAIN_CLASS=cn.savor.standalone.log.gui.GuiMain
+ECHO MAIN_CLASS        = !MAIN_CLASS!
+
+set LOGGING_CONFIG=-Dlogback.configurationFile="!APP_HOME!\conf\logback.xml"
+ECHO LOGGING_CONFIG    = !LOGGING_CONFIG!
+
+SET CLASSPATH=.;!JAVA_HOME!\lib\rt.jar
 For /R "%APP_HOME%\lib" %%f In (*) do (
     ::Echo     %%f
     Set CLASSPATH=!CLASSPATH!;%%f
 )
+::ECHO CLASSPATH         = !CLASSPATH!
 
-SET MAIN_CLASS=cn.savor.standalone.log.gui.GuiMain
+SET "JAVA_OPTS=!JAVA_OPTS! !LOGGING_CONFIG!"
 
-"!JAVA_HOME!\bin\java" -Dsavor.tool.box.home="!APP_HOME!" -Dlogback.configurationFile="!APP_HOME!\conf\logback.xml" "%MAIN_CLASS%" -classpath "!CLASSPATH!"
+
+"!JAVA_EXE!" !JAVA_OPTS! -classpath "!CLASSPATH!" -Dsavor.tool.box.home="!APP_HOME!" -Djava.io.tmpdir="!APP_TMPDIR!" "!MAIN_CLASS!"
 
 ECHO "ÒÑ¾­¹Ø±Õ"
-::EXIT /B 200
 EndLocal
-EXIT
+::EXIT /B 200
+::EXIT

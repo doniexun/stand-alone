@@ -88,7 +88,7 @@ public class MainWindow {
         Component appDownloadTabComponent = appUploadTabbedPanel.buildUI(tabbedPane);
 //        Icon appDownloadTabIcon = new ImageIcon(this.getClass().getResource(WindowConstant.AppTabbedPanel.DownloadFromOSS.icon));
         tabbedPane.addTab(WindowConstant.AppTabbedPanel.DownloadFromOSS.title, null, appDownloadTabComponent, WindowConstant.AppTabbedPanel.DownloadFromOSS.tip);
-        tabbedPane.setEnabledAt(3, true);
+        tabbedPane.setEnabledAt(3, false);
 
         tabbedPane.setSelectedComponent(appCopyTabComponent);
         mainFrame.setContentPane(tabbedPane);
