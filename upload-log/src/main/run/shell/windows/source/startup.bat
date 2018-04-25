@@ -20,7 +20,7 @@ ECHO APP_TMPDIR        = !APP_TMPDIR!
 SET JAVA_HOME=!APP_HOME!\java\jre
 ECHO JAVA_HOME         = !JAVA_HOME!
 
-SET JAVA_EXE=!JAVA_HOME!\bin\java
+SET JAVA_EXE=!JAVA_HOME!\bin\javaw
 ECHO JAVA_EXE          = !JAVA_EXE!
 
 SET MAIN_CLASS=cn.savor.standalone.log.gui.GuiMain
@@ -39,9 +39,10 @@ For /R "%APP_HOME%\lib" %%f In (*) do (
 SET "JAVA_OPTS=!JAVA_OPTS! !LOGGING_CONFIG!"
 
 
-"!JAVA_EXE!" !JAVA_OPTS! -classpath "!CLASSPATH!" -Dsavor.tool.box.home="!APP_HOME!" -Djava.io.tmpdir="!APP_TMPDIR!" "!MAIN_CLASS!"
+START "" "!JAVA_EXE!" !JAVA_OPTS! -classpath "!CLASSPATH!" -Dsavor.tool.box.home="!APP_HOME!" -Djava.io.tmpdir="!APP_TMPDIR!" "!MAIN_CLASS!"
 
 ECHO "ÒÑ¾­¹Ø±Õ"
+
+::"!APP_HOME!\bin\sleep" 3000
 EndLocal
-::EXIT /B 200
-::EXIT
+EXIT
