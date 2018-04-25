@@ -165,10 +165,12 @@ public class CommandUpload extends OSSObjectOperation implements ICommand {
         StringBuilder information = new StringBuilder();
         information.append("Usage: upload <ARGUMENT>...").append("\n");
         information.append("Command upload argument:").append("\n");
-        information.append("    fromDir=DIR      Local directory for reading files").append("\n");
-        information.append("    tempDir=DIR      Local storage temporary directory").append("\n");
-        information.append("    bucketName=WORD  The OSS bucket name for the file to upload").append("\n");
-        information.append("    keyPrefix=WORD   The prefix of the file in OSS").append("\n");
+        information.append("    fromDir=<DIR>      Local directory for reading files").append("\n");
+        information.append("    tempDir=[DIR]      Local storage temporary directory").append("\n");
+        information.append("    backupDir=[DIR]    Local storage backup directory").append("\n");
+        information.append("    bucketName=<WORD>  The OSS bucket name for the file to upload").append("\n");
+        information.append("    keyPrefix=<WORD>   The prefix of the file in OSS").append("\n");
+        information.append("    areaUrl=[WORD]     The url of the area").append("\n");
         return information.toString();
     }
 

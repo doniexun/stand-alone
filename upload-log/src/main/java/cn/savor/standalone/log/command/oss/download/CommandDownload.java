@@ -124,7 +124,14 @@ public class CommandDownload extends OSSObjectOperation implements ICommand {
 
     @Override
     public String getInformation() {
-        return null;
+        StringBuilder information = new StringBuilder();
+        information.append("Usage: download <ARGUMENT>...").append("\n");
+        information.append("Command download argument:").append("\n");
+        information.append("    downloadDir=<DIR>    Local directory for writing files").append("\n");
+        information.append("    tempDir=[DIR]        Local storage temporary directory").append("\n");
+        information.append("    bucketName=<WORD>    The OSS bucket name for the file to upload").append("\n");
+        information.append("    keyPrefix=<WORD...>  The prefix of the file in OSS").append("\n");
+        return information.toString();
     }
 
     /**
