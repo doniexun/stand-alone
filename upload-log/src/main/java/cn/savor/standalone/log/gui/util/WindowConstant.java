@@ -130,7 +130,7 @@ public class WindowConstant {
         public static class UploadToOSS {
             public static final String title = "上传到云";
             public static final String icon = "/images/icon_upload.png";
-            public static final String tip = "把日志文件从此电脑上传到 OSS";
+            public static final String tip = "把日志文件从此电脑上传到云端";
 
             public static class ConfigurePanel {
                 public static final String title = "数据源";
@@ -146,9 +146,9 @@ public class WindowConstant {
         }
 
         public static class DownloadFromOSS {
-            public static final String title = "上传到云";
-            public static final String icon = "/images/icon_upload.png";
-            public static final String tip = "把日志文件从此电脑上传到 OSS";
+            public static final String title = "从云下载";
+            public static final String icon = "/images/icon_download.png";
+            public static final String tip = "把日志文件从云端下载到此电脑";
 
             public static class ConfigurePanel {
                 public static final String title = "数据源";
