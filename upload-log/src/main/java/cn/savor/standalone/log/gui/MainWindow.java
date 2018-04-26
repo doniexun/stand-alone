@@ -17,6 +17,7 @@ import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.model.Configure;
 import cn.savor.standalone.log.util.ConfigureLoader;
 import cn.savor.standalone.log.util.Constants;
+import net.lizhaoweb.common.util.base.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,12 @@ public class MainWindow {
     void run() {
         logger.info("Building GUI ...");
         JFrame mainFrame = context.getTopWindow();
+
+        String windowTitle = System.getProperty("savor.tool.box.project.name");
+        logger.info("System.getProperty(\"savor.tool.box.project.name\")={}", windowTitle);
+        if (StringUtil.isNotBlank(windowTitle)) {
+            mainFrame.setTitle(windowTitle);
+        }
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setSize(mainFrame.getWidth(), mainFrame.getHeight());

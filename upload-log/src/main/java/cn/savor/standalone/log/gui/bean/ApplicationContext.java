@@ -10,10 +10,10 @@
  */
 package cn.savor.standalone.log.gui.bean;
 
-import cn.savor.standalone.log.model.Configure;
-import cn.savor.standalone.log.util.Constants;
 import cn.savor.standalone.log.gui.util.WindowConstant;
+import cn.savor.standalone.log.model.Configure;
 import cn.savor.standalone.log.model.ItemKeyValue;
+import cn.savor.standalone.log.util.Constants;
 import lombok.Getter;
 import nl.demon.shadowland.freedumbytes.swingx.gui.modal.JModalFrame;
 
@@ -56,6 +56,11 @@ public class ApplicationContext {
         this.configure = configure;
         this.icon = new ImageIcon(this.getClass().getResource(WindowConstant.MainFrame.icon)).getImage();
 
+//        String windowTitle = System.getProperty("savor.tool.box.project.name");
+//        if (StringUtil.isBlank(windowTitle)) {
+//            windowTitle = WindowConstant.MainFrame.title;
+//        }
+//        this.topWindow = new JModalFrame(windowTitle);
         this.topWindow = new JModalFrame(WindowConstant.MainFrame.title);
         this.topWindow.setIconImage(this.icon);
         this.topWindow.setSize(WindowConstant.MainFrame.width, WindowConstant.MainFrame.height);

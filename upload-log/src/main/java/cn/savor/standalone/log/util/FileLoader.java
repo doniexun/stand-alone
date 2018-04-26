@@ -61,6 +61,7 @@ public class FileLoader {
     public Properties loadConfigFile(Configure configure) {
         Properties properties = new Properties();
         String fileName = System.getProperty("savor.tool.box.conf");
+        logger.info("System.getProperty(\"savor.tool.box.conf\")={}", fileName);
         if (this.loadFromFile(configure, properties, fileName, FILE_TYPE_CONFIG)) {
             return properties;
         }

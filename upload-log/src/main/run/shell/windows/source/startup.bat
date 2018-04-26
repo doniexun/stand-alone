@@ -45,6 +45,10 @@ ECHO JRE_HOME          = !JRE_HOME!
 
 CALL "!WORK_DIR!\ReadConfig" false "!DIR_CONF!\app.ini"
 
+If Not "%com.littlehotspot.offline.tools.project.name%" == "" (
+    SET "JAVA_OPTS=!JAVA_OPTS! -Dsavor.tool.box.project.name=^"%com.littlehotspot.offline.tools.project.name%^""
+)
+
 If "%com.littlehotspot.offline.tools.conf%" == "" (
     SET APP_CONFIG=-Dsavor.tool.box.conf="!APP_HOME!\conf\config.properties"
 ) Else (
