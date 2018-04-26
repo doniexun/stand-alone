@@ -19,9 +19,12 @@ import cn.savor.standalone.log.gui.io.JTextAreaSetTextOutputStream;
 import cn.savor.standalone.log.gui.util.WindowConstant;
 import cn.savor.standalone.log.util.Constants;
 import net.lizhaoweb.common.util.argument.ArgumentFactory;
+import net.lizhaoweb.common.util.base.HttpUtil;
 import net.lizhaoweb.common.util.base.IOUtil;
 import net.lizhaoweb.common.util.base.OSUtil;
 import net.lizhaoweb.common.util.base.StringUtil;
+import net.lizhaoweb.common.util.base.date.DateConstant;
+import net.lizhaoweb.common.util.base.date.DateUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -184,11 +187,15 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                 }
                 argList.add("bucketName=" + bucketName);
 
+
+                String areaCode = context.getConfig(Constants.Configure.Keys.CITY);
+
                 String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
                 if (StringUtil.isBlank(keyPrefix)) {
                     throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 键");
                 }
-                argList.add("keyPrefix=" + keyPrefix);
+                keyPrefix = String.format("%s/%s/%s", keyPrefix, areaCode, DateUtil.getSystemDateString(DateConstant.Format.Intact.DATE_3));
+                argList.add("keyPrefix=" + HttpUtil.formatPath(keyPrefix));
 
                 ICommand command = new CommandUpload(messageOutputStream);
                 ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
@@ -247,7 +254,8 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
                 if (StringUtil.isBlank(keyPrefix)) {
                     throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 键");
                 }
-                argList.add("keyPrefix=" + keyPrefix);
+                keyPrefix = String.format("%s/{}/%s", keyPrefix, DateUtil.getSystemDateString(DateConstant.Format.Intact.DATE_3));
+                argList.add("keyPrefix=" + HttpUtil.formatPath(keyPrefix));
 
                 String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
                 if (StringUtil.isBlank(areaUrl)) {

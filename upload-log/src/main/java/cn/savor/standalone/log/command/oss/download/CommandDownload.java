@@ -87,7 +87,8 @@ public class CommandDownload extends OSSObjectOperation implements ICommand {
             TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {
             };
             Map<String, Object> response = JsonUtil.toBean(json, typeReference);
-            if ("10000".equals(response.get("code"))) {
+            Integer responseCode = (Integer) response.get("code");
+            if (10000 == responseCode) {
                 Map<String, String> result = (Map<String, String>) response.get("result");
                 String id = result.get("id");
                 if (StringUtil.isBlank(id)) {
