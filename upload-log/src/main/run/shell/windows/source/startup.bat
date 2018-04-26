@@ -20,7 +20,7 @@ ECHO APP_TMPDIR        = !APP_TMPDIR!
 SET JAVA_HOME=!APP_HOME!\java\jre
 ECHO JAVA_HOME         = !JAVA_HOME!
 
-SET JAVA_EXE=!JAVA_HOME!\bin\javaw
+SET JAVA_EXE=!JAVA_HOME!\bin\java
 ECHO JAVA_EXE          = !JAVA_EXE!
 
 SET MAIN_CLASS=cn.savor.standalone.log.gui.GuiMain

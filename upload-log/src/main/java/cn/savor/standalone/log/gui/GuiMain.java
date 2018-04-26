@@ -29,6 +29,7 @@ public class GuiMain {
     private static Logger logger = LoggerFactory.getLogger(GuiMain.class);
 
     public static void main(String[] args) {
+        logger.info("Opening GUI ...");
         try {
             MainWindow window = new MainWindow();
             window.init();
@@ -37,5 +38,6 @@ public class GuiMain {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+        logger.info("GUI is closed");
     }
 }

@@ -70,7 +70,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        final JTextArea textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setForeground(new Color(20, 20, 20));
         textArea.setDisabledTextColor(new Color(30, 30, 30));
         textArea.setBackground(null);
@@ -93,136 +93,12 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
 
         JButton uploadOfflineV1Button = new JButton("上传一代");
         uploadOfflineV1Button.setToolTipText("从此台电脑中把一代单机版日志上传到云");
-        uploadOfflineV1Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    checkRunningStatus();
-                    runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("准备上传一代单机版日志 ... ");
-
-                    // 本机时间校准
-                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
-                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
-
-                    List<String> argList = new ArrayList<>();
-                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
-                    if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有源目录");
-                    }
-                    argList.add("fromDir=" + sourceDirectoryPath);
-
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1);
-                    if (StringUtil.isBlank(tempDirectoryPath)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有临时目录");
-                    }
-                    argList.add("tempDir=" + tempDirectoryPath);
-
-                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
-                    if (StringUtil.isBlank(backupDirectoryPath)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有备份目录");
-                    }
-                    argList.add("backupDir=" + backupDirectoryPath);
-
-                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
-                    if (StringUtil.isBlank(bucketName)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 桶");
-                    }
-                    argList.add("bucketName=" + bucketName);
-
-                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
-                    if (StringUtil.isBlank(keyPrefix)) {
-                        throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 键");
-                    }
-                    argList.add("keyPrefix=" + keyPrefix);
-
-//                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1), context.getConfig(Constants.Configure.Keys.CITY));
-//                    if (StringUtil.isBlank(areaUrl)) {
-//                        throw new IllegalArgumentException("上传一代单机版日志时，没有区域 url 地址");
-//                    }
-//                    argList.add("areaUrl=" + areaUrl);
-
-                    ICommand command = new CommandUpload(messageOutputStream);
-                    ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
-
-                    messagePrintln(1, "开始上传： ");
-                    command.execute();
-                    messagePrintln("一代单机版日志上传完成");
-                } catch (Exception e) {
-                    messagePrintlnError(e);
-                }
-                messageNewLine();
-                messageNewLine();
-                runningStatus = THIS_STATUS_OFFLINE_V1_END;
-            }
-        });
+        uploadOfflineV1Button.addActionListener(new UploadButtonForOfflineV1ActionListener());
         configurePanel.add(uploadOfflineV1Button);
 
         JButton uploadOfflineV3Button = new JButton("上传三代");
         uploadOfflineV3Button.setToolTipText("从此台电脑中把三代单机版日志上传到云");
-        uploadOfflineV3Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    checkRunningStatus();
-                    runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("准备上传三代单机版日志 ... ");
-
-                    // 本机时间校准
-                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
-                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
-
-                    List<String> argList = new ArrayList<>();
-                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
-                    if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有源目录");
-                    }
-                    argList.add("fromDir=" + sourceDirectoryPath);
-
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3);
-                    if (StringUtil.isBlank(tempDirectoryPath)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有临时目录");
-                    }
-                    argList.add("tempDir=" + tempDirectoryPath);
-
-                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
-                    if (StringUtil.isBlank(backupDirectoryPath)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有备份目录");
-                    }
-                    argList.add("backupDir=" + backupDirectoryPath);
-
-                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
-                    if (StringUtil.isBlank(bucketName)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 桶");
-                    }
-                    argList.add("bucketName=" + bucketName);
-
-                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
-                    if (StringUtil.isBlank(keyPrefix)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 键");
-                    }
-                    argList.add("keyPrefix=" + keyPrefix);
-
-                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
-                    if (StringUtil.isBlank(areaUrl)) {
-                        throw new IllegalArgumentException("上传三代单机版日志时，没有区域 url 地址");
-                    }
-                    argList.add("areaUrl=" + areaUrl);
-
-                    ICommand command = new CommandUpload(messageOutputStream);
-                    ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
-
-                    messagePrintln(1, "开始上传： ");
-                    command.execute();
-                    messagePrintln("三代单机版日志上传完成");
-                } catch (Exception e) {
-                    messagePrintlnError(e);
-                }
-                messageNewLine();
-                messageNewLine();
-                runningStatus = THIS_STATUS_OFFLINE_V3_END;
-            }
-        });
+        uploadOfflineV3Button.addActionListener(new UploadButtonForOfflineV3ActionListener());
         configurePanel.add(uploadOfflineV3Button);
 
         parentPanel.add(configurePanel, BorderLayout.CENTER);
@@ -240,7 +116,7 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        final JTextArea textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setForeground(new Color(20, 20, 20));
         textArea.setDisabledTextColor(new Color(30, 30, 30));
         textArea.setBackground(null);
@@ -265,6 +141,132 @@ public class AppUploadTabbedPanel extends AppAbstractTabbedPanel {
         }
         if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
             this.messagePrintln("上传三代单机版日志没有结束");
+        }
+    }
+
+
+    // ================================================ 内部类 ================================================
+    // 上传按键动作监听器 - 一代单机版
+    private class UploadButtonForOfflineV1ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try {
+                checkRunningStatus();
+                runningStatus = THIS_STATUS_OFFLINE_V1_START;
+                messagePrintln("准备上传一代单机版日志 ... ");
+
+                // 本机时间校准
+                String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                OSUtil.correctingOSTimeForWindows(timeSyncURL);
+
+                List<String> argList = new ArrayList<>();
+                String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V1);
+                if (StringUtil.isBlank(sourceDirectoryPath)) {
+                    throw new IllegalArgumentException("上传一代单机版日志时，没有源目录");
+                }
+                argList.add("fromDir=" + sourceDirectoryPath);
+
+                String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V1);
+                if (StringUtil.isBlank(tempDirectoryPath)) {
+                    throw new IllegalArgumentException("上传一代单机版日志时，没有临时目录");
+                }
+                argList.add("tempDir=" + tempDirectoryPath);
+
+                String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V1);
+                if (StringUtil.isBlank(backupDirectoryPath)) {
+                    throw new IllegalArgumentException("上传一代单机版日志时，没有备份目录");
+                }
+                argList.add("backupDir=" + backupDirectoryPath);
+
+                String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                if (StringUtil.isBlank(bucketName)) {
+                    throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 桶");
+                }
+                argList.add("bucketName=" + bucketName);
+
+                String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
+                if (StringUtil.isBlank(keyPrefix)) {
+                    throw new IllegalArgumentException("上传一代单机版日志时，没有 OSS 键");
+                }
+                argList.add("keyPrefix=" + keyPrefix);
+
+                ICommand command = new CommandUpload(messageOutputStream);
+                ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                messagePrintln(1, "开始上传： ");
+                command.execute();
+                messagePrintln("一代单机版日志上传完成");
+            } catch (Exception e) {
+                messagePrintlnError(e);
+            }
+            messageNewLine();
+            messageNewLine();
+            runningStatus = THIS_STATUS_OFFLINE_V1_END;
+        }
+    }
+
+    // 上传按键动作监听器 - 三代单机版
+    private class UploadButtonForOfflineV3ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try {
+                checkRunningStatus();
+                runningStatus = THIS_STATUS_OFFLINE_V3_START;
+                messagePrintln("准备上传三代单机版日志 ... ");
+
+                // 本机时间校准
+                String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                OSUtil.correctingOSTimeForWindows(timeSyncURL);
+
+                List<String> argList = new ArrayList<>();
+                String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Upload.OFFLINE_V3);
+                if (StringUtil.isBlank(sourceDirectoryPath)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有源目录");
+                }
+                argList.add("fromDir=" + sourceDirectoryPath);
+
+                String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Upload.OFFLINE_V3);
+                if (StringUtil.isBlank(tempDirectoryPath)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有临时目录");
+                }
+                argList.add("tempDir=" + tempDirectoryPath);
+
+                String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Upload.OFFLINE_V3);
+                if (StringUtil.isBlank(backupDirectoryPath)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有备份目录");
+                }
+                argList.add("backupDir=" + backupDirectoryPath);
+
+                String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                if (StringUtil.isBlank(bucketName)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 桶");
+                }
+                argList.add("bucketName=" + bucketName);
+
+                String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
+                if (StringUtil.isBlank(keyPrefix)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有 OSS 键");
+                }
+                argList.add("keyPrefix=" + keyPrefix);
+
+                String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
+                if (StringUtil.isBlank(areaUrl)) {
+                    throw new IllegalArgumentException("上传三代单机版日志时，没有区域 url 地址");
+                }
+                argList.add("areaUrl=" + areaUrl);
+
+                ICommand command = new CommandUpload(messageOutputStream);
+                ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                messagePrintln(1, "开始上传： ");
+                command.execute();
+                messagePrintln("三代单机版日志上传完成");
+            } catch (Exception e) {
+                messagePrintlnError(e);
+            }
+            messageNewLine();
+            messageNewLine();
+            runningStatus = THIS_STATUS_OFFLINE_V3_END;
         }
     }
 }

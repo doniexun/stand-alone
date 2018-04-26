@@ -70,7 +70,7 @@ public class AppDownloadTabbedPanel extends AppAbstractTabbedPanel {
         scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        final JTextArea textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setForeground(new Color(20, 20, 20));
         textArea.setDisabledTextColor(new Color(30, 30, 30));
         textArea.setBackground(null);
@@ -93,136 +93,12 @@ public class AppDownloadTabbedPanel extends AppAbstractTabbedPanel {
 
         JButton downloadOfflineV1Button = new JButton("下载一代");
         downloadOfflineV1Button.setToolTipText("从云端把一代单机版日志下载到此台电脑上");
-        downloadOfflineV1Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    checkRunningStatus();
-                    runningStatus = THIS_STATUS_OFFLINE_V1_START;
-                    messagePrintln("准备下载一代单机版日志 ... ");
-
-                    //TODO 本机时间校验
-                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
-                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
-
-                    List<String> argList = new ArrayList<>();
-                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V1);
-                    if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        throw new IllegalArgumentException("下载一代单机版日志时，没有源目录");
-                    }
-                    argList.add("fromDir=" + sourceDirectoryPath);
-
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V1);
-                    if (StringUtil.isBlank(tempDirectoryPath)) {
-                        throw new IllegalArgumentException("下载一代单机版日志时，没有临时目录");
-                    }
-                    argList.add("tempDir=" + tempDirectoryPath);
-
-                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V1);
-                    if (StringUtil.isBlank(backupDirectoryPath)) {
-                        throw new IllegalArgumentException("下载一代单机版日志时，没有备份目录");
-                    }
-                    argList.add("backupDir=" + backupDirectoryPath);
-
-                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
-                    if (StringUtil.isBlank(bucketName)) {
-                        throw new IllegalArgumentException("下载一代单机版日志时，没有 OSS 桶");
-                    }
-                    argList.add("bucketName=" + bucketName);
-
-                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
-                    if (StringUtil.isBlank(keyPrefix)) {
-                        throw new IllegalArgumentException("下载一代单机版日志时，没有 OSS 键");
-                    }
-                    argList.add("keyPrefix=" + keyPrefix);
-
-//                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1), context.getConfig(Constants.Configure.Keys.CITY));
-//                    if (StringUtil.isBlank(areaUrl)) {
-//                        throw new IllegalArgumentException("下载一代单机版日志时，没有区域 url 地址");
-//                    }
-//                    argList.add("areaUrl=" + areaUrl);
-
-                    ICommand command = new CommandDownload(messageOutputStream);
-                    ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
-
-                    messagePrintln(1, "开始下载： ");
-                    command.execute();
-                    messagePrintln("一代单机版日志下载完成");
-                } catch (Exception e) {
-                    messagePrintlnError(e);
-                }
-                messageNewLine();
-                messageNewLine();
-                runningStatus = THIS_STATUS_OFFLINE_V1_END;
-            }
-        });
+        downloadOfflineV1Button.addActionListener(new DownloadButtonForOfflineV1ActionListener());
         configurePanel.add(downloadOfflineV1Button);
 
         JButton downloadOfflineV3Button = new JButton("下载三代");
         downloadOfflineV3Button.setToolTipText("从云端把三代单机版日志下载到此台电脑上");
-        downloadOfflineV3Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    checkRunningStatus();
-                    runningStatus = THIS_STATUS_OFFLINE_V3_START;
-                    messagePrintln("准备下载三代单机版日志 ... ");
-
-                    //TODO 本机时间校验
-                    String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
-                    OSUtil.correctingOSTimeForWindows(timeSyncURL);
-
-                    List<String> argList = new ArrayList<>();
-                    String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V3);
-                    if (StringUtil.isBlank(sourceDirectoryPath)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有源目录");
-                    }
-                    argList.add("fromDir=" + sourceDirectoryPath);
-
-                    String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V3);
-                    if (StringUtil.isBlank(tempDirectoryPath)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有临时目录");
-                    }
-                    argList.add("tempDir=" + tempDirectoryPath);
-
-                    String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V3);
-                    if (StringUtil.isBlank(backupDirectoryPath)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有备份目录");
-                    }
-                    argList.add("backupDir=" + backupDirectoryPath);
-
-                    String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
-                    if (StringUtil.isBlank(bucketName)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有 OSS 桶");
-                    }
-                    argList.add("bucketName=" + bucketName);
-
-                    String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
-                    if (StringUtil.isBlank(keyPrefix)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有 OSS 键");
-                    }
-                    argList.add("keyPrefix=" + keyPrefix);
-
-                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
-                    if (StringUtil.isBlank(areaUrl)) {
-                        throw new IllegalArgumentException("下载三代单机版日志时，没有区域 url 地址");
-                    }
-                    argList.add("areaUrl=" + areaUrl);
-
-                    ICommand command = new CommandDownload(messageOutputStream);
-                    ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
-
-                    messagePrintln(1, "开始下载： ");
-                    command.execute();
-                    messagePrintln("三代单机版日志下载完成");
-                } catch (Exception e) {
-                    messagePrintlnError(e);
-                }
-                messageNewLine();
-                messageNewLine();
-                runningStatus = THIS_STATUS_OFFLINE_V3_END;
-            }
-        });
+        downloadOfflineV3Button.addActionListener(new DownloadButtonForOfflineV3ActionListener());
         configurePanel.add(downloadOfflineV3Button);
 
         parentPanel.add(configurePanel, BorderLayout.CENTER);
@@ -240,7 +116,7 @@ public class AppDownloadTabbedPanel extends AppAbstractTabbedPanel {
         scrollPane.setPreferredSize(new Dimension((int) (configurePanel.getWidth() * 0.97), configurePanel.getHeight() - 30));
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        final JTextArea textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setForeground(new Color(20, 20, 20));
         textArea.setDisabledTextColor(new Color(30, 30, 30));
         textArea.setBackground(null);
@@ -265,6 +141,137 @@ public class AppDownloadTabbedPanel extends AppAbstractTabbedPanel {
         }
         if (runningStatus == THIS_STATUS_OFFLINE_V3_START) {
             this.messagePrintln("下载三代单机版日志没有结束");
+        }
+    }
+
+    // ================================================ 内部类 ================================================
+    // 下载按键动作监听器 - 一代单机版
+    private class DownloadButtonForOfflineV1ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try {
+                checkRunningStatus();
+                runningStatus = THIS_STATUS_OFFLINE_V1_START;
+                messagePrintln("准备下载一代单机版日志 ... ");
+
+                //TODO 本机时间校验
+                String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                OSUtil.correctingOSTimeForWindows(timeSyncURL);
+
+                List<String> argList = new ArrayList<>();
+                String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V1);
+                if (StringUtil.isBlank(sourceDirectoryPath)) {
+                    throw new IllegalArgumentException("下载一代单机版日志时，没有源目录");
+                }
+                argList.add("fromDir=" + sourceDirectoryPath);
+
+                String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V1);
+                if (StringUtil.isBlank(tempDirectoryPath)) {
+                    throw new IllegalArgumentException("下载一代单机版日志时，没有临时目录");
+                }
+                argList.add("tempDir=" + tempDirectoryPath);
+
+                String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V1);
+                if (StringUtil.isBlank(backupDirectoryPath)) {
+                    throw new IllegalArgumentException("下载一代单机版日志时，没有备份目录");
+                }
+                argList.add("backupDir=" + backupDirectoryPath);
+
+                String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                if (StringUtil.isBlank(bucketName)) {
+                    throw new IllegalArgumentException("下载一代单机版日志时，没有 OSS 桶");
+                }
+                argList.add("bucketName=" + bucketName);
+
+                String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V1);
+                if (StringUtil.isBlank(keyPrefix)) {
+                    throw new IllegalArgumentException("下载一代单机版日志时，没有 OSS 键");
+                }
+                argList.add("keyPrefix=" + keyPrefix);
+
+//                    String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V1), context.getConfig(Constants.Configure.Keys.CITY));
+//                    if (StringUtil.isBlank(areaUrl)) {
+//                        throw new IllegalArgumentException("下载一代单机版日志时，没有区域 url 地址");
+//                    }
+//                    argList.add("areaUrl=" + areaUrl);
+
+                ICommand command = new CommandDownload(messageOutputStream);
+                ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                messagePrintln(1, "开始下载： ");
+                command.execute();
+                messagePrintln("一代单机版日志下载完成");
+            } catch (Exception e) {
+                messagePrintlnError(e);
+            }
+            messageNewLine();
+            messageNewLine();
+            runningStatus = THIS_STATUS_OFFLINE_V1_END;
+        }
+    }
+
+    // 下载按键动作监听器 - 三代单机版
+    private class DownloadButtonForOfflineV3ActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try {
+                checkRunningStatus();
+                runningStatus = THIS_STATUS_OFFLINE_V3_START;
+                messagePrintln("准备下载三代单机版日志 ... ");
+
+                //TODO 本机时间校验
+                String timeSyncURL = context.getConfig(Constants.Configure.Keys.Url.TIME_SYNC);
+                OSUtil.correctingOSTimeForWindows(timeSyncURL);
+
+                List<String> argList = new ArrayList<>();
+                String sourceDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Data.Download.OFFLINE_V3);
+                if (StringUtil.isBlank(sourceDirectoryPath)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有源目录");
+                }
+                argList.add("fromDir=" + sourceDirectoryPath);
+
+                String tempDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Temp.Download.OFFLINE_V3);
+                if (StringUtil.isBlank(tempDirectoryPath)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有临时目录");
+                }
+                argList.add("tempDir=" + tempDirectoryPath);
+
+                String backupDirectoryPath = context.getConfig(Constants.Configure.Keys.Directory.Backup.Download.OFFLINE_V3);
+                if (StringUtil.isBlank(backupDirectoryPath)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有备份目录");
+                }
+                argList.add("backupDir=" + backupDirectoryPath);
+
+                String bucketName = context.getConfig(Constants.Configure.Keys.OSS.BUCKET);
+                if (StringUtil.isBlank(bucketName)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有 OSS 桶");
+                }
+                argList.add("bucketName=" + bucketName);
+
+                String keyPrefix = context.getConfig(Constants.Configure.Keys.OSS.ObjectKey.OFFLINE_V3);
+                if (StringUtil.isBlank(keyPrefix)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有 OSS 键");
+                }
+                argList.add("keyPrefix=" + keyPrefix);
+
+                String areaUrl = String.format("%s?area_no=%s", context.getConfig(Constants.Configure.Keys.Url.Area.OFFLINE_V3), context.getConfig(Constants.Configure.Keys.CITY));
+                if (StringUtil.isBlank(areaUrl)) {
+                    throw new IllegalArgumentException("下载三代单机版日志时，没有区域 url 地址");
+                }
+                argList.add("areaUrl=" + areaUrl);
+
+                ICommand command = new CommandDownload(messageOutputStream);
+                ArgumentFactory.analysisArgument(argList.toArray(new String[0]));
+
+                messagePrintln(1, "开始下载： ");
+                command.execute();
+                messagePrintln("三代单机版日志下载完成");
+            } catch (Exception e) {
+                messagePrintlnError(e);
+            }
+            messageNewLine();
+            messageNewLine();
+            runningStatus = THIS_STATUS_OFFLINE_V3_END;
         }
     }
 }

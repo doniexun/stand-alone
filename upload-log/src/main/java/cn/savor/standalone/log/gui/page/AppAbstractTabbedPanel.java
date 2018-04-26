@@ -32,11 +32,11 @@ import java.awt.*;
 public abstract class AppAbstractTabbedPanel {
     static final String INDENT = "        ";
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    PageContext context;
-    AbstractTextAreaOutputStream sourceOutputStream;
-    AbstractTextAreaOutputStream messageOutputStream;
+    protected PageContext context;
+    protected AbstractTextAreaOutputStream sourceOutputStream;
+    protected AbstractTextAreaOutputStream messageOutputStream;
 
     public Component buildUI(Container parentContainer) {
         JPanel mainPanel = new JPanel();
