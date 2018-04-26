@@ -60,7 +60,11 @@ public class FileLoader {
 
     public Properties loadConfigFile(Configure configure) {
         Properties properties = new Properties();
-        String fileName = "config.properties";
+        String fileName = System.getProperty("savor.tool.box.conf");
+        if (this.loadFromFile(configure, properties, fileName, FILE_TYPE_CONFIG)) {
+            return properties;
+        }
+        fileName = "config.properties";
         if (this.loadFromUserHome(configure, properties, fileName, FILE_TYPE_CONFIG)) {
             return properties;
         }
@@ -79,49 +83,26 @@ public class FileLoader {
     }
 
     private boolean loadFromUserHome(Configure configure, Properties properties, String fileName, int fileType) {
-        InputStream inputStream = null;
-        InputStreamReader inputStreamReader = null;
-        try {
-            String configFileName = String.format("%s/%s/%s", FileUtil.getUserDirectoryPath(), Constants.Configure.Directory.USER_HOME, fileName);
-            File configFile = new File(configFileName);
-            if (!configFile.exists() || !configFile.isFile()) {
-                return false;
-            }
-            inputStream = new BufferedInputStream(new FileInputStream(configFile));
-            inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
-            properties.load(inputStreamReader);
-            if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
-            } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
-            }
-            return true;
-        } catch (IOException e) {
-            logger.warn(e.getMessage());
-        } finally {
-            IOUtil.close(inputStreamReader);
-            IOUtil.close(inputStream);
-        }
-        return false;
+        String configFileName = String.format("%s/%s/%s", FileUtil.getUserDirectoryPath(), Constants.Configure.Directory.USER_HOME, fileName);
+        return this.loadFromFile(configure, properties, configFileName, fileType);
     }
 
     private boolean loadFromUserWork(Configure configure, Properties properties, String fileName, int fileType) {
+        String configFileName = String.format("%s/%s/%s", configure.getWorkDirectoryPath(), Constants.Configure.Directory.USER_WORK, fileName);
+        return this.loadFromFile(configure, properties, configFileName, fileType);
+    }
+
+    private boolean loadFromJar(Configure configure, Properties properties, String fileName, int fileType) {
+        String configFileName = String.format("/config/offline_logs/%s", fileName);
+        String defaultFileName = String.format("%s/%s/%s", FileUtil.getUserDirectoryPath(), Constants.Configure.Directory.USER_HOME, fileName);
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {
-            String configFileName = String.format("%s/%s/%s", configure.getWorkDirectoryPath(), Constants.Configure.Directory.USER_WORK, fileName);
-            File configFile = new File(configFileName);
-            if (!configFile.exists() || !configFile.isFile()) {
-                return false;
-            }
-            inputStream = new BufferedInputStream(new FileInputStream(configFile));
+            inputStream = this.getClass().getResourceAsStream(configFileName);
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
-            if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
-            } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
-            }
+            File configFile = new File(defaultFileName);
+            this.recordConfigPath(configure, fileType, configFile);
             return true;
         } catch (IOException e) {
             logger.warn(e.getMessage());
@@ -132,28 +113,40 @@ public class FileLoader {
         return false;
     }
 
-    private boolean loadFromJar(Configure configure, Properties properties, String fileName, int fileType) {
+    private boolean loadFromFile(Configure configure, Properties properties, String configFileName, int fileType) {
+        FileInputStream fileInputStream = null;
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         try {
-            String configFileName = String.format("/config/offline_logs/%s", fileName);
-            inputStream = this.getClass().getResourceAsStream(configFileName);
+            File configFile = new File(configFileName);
+            if (!configFile.exists() || !configFile.isFile()) {
+                return false;
+            }
+            fileInputStream = new FileInputStream(configFile);
+            inputStream = new BufferedInputStream(fileInputStream);
             inputStreamReader = new InputStreamReader(inputStream, Constant.Charset.UTF8);
             properties.load(inputStreamReader);
-            String defaultFileName = String.format("%s/%s/%s", FileUtil.getUserDirectoryPath(), Constants.Configure.Directory.USER_HOME, fileName);
-            File configFile = new File(defaultFileName);
-            if (fileType == FILE_TYPE_DATA) {
-                configure.setDataFilePath(FileUtil.getCanonicalPath(configFile));
-            } else if (fileType == FILE_TYPE_CONFIG) {
-                configure.setConfigFilePath(FileUtil.getCanonicalPath(configFile));
-            }
+            this.recordConfigPath(configure, fileType, configFile);
             return true;
         } catch (IOException e) {
             logger.warn(e.getMessage());
         } finally {
             IOUtil.close(inputStreamReader);
             IOUtil.close(inputStream);
+            IOUtil.close(fileInputStream);
         }
         return false;
+    }
+
+    private void recordConfigPath(Configure configure, int fileType, File configFile) {
+        if (fileType == FILE_TYPE_DATA) {
+            String realDataFileName = FileUtil.getCanonicalPath(configFile);
+            logger.info("dataFilePath = {}", realDataFileName);
+            configure.setDataFilePath(realDataFileName);
+        } else if (fileType == FILE_TYPE_CONFIG) {
+            String realConfigFileName = FileUtil.getCanonicalPath(configFile);
+            logger.info("configFilePath = {}", realConfigFileName);
+            configure.setConfigFilePath(realConfigFileName);
+        }
     }
 }

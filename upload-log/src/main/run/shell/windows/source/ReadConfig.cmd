@@ -1,16 +1,16 @@
-@ECHO OFF & SetLocal EnableDelayedExpansion & CLS & Echo.
+@ECHO OFF
 
 Set VERBOSE=%~1
 Set CONFIG_FILE=%~2
 
-If "!VERBOSE!" == "true" (
-    Echo "CONFIG_FILE=!CONFIG_FILE!"
+If "%VERBOSE%" == "true" (
+    Echo "CONFIG_FILE=%CONFIG_FILE%"
 )
 
 
 Echo / =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*= Loading Data =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*= \ & Echo.
 
-For /F "eol=; usebackq delims=" %%a In ("!CONFIG_FILE!") Do (
+For /F "eol=; usebackq delims=" %%a In ("%CONFIG_FILE%") Do (
 	Set rowContent=%%a
 	If Not "!rowContent:~0,1!" == "#" (
         If Not "!rowContent:~0,1!" == "[" (
@@ -39,4 +39,4 @@ For /F "eol=; usebackq delims=" %%a In ("!CONFIG_FILE!") Do (
 )
 
 Echo. & Echo \ =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*= Loaded Data =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*= /
-Echo. & EndLocal
+Echo.

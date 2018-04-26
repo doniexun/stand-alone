@@ -55,23 +55,30 @@ ECHO DIR_BACKUP        = !DIR_BACKUP!
 SET JRE_HOME=!APP_HOME!\java\jre
 ECHO JRE_HOME          = !JRE_HOME!
 
+CALL "!WORK_DIR!\ReadConfig" false "!DIR_CONF!\app.ini"
+
 SET JRE_ZIP_DOWNLOAD=!DIR_TEMP!\jre.zip
 ECHO JRE_ZIP_DOWNLOAD  = !JRE_ZIP_DOWNLOAD!
 
-SET URL_JRE_X86=http://redian-produce.oss-cn-beijing.aliyuncs.com/soft/jre/windows/jre1.8.0_05_x86.zip
+SET URL_JRE_X86=%com.littlehotspot.offline.tools.jdk.x86%
 ECHO URL_JRE_X86       = !URL_JRE_X86!
 
-SET URL_JRE_X64=http://redian-produce.oss-cn-beijing.aliyuncs.com/soft/jre/windows/jre1.8.0_05_x64.zip
+SET URL_JRE_X64=%com.littlehotspot.offline.tools.jdk.x64%
 ECHO URL_JRE_X64       = !URL_JRE_X64!
 
 
+If "%com.littlehotspot.offline.tools.project.name%" == "" (
+    SET SHORTCUT_NAME_PROJECT=热点运维工具
+) Else (
+    SET SHORTCUT_NAME_PROJECT=%com.littlehotspot.offline.tools.project.name%
+)
 SET SHORTCUT_PROGRAM=!APP_HOME!\!MAIN_EXE!
 SET SHORTCUT_WORK_DIR=!APP_HOME!
+SET SHORTCUT_NAME_DESKTOP=!SHORTCUT_NAME_PROJECT!
 SET SHORTCUT_DESC=用于热点信息科技有限公司运维处理
-SET SHORTCUT_NAME_DESKTOP=热点运维工具
-SET SHORTCUT_NAME_STARTUP=热点运维工具\启动
+SET SHORTCUT_NAME_STARTUP=!SHORTCUT_NAME_PROJECT!\启动
 SET SHORTCUT_PROGRAM_PARAMETER_STARTUP=startup
-SET SHORTCUT_NAME_UNINSTALL=热点运维工具\卸载
+SET SHORTCUT_NAME_UNINSTALL=!SHORTCUT_NAME_PROJECT!\卸载
 SET SHORTCUT_PROGRAM_PARAMETER_UNINSTALL=uninstall
 SET SHORTCUT_PROGRAM_PARAMETER_VERBOSE=true
 ECHO \ ===================================== 初始化环境变量 ===================================== /
@@ -221,6 +228,11 @@ If NOT EXIST "!JRE_HOME!\" (
 )
 @REM Download JRE-Package
 if /i %LONG_BIT%==32 (
+    If "!URL_JRE_X86!" == "" (
+        Echo     JDK 下载路径不存在
+        PAUSE
+        GoTo eof
+    )
     "!DIR_BIN!\wget" "!URL_JRE_X86!" -O "!JRE_ZIP_DOWNLOAD!"
     If ErrorLevel 1 (
         Call :msg_download_jre_fail "!URL_JRE_X86!"
@@ -228,6 +240,11 @@ if /i %LONG_BIT%==32 (
     )
     Call :msg_download_jre_success "!URL_JRE_X86!"
 ) else (
+    If "!URL_JRE_X64!" == "" (
+        Echo     JDK 下载路径不存在
+        PAUSE
+        GoTo eof
+    )
     "!DIR_BIN!\wget" "!URL_JRE_X64!" -O "!JRE_ZIP_DOWNLOAD!"
     If ErrorLevel 1 (
         Call :msg_download_jre_fail "!URL_JRE_X64!"
@@ -288,8 +305,8 @@ Echo.
 
 
 
-Echo     程序安装成功。请点击 [开始/所有程序/!SHORTCUT_NAME_STARTUP!] 或 [桌面/!SHORTCUT_NAME_DESKTOP!] 来启动程序！
-MSG %UserName% /server:127.0.0.1 /time:10 "程序安装成功。请点击 [开始/所有程序/!SHORTCUT_NAME_STARTUP!] 或 [桌面/!SHORTCUT_NAME_DESKTOP!] 来启动程序！"
+Echo     程序安装成功。请点击 [开始\所有程序\!SHORTCUT_NAME_STARTUP!] 或 [桌面\!SHORTCUT_NAME_DESKTOP!] 来启动程序！
+MSG %UserName% /server:127.0.0.1 /time:10 "程序安装成功。请点击 [开始\所有程序\!SHORTCUT_NAME_STARTUP!] 或 [桌面\!SHORTCUT_NAME_DESKTOP!] 来启动程序！"
 "!APP_HOME!\bin\sleep" 3000
 EndLocal & GoTo eof
 
