@@ -2,41 +2,54 @@
 <configuration debug="false">
 
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="LOG_HOME" value="${savor.tool.box.home}/logs"/>
+    <property name="logger.home" value="${savor.tool.box.home}/logs"/>
+    <property name="logger.file.log.name.main" value="out"/>
+    <property name="logger.file.log.name.suffix" value=".log"/>
+    <property name="logger.file.archive.name.suffix" value="${logger.file.log.name.suffix}.zip"/>
+    <property name="logger.file.size.max" value="10MB"/>
+    <property name="logger.file.history.days.max" value="30"/>
+    <property name="logger.content.encoder.charset" value="UTF-8"/>
+    <property name="logger.content.pattern"
+              value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method\\(\\):%L - %msg%n"/>
+
+    <property name="logger.file.log" value="${logger.home}/${logger.file.log.name.main}${logger.file.log.name.suffix}"/>
+    <property name="logger.file.archive"
+              value="${logger.home}/${logger.file.name.main}-%d{yyyy-MM-dd}${logger.file.archive.name.suffix}"/>
+
 
     <!-- 控制台输出 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="logger.appender.stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
             <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
-            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method\\(\\):%L -%msg%n</pattern>
+            <pattern>${logger.content.pattern}</pattern>
         </encoder>
     </appender>
 
     <!-- 按照每天生成日志文件 -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/out.log</file>
+    <appender name="logger.appender.file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logger.file.log}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/out-%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <FileNamePattern>${logger.file.archive}</FileNamePattern>
             <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
+            <MaxHistory>${logger.file.history.days.max}</MaxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
             <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
-            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method\\(\\):%L -%msg%n</pattern>
-            <charset>UTF-8</charset>
+            <pattern>${logger.content.pattern}</pattern>
+            <charset>${logger.content.encoder.charset}</charset>
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
+            <MaxFileSize>${logger.file.size.max}</MaxFileSize>
         </triggeringPolicy>
     </appender>
 
     <!-- 日志输出级别 -->
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="logger.appender.stdout"/>
+        <appender-ref ref="logger.appender.file"/>
     </root>
 </configuration>
